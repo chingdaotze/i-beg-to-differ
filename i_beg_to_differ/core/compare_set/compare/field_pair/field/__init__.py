@@ -1,29 +1,26 @@
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
-    List,
     Dict,
     Self,
 )
 
-from ....ib2d_file_element import IB2DFileElement
-from .field import Field
+from .....ib2d_file_element import IB2DFileElement
 
 if TYPE_CHECKING:
-    from ....ib2d_file import IB2DFile
+    from .....ib2d_file import IB2DFile
 
 
-class FieldPair(
+class Field(
     IB2DFileElement,
 ):
     """
-    Pair of Fields for comparison.
+    Field object.
     """
 
-    source: Field
-    target: Field
-
-    comparison_rules: List[ComparisonRule]
+    name: str
+    py_type: str
+    native_type: str
 
     def __init__(
         self,

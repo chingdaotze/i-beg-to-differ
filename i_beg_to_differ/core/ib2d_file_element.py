@@ -20,7 +20,7 @@ class IB2DFileElement(
     ABC,
 ):
     """
-    Element or component of a ``*.ib2d`` file.
+    Element or component of an ``*.ib2d`` file.
     """
 
     def __init__(

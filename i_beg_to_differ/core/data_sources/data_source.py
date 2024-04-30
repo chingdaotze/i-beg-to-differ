@@ -1,34 +1,36 @@
+from abc import ABC
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
-    List,
     Dict,
     Self,
 )
 
-from ....ib2d_file_element import IB2DFileElement
-from .field import Field
+from ..ib2d_file_element import IB2DFileElement
 
 if TYPE_CHECKING:
-    from ....ib2d_file import IB2DFile
+    from ..ib2d_file import IB2DFile
 
 
-class FieldPair(
+class DataSource(
     IB2DFileElement,
+    ABC,
 ):
     """
-    Pair of Fields for comparison.
+    Abstract data source.
     """
 
-    source: Field
-    target: Field
-
-    comparison_rules: List[ComparisonRule]
+    type_id: str
+    """
+    Unique identifier for this DataSource.
+    """
 
     def __init__(
         self,
         working_dir_path: Path,
+        type_id: str,
     ):
+        self.type_id = type_id
 
         IB2DFileElement.__init__(
             self=self,
