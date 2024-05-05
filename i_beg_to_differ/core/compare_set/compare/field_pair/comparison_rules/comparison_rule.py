@@ -1,3 +1,0 @@
-"""
-Base comparison rule.
-"""

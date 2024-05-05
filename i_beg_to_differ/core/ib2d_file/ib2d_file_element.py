@@ -9,10 +9,11 @@ from typing import (
     Dict,
 )
 
-from .base import Base
+from i_beg_to_differ.core.base import Base
+from i_beg_to_differ.core.wildcards import Wildcards
 
 if TYPE_CHECKING:
-    from .ib2d_file import IB2DFile
+    from i_beg_to_differ.core.ib2d_file import IB2DFile
 
 
 class IB2DFileElement(
@@ -23,14 +24,45 @@ class IB2DFileElement(
     Element or component of an ``*.ib2d`` file.
     """
 
+    _wildcards: Wildcards
+
     def __init__(
         self,
         working_dir_path: Path,
+        wildcards: Wildcards | None = None,
     ):
         Base.__init__(
             self=self,
             working_dir_path=working_dir_path,
         )
+
+        if wildcards is None:
+            self.wildcards = Wildcards(
+                working_dir_path=self.working_dir_path,
+            )
+
+        else:
+            self.wildcards = wildcards
+
+    @property
+    def wildcards(
+        self,
+    ) -> Wildcards:
+
+        return self._wildcards
+
+    @wildcards.setter
+    @abstractmethod
+    def wildcards(
+        self,
+        wildcards: Wildcards,
+    ) -> None:
+        """
+        Sets wildcards on itself and all child objects.
+
+        :param wildcards: Wildcards object to set.
+        :return:
+        """
 
     @classmethod
     @abstractmethod

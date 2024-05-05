@@ -1,3 +1,0 @@
-"""
-Base Transform class.
-"""

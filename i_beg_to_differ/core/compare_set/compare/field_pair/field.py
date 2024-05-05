@@ -1,4 +1,3 @@
-from abc import ABC
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
@@ -6,35 +5,34 @@ from typing import (
     Self,
 )
 
-from ..ib2d_file_element import IB2DFileElement
+from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....wildcards import Wildcards
 
 if TYPE_CHECKING:
-    from ..ib2d_file import IB2DFile
+    from ....ib2d_file import IB2DFile
 
 
-class DataSource(
+class Field(
     IB2DFileElement,
-    ABC,
 ):
     """
-    Abstract data source.
+    Field object.
     """
 
-    type_id: str
-    """
-    Unique identifier for this DataSource.
-    """
+    name: str
+    py_type: str
+    native_type: str
 
     def __init__(
         self,
         working_dir_path: Path,
-        type_id: str,
+        wildcards: Wildcards | None = None,
     ):
-        self.type_id = type_id
 
         IB2DFileElement.__init__(
             self=self,
             working_dir_path=working_dir_path,
+            wildcards=wildcards,
         )
 
     @classmethod

@@ -9,8 +9,8 @@ from contextlib import contextmanager
 from uuid import uuid4
 from typing import Self
 
-from .base import Base
-from .compare_set import CompareSet
+from ..base import Base
+from ..compare_set import CompareSet
 
 
 class IB2DFile(

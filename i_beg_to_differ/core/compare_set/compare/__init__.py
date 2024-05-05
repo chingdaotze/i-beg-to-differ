@@ -1,14 +1,15 @@
 from pathlib import Path
 from typing import (
+    TYPE_CHECKING,
     List,
     Dict,
-    TYPE_CHECKING,
     Self,
 )
 
-from ...ib2d_file_element import IB2DFileElement
+from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...data_sources.data_source import DataSource
 from .field_pair import FieldPair
+from ...wildcards import Wildcards
 
 if TYPE_CHECKING:
     from ...ib2d_file import IB2DFile
@@ -37,10 +38,17 @@ class Compare(
         name: str,
         source: DataSource,
         target: DataSource,
+        wildcards: Wildcards | None = None,
         pk_fields: List[FieldPair] | None = None,
         dt_fields: List[FieldPair] | None = None,
         description: str | None = None,
     ):
+        IB2DFileElement.__init__(
+            self=self,
+            working_dir_path=working_dir_path,
+            wildcards=wildcards,
+        )
+
         self.name = name
         self.description = description
 
@@ -50,11 +58,6 @@ class Compare(
         self.pk_fields = pk_fields
         self.dt_fields = dt_fields
         self.fields = self.pk_fields + self.dt_fields
-
-        IB2DFileElement.__init__(
-            self=self,
-            working_dir_path=working_dir_path,
-        )
 
     @classmethod
     def deserialize(

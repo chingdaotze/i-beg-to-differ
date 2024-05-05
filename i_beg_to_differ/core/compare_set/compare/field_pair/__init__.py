@@ -6,8 +6,9 @@ from typing import (
     Self,
 )
 
-from ....ib2d_file_element import IB2DFileElement
+from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from .field import Field
+from ....wildcards import Wildcards
 
 if TYPE_CHECKING:
     from ....ib2d_file import IB2DFile
@@ -28,11 +29,13 @@ class FieldPair(
     def __init__(
         self,
         working_dir_path: Path,
+        wildcards: Wildcards | None = None,
     ):
 
         IB2DFileElement.__init__(
             self=self,
             working_dir_path=working_dir_path,
+            wildcards=wildcards,
         )
 
     @classmethod

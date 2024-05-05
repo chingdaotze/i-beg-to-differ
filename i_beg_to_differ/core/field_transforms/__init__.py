@@ -1,12 +1,12 @@
 from ..registered_types import RegisteredTypes
-from .data_source import DataSource
+from .field_transform import FieldTransform
 
 
-class DataSources[DataSource](
+class FieldTransforms[FieldTransform](
     RegisteredTypes,
 ):
     """
-    Contains and manages all DataSource types for this package.
+    Contains and manages all FieldTransform types for this package.
     """
 
     def __init__(
