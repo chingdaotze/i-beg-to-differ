@@ -3,17 +3,14 @@ from abc import (
     abstractmethod,
 )
 from pathlib import Path
+from zipfile import ZipFile
 from typing import (
-    TYPE_CHECKING,
     Self,
     Dict,
 )
 
-from i_beg_to_differ.core.base import Base
-from i_beg_to_differ.core.wildcards import Wildcards
-
-if TYPE_CHECKING:
-    from i_beg_to_differ.core.ib2d_file import IB2DFile
+from ..base import Base
+from ..wildcards import Wildcards
 
 
 class IB2DFileElement(
@@ -64,13 +61,51 @@ class IB2DFileElement(
         :return:
         """
 
+    @staticmethod
+    def inflate(
+        file_name: str,
+        working_dir_path: Path,
+        ib2d_file: ZipFile,
+    ) -> None:
+        """
+        Inflates a file within the `*.ib2d`` file to the working directory.
+
+        :param file_name: Name of the file to add or overwrite.
+        :param working_dir_path: Working directory path.
+        :param ib2d_file: ``*.ib2d`` file.
+        :return:
+        """
+
+        # TODO: Extract file from zip
+
+        pass
+
+    @staticmethod
+    def deflate(
+        file_name: str,
+        working_dir_path: Path,
+        ib2d_file: ZipFile,
+    ) -> None:
+        """
+        Adds or overwrites a file from the working directory to the `*.ib2d`` file.
+
+        :param file_name: Name of the file to add or overwrite.
+        :param working_dir_path: Working directory path.
+        :param ib2d_file: ``*.ib2d`` file.
+        :return:
+        """
+
+        # TODO: Add file to zip
+
+        pass
+
     @classmethod
     @abstractmethod
     def deserialize(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Self:
         """
         Constructs an instance from a dictionary. Also extracts any supporting files from the ``*.compare``
@@ -84,7 +119,7 @@ class IB2DFileElement(
     @abstractmethod
     def serialize(
         self,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Dict:
         """
         Constructs a dictionary from an instance. Also compresses any supporting files from the working

@@ -1,6 +1,11 @@
 from pathlib import Path
 from zipfile import ZipFile
-from json import load
+from io import BytesIO
+from shutil import rmtree
+from json import (
+    load,
+    dumps,
+)
 from os import (
     PathLike,
     getenv,
@@ -20,55 +25,23 @@ class IB2DFile(
     ``*.ib2d`` file object.
     """
 
-    path: Path
     compare_set: CompareSet
-    zip_file: ZipFile
+    """
+    Comparison set object.
+    """
 
     def __init__(
         self,
-        path: Path,
         working_dir_path: Path,
+        compare_set: CompareSet,
     ):
-        """
-        Creates a CompareSet object. If file exists, deserialize file. If file does not exist,
-        create an empty CompareSet object.
-
-        :param path: ``*.ib2d`` file path.
-        :param working_dir_path: Working directory path.
-        """
 
         Base.__init__(
             self=self,
             working_dir_path=working_dir_path,
         )
 
-        self.path = path
-
-        if self.path.exists():
-            # Deserialize
-            with ZipFile(file=self.path, mode='r') as zip_file:
-
-                json_file = zip_file.open(
-                    name='compare_set.json',
-                )
-
-                instance_data = load(
-                    fp=json_file,
-                )
-
-                self.compare_set = CompareSet.deserialize(
-                    instance_data=instance_data,
-                    working_dir_path=self.working_dir_path,
-                    ib2d_file=self,
-                )
-
-        else:
-            # TODO: Create empty archive
-
-            # Create empty instance
-            self.compare_set = CompareSet(
-                working_dir_path=working_dir_path,
-            )
+        self.compare_set = compare_set
 
     def __del__(
         self,
@@ -79,37 +52,9 @@ class IB2DFile(
         :return:
         """
 
-        # TODO: Remove working directory
-
-    def inflate(
-        self,
-        file_name: str,
-    ) -> None:
-        """
-        Adds or overwrites a file from the working directory to the `*.ib2d`` file.
-
-        :param file_name: Name of the file to add or overwrite.
-        :return:
-        """
-
-        # TODO: Add file to zip
-
-        pass
-
-    def deflate(
-        self,
-        file_name: str,
-    ) -> None:
-        """
-        Deflates a file within the `*.ib2d`` file to the working directory.
-
-        :param file_name: Name of the file to extract to the working directory.
-        :return:
-        """
-
-        # TODO: Extract file from zip
-
-        pass
+        rmtree(
+            self.working_dir_path,
+        )
 
     @classmethod
     @contextmanager
@@ -163,17 +108,43 @@ class IB2DFile(
                     working_dir_path,
                 )
 
+            # Load *.ib2d file to memory
+            with open(file=path, mode='rb') as input_file:
+
+                ib2d_file_bytes = BytesIO(
+                    initial_bytes=input_file.read(),
+                )
+
+                ib2d_file = ZipFile(
+                    file=ib2d_file_bytes,
+                    mode='r',
+                )
+
+            # Create compare set
+            compare_set_file = ib2d_file.open(
+                name='compare_set.json',
+            )
+
+            compare_set_data = load(
+                fp=compare_set_file,
+            )
+
+            compare_set = CompareSet.deserialize(
+                instance_data=compare_set_data,
+                working_dir_path=working_dir_path,
+                ib2d_file=ib2d_file,
+            )
+
             # Create instance
             ib2d_file = IB2DFile(
-                path=path,
                 working_dir_path=working_dir_path,
+                compare_set=compare_set,
             )
 
             yield ib2d_file
 
         finally:
 
-            # TODO: Delete working directory
             pass
 
     def save(
@@ -187,9 +158,32 @@ class IB2DFile(
         :return:
         """
 
-        # TODO: Serialize object, and write to JSON file
-        json_data = self.compare_set.serialize(
-            ib2d_file=self,
+        # Create *.ib2d file in memory
+        ib2d_file_bytes = BytesIO()
+
+        ib2d_file = ZipFile(
+            file=ib2d_file_bytes,
+            mode='w',
         )
 
-        pass
+        # Serialize compare set
+        compare_set_data = self.compare_set.serialize(
+            ib2d_file=ib2d_file,
+        )
+
+        # Flush buffer in *.ib2d file
+        ib2d_file.writestr(
+            zinfo_or_arcname='compare_set.json',
+            data=dumps(
+                obj=compare_set_data,
+                indent=4,
+            ),
+        )
+
+        ib2d_file.close()
+
+        # Write *.ib2d file to disk
+        with open(file=path, mode='wb') as output_file:
+            output_file.write(
+                ib2d_file_bytes.getvalue(),
+            )

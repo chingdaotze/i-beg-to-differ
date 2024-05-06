@@ -1,15 +1,12 @@
 from pathlib import Path
 from typing import (
-    TYPE_CHECKING,
     Dict,
     Self,
 )
+from zipfile import ZipFile
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from ....wildcards import Wildcards
-
-if TYPE_CHECKING:
-    from ....ib2d_file import IB2DFile
 
 
 class Field(
@@ -40,7 +37,7 @@ class Field(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Self:
 
         # TODO: Deserialize object

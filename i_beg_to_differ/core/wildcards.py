@@ -1,14 +1,11 @@
 from pathlib import Path
 from typing import (
-    TYPE_CHECKING,
     Dict,
     Self,
 )
+from zipfile import ZipFile
 
-from i_beg_to_differ.core.ib2d_file.ib2d_file_element import IB2DFileElement
-
-if TYPE_CHECKING:
-    from .ib2d_file import IB2DFile
+from .ib2d_file.ib2d_file_element import IB2DFileElement
 
 
 class Wildcards(
@@ -30,17 +27,16 @@ class Wildcards(
         working_dir_path: Path,
         wildcards: Dict[str, str] | None = None,
     ):
+        IB2DFileElement.__init__(
+            self=self,
+            working_dir_path=working_dir_path,
+        )
 
         if wildcards is None:
             self.wildcards = {}
 
         else:
             self.wildcards = wildcards
-
-        IB2DFileElement.__init__(
-            self=self,
-            working_dir_path=working_dir_path,
-        )
 
     def replace_wildcards(
         self,
@@ -56,7 +52,7 @@ class Wildcards(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Self:
 
         instance = Wildcards(
@@ -68,7 +64,7 @@ class Wildcards(
 
     def serialize(
         self,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Dict:
 
         return self.wildcards

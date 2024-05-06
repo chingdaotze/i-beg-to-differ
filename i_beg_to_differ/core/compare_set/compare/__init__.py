@@ -1,18 +1,15 @@
 from pathlib import Path
 from typing import (
-    TYPE_CHECKING,
     List,
     Dict,
     Self,
 )
+from zipfile import ZipFile
 
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...data_sources.data_source import DataSource
 from .field_pair import FieldPair
 from ...wildcards import Wildcards
-
-if TYPE_CHECKING:
-    from ...ib2d_file import IB2DFile
 
 
 class Compare(
@@ -64,7 +61,7 @@ class Compare(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Self:
 
         # TODO: Deserialize object

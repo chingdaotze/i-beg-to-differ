@@ -2,16 +2,13 @@ from pathlib import Path
 from typing import (
     List,
     Dict,
-    TYPE_CHECKING,
     Self,
 )
+from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
 from .compare import Compare
 from ..wildcards import Wildcards
-
-if TYPE_CHECKING:
-    from ..ib2d_file import IB2DFile
 
 
 class CompareSet(
@@ -53,7 +50,7 @@ class CompareSet(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Self:
         # Construct object
         compares = [
@@ -83,7 +80,7 @@ class CompareSet(
 
     def serialize(
         self,
-        ib2d_file: 'IB2DFile',
+        ib2d_file: ZipFile,
     ) -> Dict:
 
         instance_data = {
