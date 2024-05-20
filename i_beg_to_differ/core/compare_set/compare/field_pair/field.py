@@ -6,6 +6,7 @@ from typing import (
 from zipfile import ZipFile
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....wildcards.wildcard_field import WildcardField
 from ....wildcards import Wildcards
 
 
@@ -16,7 +17,7 @@ class Field(
     Field object.
     """
 
-    name: str
+    name: WildcardField
     py_type: str
     native_type: str
 
@@ -38,6 +39,7 @@ class Field(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        wildcards: Wildcards | None = None,
     ) -> Self:
 
         # TODO: Deserialize object

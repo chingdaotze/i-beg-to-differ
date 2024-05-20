@@ -34,47 +34,38 @@ class CompareSet(
 
         self.compares = compares
 
-    @IB2DFileElement.wildcards.setter
-    def wildcards(
-        self,
-        wildcards: Wildcards,
-    ) -> None:
-
-        self._wildcards = wildcards
-
-        for instance in self.compares:
-            instance.wildcards = wildcards
-
     @classmethod
     def deserialize(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        wildcards: Wildcards | None = None,
     ) -> Self:
+        # Get wildcards
+        if wildcards is None:
+            wildcards = Wildcards.deserialize(
+                instance_data=instance_data['wildcards'],
+                working_dir_path=working_dir_path,
+                ib2d_file=ib2d_file,
+            )
+
         # Construct object
         compares = [
             Compare.deserialize(
                 instance_data=compare_instance_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
+                wildcards=wildcards,
             )
             for compare_instance_data in instance_data['compare_set']
         ]
 
         instance = CompareSet(
             working_dir_path=working_dir_path,
+            wildcards=wildcards,
             compares=compares,
         )
-
-        # Set wildcards
-        wildcards = Wildcards.deserialize(
-            instance_data=instance_data['wildcards'],
-            working_dir_path=working_dir_path,
-            ib2d_file=ib2d_file,
-        )
-
-        instance.wildcards = wildcards
 
         return instance
 

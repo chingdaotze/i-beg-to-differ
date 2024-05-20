@@ -49,17 +49,18 @@ class IB2DFileElement(
         return self._wildcards
 
     @wildcards.setter
-    @abstractmethod
     def wildcards(
         self,
         wildcards: Wildcards,
     ) -> None:
         """
-        Sets wildcards on itself and all child objects.
+        Sets wildcards on itself and all related objects.
 
         :param wildcards: Wildcards object to set.
         :return:
         """
+
+        self._wildcards.values = wildcards.values
 
     @staticmethod
     def inflate(
@@ -106,6 +107,7 @@ class IB2DFileElement(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        wildcards: Wildcards | None = None,
     ) -> Self:
         """
         Constructs an instance from a dictionary. Also extracts any supporting files from the ``*.compare``
@@ -113,6 +115,7 @@ class IB2DFileElement(
         :param instance_data: Dictionary that contains instance data.
         :param working_dir_path: Working directory path.
         :param ib2d_file: ``*.ib2d`` file.
+        :param wildcards: Wildcards instance.
         :return: An instance of this class.
         """
 
