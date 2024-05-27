@@ -26,6 +26,7 @@ class FieldTransform(
         self,
         working_dir_path: Path,
         extension_id: str,
+        extension_name: str,
     ):
 
         IB2DFileElement.__init__(
@@ -36,6 +37,7 @@ class FieldTransform(
         Extension.__init__(
             self=self,
             extension_id=extension_id,
+            extension_name=extension_name,
         )
 
     @abstractmethod

@@ -9,8 +9,6 @@ from zipfile import ZipFile
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .field import Field
 from .field_pair_compare_rule import FieldPairCompareRule
-
-# from .....extensions.field_pair_compare_rules import
 from .....wildcards_sets import WildcardSets
 
 

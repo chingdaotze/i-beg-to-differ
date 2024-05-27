@@ -43,7 +43,7 @@ class FieldPairCompareRule(
         self,
         working_dir_path: Path,
         extension_id: str,
-        parameters: Dict,
+        extension_name: str,
         linkage: FieldPairCompareRuleLinkage,
     ):
         IB2DFileElement.__init__(
@@ -54,9 +54,9 @@ class FieldPairCompareRule(
         Extension.__init__(
             self=self,
             extension_id=extension_id,
+            extension_name=extension_name,
         )
 
-        self.parameters = parameters
         self.linkage = linkage
 
     @abstractmethod

@@ -16,29 +16,21 @@ from ...compare_sets.compare_set.compare.field_pair.field.field_transform import
 from ...wildcards_sets import WildcardSets
 
 
-class FieldTransformCustom(
+class FieldTransformToLowerCase(
     FieldTransform,
 ):
-
-    _file_name: str
-    _wildcard_sets: WildcardSets | None
 
     def __init__(
         self,
         working_dir_path: Path,
-        file_name: str,
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='6b8d572d-49bb-4d15-b612-98ab2f81cb5a',
-            extension_name='Custom',
+            extension_id='a0111629-8038-4cca-aae9-9748adb758ba',
+            extension_name='Convert to lower case',
         )
-
-        self._file_name = file_name
-        self._wildcard_sets = wildcard_sets
 
     def transform(
         self,
@@ -55,7 +47,7 @@ class FieldTransformCustom(
         :return: Transformed values.
         """
 
-        # TODO: Load custom file, pass in current active wildcard set.
+        # TODO: Implement transform.
 
         pass
 
@@ -68,10 +60,8 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformCustom(
+        return FieldTransformToLowerCase(
             working_dir_path=working_dir_path,
-            file_name=instance_data['parameters']['file_name'],
-            wildcard_sets=wildcard_sets,
         )
 
     def serialize(
@@ -81,7 +71,5 @@ class FieldTransformCustom(
 
         return {
             'extension_id': str(self),
-            'parameters': {
-                'file_name': self._file_name,
-            },
+            'parameters': None,
         }

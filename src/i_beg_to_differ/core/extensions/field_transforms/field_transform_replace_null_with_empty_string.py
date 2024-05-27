@@ -16,29 +16,21 @@ from ...compare_sets.compare_set.compare.field_pair.field.field_transform import
 from ...wildcards_sets import WildcardSets
 
 
-class FieldTransformCustom(
+class FieldTransformReplaceNullWithEmptyString(
     FieldTransform,
 ):
-
-    _file_name: str
-    _wildcard_sets: WildcardSets | None
 
     def __init__(
         self,
         working_dir_path: Path,
-        file_name: str,
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='6b8d572d-49bb-4d15-b612-98ab2f81cb5a',
-            extension_name='Custom',
+            extension_id='34e57999-9021-4dff-88e2-14f62d21a646',
+            extension_name='Replace null with empty string',
         )
-
-        self._file_name = file_name
-        self._wildcard_sets = wildcard_sets
 
     def transform(
         self,
@@ -55,7 +47,7 @@ class FieldTransformCustom(
         :return: Transformed values.
         """
 
-        # TODO: Load custom file, pass in current active wildcard set.
+        # TODO: Implement transform.
 
         pass
 
@@ -68,10 +60,8 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformCustom(
+        return FieldTransformReplaceNullWithEmptyString(
             working_dir_path=working_dir_path,
-            file_name=instance_data['parameters']['file_name'],
-            wildcard_sets=wildcard_sets,
         )
 
     def serialize(
@@ -81,7 +71,5 @@ class FieldTransformCustom(
 
         return {
             'extension_id': str(self),
-            'parameters': {
-                'file_name': self._file_name,
-            },
+            'parameters': None,
         }
