@@ -14,6 +14,6 @@ class DataSources[DataSource](
     ):
         Extensions.__init__(
             self=self,
+            path=__path__,
+            name=__name__,
         )
-
-        # TODO: Load all extensions

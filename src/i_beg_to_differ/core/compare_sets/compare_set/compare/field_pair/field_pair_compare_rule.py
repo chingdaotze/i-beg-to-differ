@@ -42,19 +42,11 @@ class FieldPairCompareRule(
     def __init__(
         self,
         working_dir_path: Path,
-        extension_id: str,
-        extension_name: str,
         linkage: FieldPairCompareRuleLinkage,
     ):
         IB2DFileElement.__init__(
             self=self,
             working_dir_path=working_dir_path,
-        )
-
-        Extension.__init__(
-            self=self,
-            extension_id=extension_id,
-            extension_name=extension_name,
         )
 
         self.linkage = linkage
@@ -66,7 +58,7 @@ class FieldPairCompareRule(
         transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
-    ) -> Series[bool]:
+    ) -> Series:
         """
         Compares values between source and target fields.
 

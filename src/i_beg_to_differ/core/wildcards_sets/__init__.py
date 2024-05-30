@@ -35,6 +35,7 @@ class WildcardSets(
 
         else:
             self.wildcard_sets = wildcard_sets
+            self.active_wildcard_set = self._DEFAULT_WILDCARD_SET
 
     @property
     def active_wildcard_set(

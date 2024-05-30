@@ -8,7 +8,7 @@ class FieldPairCompareRules[FieldPairCompareRule](
     Extensions,
 ):
     """
-    Contains and manages all DataSource types for this package.
+    Contains and manages all FieldPairCompareRule types for this package.
     """
 
     def __init__(
@@ -16,6 +16,6 @@ class FieldPairCompareRules[FieldPairCompareRule](
     ):
         Extensions.__init__(
             self=self,
+            path=__path__,
+            name=__name__,
         )
-
-        # TODO: Load all extensions

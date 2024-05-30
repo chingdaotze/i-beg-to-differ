@@ -8,7 +8,7 @@ class FieldTransforms[FieldTransform](
     Extensions,
 ):
     """
-    Contains and manages all DataSource types for this package.
+    Contains and manages all FieldTransform types for this package.
     """
 
     def __init__(
@@ -16,6 +16,6 @@ class FieldTransforms[FieldTransform](
     ):
         Extensions.__init__(
             self=self,
+            path=__path__,
+            name=__name__,
         )
-
-        # TODO: Load all extensions

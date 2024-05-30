@@ -21,6 +21,9 @@ class FieldCompareRuleEquals(
     FieldPairCompareRule,
 ):
 
+    extension_id = 'eeb407c8-de62-42ad-ab32-3532cd428f6a'
+    extension_name = 'Equals'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -30,8 +33,6 @@ class FieldCompareRuleEquals(
         FieldPairCompareRule.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='eeb407c8-de62-42ad-ab32-3532cd428f6a',
-            extension_name='Equals',
             linkage=linkage,
         )
 
@@ -41,7 +42,7 @@ class FieldCompareRuleEquals(
         transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
-    ) -> Series[bool]:
+    ) -> Series:
         """
         Compares values between source and target fields, using strict equality.
 

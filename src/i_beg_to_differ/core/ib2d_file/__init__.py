@@ -15,7 +15,8 @@ from uuid import uuid4
 from typing import Self
 
 from ..base import Base
-from ..compare_set import CompareSet
+from ..wildcards_sets import WildcardSets
+from ..compare_sets import CompareSets
 
 
 class IB2DFile(
@@ -25,15 +26,21 @@ class IB2DFile(
     ``*.ib2d`` file object.
     """
 
-    compare_set: CompareSet
+    wildcard_sets: WildcardSets
     """
-    Comparison set object.
+    Wildcard sets object.
+    """
+
+    compare_sets: CompareSets
+    """
+    Comparison sets object.
     """
 
     def __init__(
         self,
         working_dir_path: Path,
-        compare_set: CompareSet,
+        wildcard_sets: WildcardSets,
+        compare_sets: CompareSets,
     ):
 
         Base.__init__(
@@ -41,7 +48,8 @@ class IB2DFile(
             working_dir_path=working_dir_path,
         )
 
-        self.compare_set = compare_set
+        self.wildcard_sets = wildcard_sets
+        self.compare_sets = compare_sets
 
     def __del__(
         self,
@@ -120,25 +128,42 @@ class IB2DFile(
                     mode='r',
                 )
 
-            # Create compare set
+            # Create wildcard sets
+            wildcard_sets_file = ib2d_file.open(
+                name='wildcard_sets.json',
+            )
+
+            wildcard_sets_data = load(
+                fp=wildcard_sets_file,
+            )
+
+            wildcard_sets = WildcardSets.deserialize(
+                instance_data=wildcard_sets_data,
+                working_dir_path=working_dir_path,
+                ib2d_file=ib2d_file,
+            )
+
+            # Create compare sets
             compare_set_file = ib2d_file.open(
-                name='compare_set.json',
+                name='compare_sets.json',
             )
 
             compare_set_data = load(
                 fp=compare_set_file,
             )
 
-            compare_set = CompareSet.deserialize(
+            compare_sets = CompareSets.deserialize(
                 instance_data=compare_set_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
+                wildcard_sets=wildcard_sets,
             )
 
             # Create instance
             ib2d_file = IB2DFile(
                 working_dir_path=working_dir_path,
-                compare_set=compare_set,
+                wildcard_sets=wildcard_sets,
+                compare_sets=compare_sets,
             )
 
             yield ib2d_file
@@ -167,13 +192,13 @@ class IB2DFile(
         )
 
         # Serialize compare set
-        compare_set_data = self.compare_set.serialize(
+        compare_set_data = self.compare_sets.serialize(
             ib2d_file=ib2d_file,
         )
 
         # Flush buffer in *.ib2d file
         ib2d_file.writestr(
-            zinfo_or_arcname='compare_set.json',
+            zinfo_or_arcname='compare_sets.json',
             data=dumps(
                 obj=compare_set_data,
                 indent=4,

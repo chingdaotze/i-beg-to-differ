@@ -23,6 +23,9 @@ class FieldTransformCustom(
     _file_name: str
     _wildcard_sets: WildcardSets | None
 
+    extension_id = '6b8d572d-49bb-4d15-b612-98ab2f81cb5a'
+    extension_name = 'Custom'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -33,8 +36,6 @@ class FieldTransformCustom(
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='6b8d572d-49bb-4d15-b612-98ab2f81cb5a',
-            extension_name='Custom',
         )
 
         self._file_name = file_name

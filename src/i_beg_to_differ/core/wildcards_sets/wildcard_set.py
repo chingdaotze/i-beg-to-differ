@@ -70,7 +70,7 @@ class WildcardSet(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
-        wildcard_sets: WildcardSets | None = None,
+        wildcard_sets: Self | None = None,
     ) -> Self:
 
         return WildcardSet(

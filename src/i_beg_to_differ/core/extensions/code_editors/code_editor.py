@@ -11,18 +11,6 @@ class CodeEditor(
     ABC,
 ):
 
-    def __init__(
-        self,
-        extension_id: str,
-        extension_name: str,
-    ):
-
-        Extension.__init__(
-            self=self,
-            extension_id=extension_id,
-            extension_name=extension_name,
-        )
-
     @abstractmethod
     def load(
         self,

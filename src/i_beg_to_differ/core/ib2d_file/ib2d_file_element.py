@@ -5,12 +5,16 @@ from abc import (
 from pathlib import Path
 from zipfile import ZipFile
 from typing import (
+    TYPE_CHECKING,
     Self,
     Dict,
+    Union,
 )
 
 from ..base import Base
-from ..wildcards_sets import WildcardSets
+
+if TYPE_CHECKING:
+    from ..wildcards_sets import WildcardSets
 
 
 class IB2DFileElement(
@@ -75,7 +79,7 @@ class IB2DFileElement(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
-        wildcard_sets: WildcardSets | None = None,
+        wildcard_sets: Union['WildcardSets', None] = None,
     ) -> Self:
         """
         Constructs an instance from a dictionary. Also extracts any supporting files from the ``*.compare``

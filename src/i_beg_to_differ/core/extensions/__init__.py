@@ -3,6 +3,12 @@ from typing import (
     Dict,
     Type,
 )
+from pkgutil import iter_modules
+from importlib import import_module
+from inspect import (
+    getmembers,
+    isclass,
+)
 
 from .extension import Extension
 
@@ -15,9 +21,36 @@ class Extensions[T](
 
     def __init__(
         self,
+        path: str,
+        name: str,
     ):
-
         self._collection = {}
+
+        for module in iter_modules(
+            path=path,
+            prefix=f'{name}.',
+        ):
+
+            extension_module = import_module(
+                name=module.name,
+            )
+
+            for _, member in getmembers(object=extension_module):
+
+                if (
+                    isclass(
+                        member,
+                    )
+                    and issubclass(
+                        member,
+                        Extension,
+                    )
+                    and member.__module__ == extension_module.__name__
+                ):
+
+                    self.register(
+                        extension_type=member,
+                    )
 
     def register(
         self,
@@ -32,7 +65,7 @@ class Extensions[T](
 
         else:
 
-            self._collection[extension_type.extension_id] = new_type
+            self._collection[extension_type.extension_id] = extension_type
 
     def __getitem__(
         self,

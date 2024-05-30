@@ -20,6 +20,9 @@ class FieldTransformToLowerCase(
     FieldTransform,
 ):
 
+    extension_id = 'a0111629-8038-4cca-aae9-9748adb758ba'
+    extension_name = 'Convert to lower case'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -28,8 +31,6 @@ class FieldTransformToLowerCase(
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='a0111629-8038-4cca-aae9-9748adb758ba',
-            extension_name='Convert to lower case',
         )
 
     def transform(

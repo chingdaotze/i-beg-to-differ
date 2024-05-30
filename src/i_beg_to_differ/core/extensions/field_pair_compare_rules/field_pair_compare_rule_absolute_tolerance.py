@@ -24,6 +24,9 @@ class FieldCompareRuleAbsoluteTolerance(
 
     _tolerance: WildcardField
 
+    extension_id = 'ec4928d1-a745-49d0-a0db-efaf2ecc3262'
+    extension_name = 'Absolute Tolerance'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -35,8 +38,6 @@ class FieldCompareRuleAbsoluteTolerance(
         FieldPairCompareRule.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='ec4928d1-a745-49d0-a0db-efaf2ecc3262',
-            extension_name='Absolute Tolerance',
             linkage=linkage,
         )
 
@@ -65,7 +66,7 @@ class FieldCompareRuleAbsoluteTolerance(
         transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
-    ) -> Series[bool]:
+    ) -> Series:
         """
         Compares values between source and target fields, using strict equality.
 

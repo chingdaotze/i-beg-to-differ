@@ -20,6 +20,9 @@ class FieldTransformToUpperCase(
     FieldTransform,
 ):
 
+    extension_id = 'bdcb04a0-cf74-47c4-9cdc-59b78c8b9034'
+    extension_name = 'Convert to upper case'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -28,8 +31,6 @@ class FieldTransformToUpperCase(
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='bdcb04a0-cf74-47c4-9cdc-59b78c8b9034',
-            extension_name='Convert to upper case',
         )
 
     def transform(

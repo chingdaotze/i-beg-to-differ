@@ -24,6 +24,9 @@ class FieldCompareRuleCustom(
     _file_name: str
     _wildcard_sets: WildcardSets | None
 
+    extension_id = '5e932dfc-9d46-485b-8697-b02d850ddad2'
+    extension_name = 'Custom'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -35,8 +38,6 @@ class FieldCompareRuleCustom(
         FieldPairCompareRule.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='5e932dfc-9d46-485b-8697-b02d850ddad2',
-            extension_name='Custom',
             linkage=linkage,
         )
 
@@ -49,7 +50,7 @@ class FieldCompareRuleCustom(
         transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
-    ) -> Series[bool]:
+    ) -> Series:
         """
         Compares values between source and target fields, using strict equality.
 

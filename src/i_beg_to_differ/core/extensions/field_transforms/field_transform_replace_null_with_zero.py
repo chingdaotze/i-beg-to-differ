@@ -20,6 +20,9 @@ class FieldTransformReplaceNullWithZero(
     FieldTransform,
 ):
 
+    extension_id = '52383a39-fd66-4724-a762-62f5f276d467'
+    extension_name = 'Replace null with zero'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -28,8 +31,6 @@ class FieldTransformReplaceNullWithZero(
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='52383a39-fd66-4724-a762-62f5f276d467',
-            extension_name='Replace null with zero',
         )
 
     def transform(

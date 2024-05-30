@@ -21,6 +21,9 @@ class DataSourceCsv(
     Path to the ``*.csv`` file.
     """
 
+    extension_id = 'ba6cb274-e274-475a-bed3-6b7cb6f48247'
+    extension_name = '*.csv file'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -31,8 +34,6 @@ class DataSourceCsv(
         DataSource.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='ba6cb274-e274-475a-bed3-6b7cb6f48247',
-            extension_name='*.csv file',
         )
 
         self.path = WildcardField(

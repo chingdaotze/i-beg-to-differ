@@ -26,6 +26,9 @@ class DataSourceExcel(
     Name of the worksheet within the ``*.xlsx`` file.
     """
 
+    extension_id = '44054bc8-978d-4f9a-b3d9-9e539fde5651'
+    extension_name = '*.xlsx file'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -37,8 +40,6 @@ class DataSourceExcel(
         DataSource.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='44054bc8-978d-4f9a-b3d9-9e539fde5651',
-            extension_name='*.xlsx file',
         )
 
         self.path = WildcardField(

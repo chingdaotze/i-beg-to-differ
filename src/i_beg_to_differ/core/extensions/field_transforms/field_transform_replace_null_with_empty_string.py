@@ -20,6 +20,9 @@ class FieldTransformReplaceNullWithEmptyString(
     FieldTransform,
 ):
 
+    extension_id = '34e57999-9021-4dff-88e2-14f62d21a646'
+    extension_name = 'Replace null with empty string'
+
     def __init__(
         self,
         working_dir_path: Path,
@@ -28,8 +31,6 @@ class FieldTransformReplaceNullWithEmptyString(
         FieldTransform.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_id='34e57999-9021-4dff-88e2-14f62d21a646',
-            extension_name='Replace null with empty string',
         )
 
     def transform(
