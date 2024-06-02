@@ -5,7 +5,10 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    read_csv,
+)
 
 from ...compare_sets.compare_set.compare.table.data_source import DataSource
 from ...wildcards_sets.wildcard_field import WildcardField
@@ -41,18 +44,29 @@ class DataSourceCsv(
             wildcard_sets=wildcard_sets,
         )
 
+    def __str__(
+        self,
+    ):
+
+        return f'{self.extension_name}: \'{self.path.base_value}\''
+
     def __repr__(
         self,
     ):
 
-        return f'{self.extension_name}: "{self.path.base_value}"'
+        return str(
+            self,
+        )
 
     def load(
         self,
     ) -> DataFrame:
 
-        # TODO: Load csv
-        pass
+        data_frame = read_csv(
+            filepath_or_buffer=str(self.path),
+        )
+
+        return data_frame
 
     @classmethod
     def deserialize(

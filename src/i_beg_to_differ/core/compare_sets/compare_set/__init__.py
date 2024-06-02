@@ -41,6 +41,59 @@ class CompareSet(
         self.description = description
         self.compares = compares
 
+    def __str__(
+        self,
+    ) -> str:
+
+        if isinstance(self.compares, dict):
+            return str(
+                [compare_set_name for compare_set_name in self.compares.keys()],
+            )
+
+        else:
+            return str(
+                self.compares,
+            )
+
+    def __setitem__(
+        self,
+        key: str,
+        value: Compare,
+    ) -> None:
+        if self.compares is None:
+            self.compares = {}
+
+        if not isinstance(self.compares, dict):
+            raise TypeError(
+                'CompareSet collection is not a dictionary!',
+            )
+
+        self.compares[key] = value
+
+    def __getitem__(
+        self,
+        item: str,
+    ) -> Compare:
+
+        if self.compares is None:
+            raise ValueError(
+                'CompareSet object is empty!',
+            )
+
+        if not isinstance(self.compares, dict):
+            raise TypeError(
+                'CompareSet collection is not a dictionary!',
+            )
+
+        return self.compares[item]
+
+    def load(
+        self,
+    ) -> None:
+
+        # TODO: Multiprocess load each compare
+        pass
+
     @classmethod
     def deserialize(
         cls,

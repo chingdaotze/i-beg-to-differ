@@ -39,6 +39,12 @@ class FieldPair(
         self.source = source
         self.target = target
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'{self.source} | {self.target}'
+
     @classmethod
     def deserialize(
         cls,

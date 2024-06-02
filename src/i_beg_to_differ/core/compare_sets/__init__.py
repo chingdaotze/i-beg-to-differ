@@ -32,6 +32,52 @@ class CompareSets(
 
         self.compare_sets = compare_sets
 
+    def __str__(
+        self,
+    ) -> str:
+
+        if isinstance(self.compare_sets, dict):
+            return str(
+                [compare_set_name for compare_set_name in self.compare_sets.keys()],
+            )
+
+        else:
+            return str(
+                self.compare_sets,
+            )
+
+    def __setitem__(
+        self,
+        key: str,
+        value: CompareSet,
+    ) -> None:
+        if self.compare_sets is None:
+            self.compare_sets = {}
+
+        if not isinstance(self.compare_sets, dict):
+            raise TypeError(
+                'CompareSets collection is not a dictionary!',
+            )
+
+        self.compare_sets[key] = value
+
+    def __getitem__(
+        self,
+        item: str,
+    ) -> CompareSet:
+
+        if self.compare_sets is None:
+            raise ValueError(
+                'CompareSets object is empty!',
+            )
+
+        if not isinstance(self.compare_sets, dict):
+            raise TypeError(
+                'CompareSets collection is not a dictionary!',
+            )
+
+        return self.compare_sets[item]
+
     @classmethod
     def deserialize(
         cls,

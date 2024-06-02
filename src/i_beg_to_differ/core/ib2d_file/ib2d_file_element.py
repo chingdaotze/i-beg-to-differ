@@ -34,6 +34,14 @@ class IB2DFileElement(
             working_dir_path=working_dir_path,
         )
 
+    def __repr__(
+        self,
+    ) -> str:
+
+        return str(
+            self,
+        )
+
     @staticmethod
     def inflate(
         file_name: str,

@@ -5,7 +5,10 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    read_excel,
+)
 
 from ...compare_sets.compare_set.compare.table.data_source import DataSource
 from ...wildcards_sets.wildcard_field import WildcardField
@@ -52,18 +55,30 @@ class DataSourceExcel(
             wildcard_sets=wildcard_sets,
         )
 
-    def __repr__(
+    def __str__(
         self,
     ):
 
         return f'{self.extension_name}: \'[{self.path.base_value}]{self.sheet.base_value}\''
 
+    def __repr__(
+        self,
+    ):
+
+        return str(
+            self,
+        )
+
     def load(
         self,
     ) -> DataFrame:
 
-        # TODO: Load csv
-        pass
+        data_frame = read_excel(
+            io=str(self.path),
+            sheet_name=str(self.sheet),
+        )
+
+        return data_frame
 
     @classmethod
     def deserialize(

@@ -9,7 +9,14 @@ class Table:
     """
 
     data_source: DataSource
+    """
+    Data source object.
+    """
+
     data: DataFrame
+    """
+    Data source data as a DataFrame.
+    """
 
     def __init__(
         self,
@@ -17,5 +24,27 @@ class Table:
     ):
 
         self.data_source = data_source
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return str(
+            self.data_source,
+        )
+
+    def __repr__(
+        self,
+    ) -> str:
+
+        return str(
+            self,
+        )
+
+    def load(
+        self,
+    ) -> None:
+
+        self.data = self.data_source.load()
 
     # TODO: Implement compare methods

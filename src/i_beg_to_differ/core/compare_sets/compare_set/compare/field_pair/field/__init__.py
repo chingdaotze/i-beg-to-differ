@@ -62,6 +62,14 @@ class Field(
         self.py_type = None
         self.native_type = None
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return str(
+            self.name,
+        )
+
     @classmethod
     def deserialize(
         cls,

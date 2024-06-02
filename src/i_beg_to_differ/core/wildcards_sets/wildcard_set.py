@@ -4,6 +4,7 @@ from typing import (
     Dict,
     Self,
 )
+from re import match
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
@@ -45,6 +46,35 @@ class WildcardSet(
         self.description = description
         self.replacement_values = replacement_values
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return str(
+            self.replacement_values,
+        )
+
+    def __repr__(
+        self,
+    ) -> str:
+
+        return str(
+            self,
+        )
+
+    @property
+    def __replacement_values(
+        self,
+    ) -> Dict[str, str]:
+
+        if self.replacement_values is not None:
+            return {
+                f'${{{key}}}': value for key, value in self.replacement_values.items()
+            }
+
+        else:
+            return {}
+
     def replace_wildcards(
         self,
         string: str,
@@ -60,9 +90,21 @@ class WildcardSet(
         :return: String with wildcard replacement.
         """
 
-        # TODO: Implement wildcard replacement
+        for key, value in self.__replacement_values.items():
+            string = string.replace(
+                key,
+                value,
+            )
 
-        pass
+        if any(key in string for key in self.__replacement_values.keys()):
+            recursion_depth += 1
+
+            string = self.replace_wildcards(
+                string=string,
+                recursion_depth=recursion_depth,
+            )
+
+        return string
 
     @classmethod
     def deserialize(

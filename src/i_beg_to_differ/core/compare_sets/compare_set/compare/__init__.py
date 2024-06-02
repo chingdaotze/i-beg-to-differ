@@ -21,13 +21,34 @@ class Compare(
     """
 
     description: str | None
+    """
+    Human-readable description.
+    """
 
     source: Table
+    """
+    Source table object.
+    """
+
     target: Table
+    """
+    Target table object.
+    """
 
     pk_fields: List[FieldPair]
+    """
+    Primary key field pairs.
+    """
+
     dt_fields: List[FieldPair]
+    """
+    Data field pairs.
+    """
+
     fields: List[FieldPair]
+    """
+    All field pairs.
+    """
 
     def __init__(
         self,
@@ -51,6 +72,20 @@ class Compare(
         self.pk_fields = pk_fields
         self.dt_fields = dt_fields
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'{self.source} | {self.target}'
+
+    def load(
+        self,
+    ) -> None:
+
+        # TODO: Multiprocess load source and target
+        self.source.load()
+        self.target.load()
+
     @property
     def fields(
         self,
@@ -71,20 +106,26 @@ class Compare(
 
         source_data = instance_data['source']
         source_class = data_sources[source_data['extension_id']]
-        source = source_class.deserialize(
+        source_data_source = source_class.deserialize(
             instance_data=source_data,
             working_dir_path=working_dir_path,
             ib2d_file=ib2d_file,
             wildcard_sets=wildcard_sets,
         )
+        source = Table(
+            data_source=source_data_source,
+        )
 
         target_data = instance_data['target']
         target_class = data_sources[target_data['extension_id']]
-        target = target_class.deserialize(
+        target_data_source = target_class.deserialize(
             instance_data=target_data,
             working_dir_path=working_dir_path,
             ib2d_file=ib2d_file,
             wildcard_sets=wildcard_sets,
+        )
+        target = Table(
+            data_source=target_data_source,
         )
 
         pk_fields = [

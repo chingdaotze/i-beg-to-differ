@@ -143,6 +143,21 @@ class IB2DFile(
                 ib2d_file=ib2d_file,
             )
 
+            # Add paths to wildcard set
+            wildcard_sets.update_global_wildcard(
+                key='ib2d_file_path',
+                value=str(
+                    path.absolute(),
+                ),
+            )
+
+            wildcard_sets.update_global_wildcard(
+                key='ib2d_file_dir_path',
+                value=str(
+                    path.parent.absolute(),
+                ),
+            )
+
             # Create compare sets
             compare_set_file = ib2d_file.open(
                 name='compare_sets.json',
@@ -183,6 +198,11 @@ class IB2DFile(
         :return:
         """
 
+        if isinstance(path, str):
+            path = Path(
+                path,
+            )
+
         # Create *.ib2d file in memory
         ib2d_file_bytes = BytesIO()
 
@@ -212,3 +232,18 @@ class IB2DFile(
             output_file.write(
                 ib2d_file_bytes.getvalue(),
             )
+
+        # Add paths to wildcard set
+        self.wildcard_sets.update_global_wildcard(
+            key='ib2d_file_path',
+            value=str(
+                path.absolute(),
+            ),
+        )
+
+        self.wildcard_sets.update_global_wildcard(
+            key='ib2d_file_dir_path',
+            value=str(
+                path.parent.absolute(),
+            ),
+        )

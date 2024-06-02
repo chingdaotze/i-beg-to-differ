@@ -37,6 +37,28 @@ class WildcardSets(
             self.wildcard_sets = wildcard_sets
             self.active_wildcard_set = self._DEFAULT_WILDCARD_SET
 
+    def __str__(
+        self,
+    ):
+
+        if isinstance(self.wildcard_sets, dict):
+            return str(
+                [compare_set_name for compare_set_name in self.wildcard_sets.keys()]
+            )
+
+        else:
+            return str(
+                self.wildcard_sets,
+            )
+
+    def __repr__(
+        self,
+    ):
+
+        return str(
+            self,
+        )
+
     @property
     def active_wildcard_set(
         self,
@@ -80,6 +102,19 @@ class WildcardSets(
         return self.active_wildcard_set.replace_wildcards(
             string=string,
         )
+
+    def update_global_wildcard(
+        self,
+        key: str,
+        value: str,
+    ) -> None:
+
+        for instance in self.wildcard_sets.values():
+
+            if instance.replacement_values is None:
+                instance.replacement_values = {}
+
+            instance.replacement_values[key] = value
 
     @classmethod
     def deserialize(
