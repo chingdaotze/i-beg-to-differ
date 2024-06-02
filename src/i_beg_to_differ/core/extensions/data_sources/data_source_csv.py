@@ -64,6 +64,8 @@ class DataSourceCsv(
 
         data_frame = read_csv(
             filepath_or_buffer=str(self.path),
+            engine='pyarrow',
+            dtype_backend='pyarrow',
         )
 
         return data_frame

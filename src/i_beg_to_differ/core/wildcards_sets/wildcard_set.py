@@ -1,16 +1,11 @@
 from pathlib import Path
 from typing import (
-    TYPE_CHECKING,
     Dict,
     Self,
 )
-from re import match
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-
-if TYPE_CHECKING:
-    from ..wildcards_sets import WildcardSets
 
 
 class WildcardSet(
