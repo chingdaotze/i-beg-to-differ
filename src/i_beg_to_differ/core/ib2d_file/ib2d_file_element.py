@@ -11,14 +11,14 @@ from typing import (
     Union,
 )
 
-from ..base import Base
-
 if TYPE_CHECKING:
     from ..wildcards_sets import WildcardSets
 
+from .ib2d_file_base import IB2DFileBase
+
 
 class IB2DFileElement(
-    Base,
+    IB2DFileBase,
     ABC,
 ):
     """
@@ -27,58 +27,14 @@ class IB2DFileElement(
 
     def __init__(
         self,
+        module_name: str,
         working_dir_path: Path,
     ):
-        Base.__init__(
+        IB2DFileBase.__init__(
             self=self,
+            module_name=module_name,
             working_dir_path=working_dir_path,
         )
-
-    def __repr__(
-        self,
-    ) -> str:
-
-        return str(
-            self,
-        )
-
-    @staticmethod
-    def inflate(
-        file_name: str,
-        working_dir_path: Path,
-        ib2d_file: ZipFile,
-    ) -> None:
-        """
-        Inflates a file within the `*.ib2d`` file to the working directory.
-
-        :param file_name: Name of the file to add or overwrite.
-        :param working_dir_path: Working directory path.
-        :param ib2d_file: ``*.ib2d`` file.
-        :return:
-        """
-
-        # TODO: Extract file from zip
-
-        pass
-
-    @staticmethod
-    def deflate(
-        file_name: str,
-        working_dir_path: Path,
-        ib2d_file: ZipFile,
-    ) -> None:
-        """
-        Adds or overwrites a file from the working directory to the `*.ib2d`` file.
-
-        :param file_name: Name of the file to add or overwrite.
-        :param working_dir_path: Working directory path.
-        :param ib2d_file: ``*.ib2d`` file.
-        :return:
-        """
-
-        # TODO: Add file to zip
-
-        pass
 
     @classmethod
     @abstractmethod

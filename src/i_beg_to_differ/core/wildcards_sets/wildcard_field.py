@@ -1,7 +1,13 @@
+from ..base import (
+    Base,
+    log_exception,
+)
 from . import WildcardSets
 
 
-class WildcardField:
+class WildcardField(
+    Base,
+):
     """
     Wildcard-linked text field.
     """
@@ -18,6 +24,10 @@ class WildcardField:
         base_value: str,
         wildcard_sets: WildcardSets | None = None,
     ):
+        Base.__init__(
+            self=self,
+            module_name=__name__,
+        )
 
         self._base_value = base_value
         self.wildcard_sets = wildcard_sets
@@ -35,6 +45,7 @@ class WildcardField:
         return self._base_value
 
     @property
+    @log_exception
     def value(
         self,
     ) -> str:

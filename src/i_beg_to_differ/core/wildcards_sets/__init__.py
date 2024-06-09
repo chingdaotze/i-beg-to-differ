@@ -6,6 +6,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
+from ..base import log_exception
 from .wildcard_set import WildcardSet
 
 
@@ -27,6 +28,7 @@ class WildcardSets(
     ):
         IB2DFileElement.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -37,6 +39,7 @@ class WildcardSets(
             self.wildcard_sets = wildcard_sets
             self.active_wildcard_set = self._DEFAULT_WILDCARD_SET
 
+    @log_exception
     def __str__(
         self,
     ):
@@ -51,14 +54,6 @@ class WildcardSets(
                 self.wildcard_sets,
             )
 
-    def __repr__(
-        self,
-    ):
-
-        return str(
-            self,
-        )
-
     @property
     def active_wildcard_set(
         self,
@@ -72,6 +67,7 @@ class WildcardSets(
         return self._active_wildcard_set
 
     @active_wildcard_set.setter
+    @log_exception
     def active_wildcard_set(self, name: str) -> None:
         """
         Sets the current active wildcard set, using the wildcard set's name.
@@ -88,6 +84,7 @@ class WildcardSets(
                 f'Wildcard set: "{name}" not found!',
             )
 
+    @log_exception
     def replace_wildcards(
         self,
         string: str,
@@ -103,6 +100,7 @@ class WildcardSets(
             string=string,
         )
 
+    @log_exception
     def update_global_wildcard(
         self,
         key: str,
@@ -117,6 +115,7 @@ class WildcardSets(
             instance.replacement_values[key] = value
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -138,6 +137,7 @@ class WildcardSets(
             },
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

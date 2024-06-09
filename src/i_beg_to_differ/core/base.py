@@ -5,7 +5,6 @@ from typing import (
 )
 from time import time
 from abc import ABC
-from pathlib import Path
 from logging import (
     getLogger,
     Logger,
@@ -13,58 +12,81 @@ from logging import (
 from multiprocessing import Lock
 
 
-def log_base_instance_method(
-    log_runtime: bool = False,
+def log_runtime(
+    f: Callable,
 ) -> Callable:
     """
-    Logs exceptions using the logger and re-raises the exception. Can also log runtimes.
+    Decorator that logs runtime to a log file.
 
-    :param log_runtime: Boolean switch to log runtime.
+    :param f: Arbitrary instance method from ``Base`` class.
     :return:
     """
 
-    def decorator(
-        f: Callable,
-    ) -> Callable:
+    def wrapper(
+        self,
+        *args,
+        **kwargs,
+    ) -> Any:
 
-        def wrapper(
+        start_time = time()
+
+        result = f(
             self,
             *args,
             **kwargs,
-        ) -> Any:
+        )
 
-            try:
-                start_time = time()
+        end_time = time()
+        runtime = end_time - start_time
 
-                result = f(
-                    self,
-                    *args,
-                    **kwargs,
-                )
+        self.lock.acquire()
+        self.logger.info(
+            msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
+        )
+        self.lock.release()
 
-                end_time = time()
-                runtime = end_time - start_time
+        return result
 
-                if log_runtime:
-                    self.lock.acquire()
-                    self.logger.info(
-                        msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
-                    )
-                    self.lock.release()
+    return wrapper
 
-                return result
 
-            except Exception as e:
+def log_exception(
+    f: Callable,
+) -> Callable:
+    """
+    Decorator that logs exceptions to a log file.
 
-                self.logger.exception(
-                    msg='Exception',
-                )
+    :param f: Arbitrary instance method from ``Base`` class.
+    :return:
+    """
 
-                raise e
+    def wrapper(
+        self,
+        *args,
+        **kwargs,
+    ) -> Any:
 
-        return wrapper
+        try:
 
-    return decorator
+            result = f(
+                self,
+                *args,
+                **kwargs,
+            )
+
+            return result
+
+        except Exception as e:
+
+            self.lock.acquire()
+            self.logger.exception(
+                msg='Encountered exception. Traceback below:',
+            )
+            self.lock.release()
+
+            raise e
+
+    return wrapper
 
 
 class Base(
@@ -74,38 +96,29 @@ class Base(
     Base class for object model.
     """
 
-    working_dir_path: Path
-    """
-    Working directory path.
-    """
-
     lock: ClassVar[Lock] = Lock()
     """
     Global multiprocessing lock.
     """
 
-    logger: ClassVar[Logger] = getLogger(
-        name=__name__,
-    )
+    logger: Logger
     """
     Module-level logger.
     """
 
-    @log_base_instance_method()
+    def __repr__(
+        self,
+    ) -> str:
+
+        return str(
+            self,
+        )
+
     def __init__(
         self,
-        working_dir_path: Path,
+        module_name: str,
     ):
-        """
-        Checks if working directory exists.
 
-        :param working_dir_path: Working directory path.
-        """
-
-        self.working_dir_path = working_dir_path
-
-        if not self.working_dir_path.exists():
-
-            raise FileNotFoundError(
-                f'Unable to locate working directory: "{str(self.working_dir_path)}"!',
-            )
+        self.logger = getLogger(
+            name=module_name,
+        )

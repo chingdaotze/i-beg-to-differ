@@ -6,6 +6,7 @@ from typing import (
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
+from ..base import log_exception
 
 
 class WildcardSet(
@@ -35,6 +36,7 @@ class WildcardSet(
     ):
         IB2DFileElement.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -49,15 +51,8 @@ class WildcardSet(
             self.replacement_values,
         )
 
-    def __repr__(
-        self,
-    ) -> str:
-
-        return str(
-            self,
-        )
-
     @property
+    @log_exception
     def __replacement_values(
         self,
     ) -> Dict[str, str]:
@@ -70,6 +65,7 @@ class WildcardSet(
         else:
             return {}
 
+    @log_exception
     def replace_wildcards(
         self,
         string: str,
@@ -102,6 +98,7 @@ class WildcardSet(
         return string
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -116,6 +113,7 @@ class WildcardSet(
             replacement_values=instance_data['replacement_values'],
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

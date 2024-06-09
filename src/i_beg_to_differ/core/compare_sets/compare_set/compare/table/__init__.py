@@ -1,9 +1,16 @@
 from pandas import DataFrame
 
+from .....base import (
+    Base,
+    log_exception,
+    log_runtime,
+)
 from .data_source import DataSource
 
 
-class Table:
+class Table(
+    Base,
+):
     """
     Table object.
     """
@@ -22,6 +29,10 @@ class Table:
         self,
         data_source: DataSource,
     ):
+        Base.__init__(
+            self=self,
+            module_name=__name__,
+        )
 
         self.data_source = data_source
 
@@ -33,14 +44,8 @@ class Table:
             self.data_source,
         )
 
-    def __repr__(
-        self,
-    ) -> str:
-
-        return str(
-            self,
-        )
-
+    @log_exception
+    @log_runtime
     def load(
         self,
     ) -> None:

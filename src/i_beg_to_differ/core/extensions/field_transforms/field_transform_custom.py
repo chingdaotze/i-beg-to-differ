@@ -14,6 +14,10 @@ from ...compare_sets.compare_set.compare.field_pair.field.field_transform import
     FieldTransform,
 )
 from ...wildcards_sets import WildcardSets
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 
 
 class FieldTransformCustom(
@@ -35,12 +39,15 @@ class FieldTransformCustom(
 
         FieldTransform.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
         self._file_name = file_name
         self._wildcard_sets = wildcard_sets
 
+    @log_exception
+    @log_runtime
     def transform(
         self,
         raw_table: DataFrame,
@@ -61,6 +68,7 @@ class FieldTransformCustom(
         pass
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -75,6 +83,7 @@ class FieldTransformCustom(
             wildcard_sets=wildcard_sets,
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

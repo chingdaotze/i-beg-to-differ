@@ -7,6 +7,7 @@ from typing import (
 from zipfile import ZipFile
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
+from .....base import log_exception
 from .field import Field
 from .field_pair_compare_rule import FieldPairCompareRule
 from .....wildcards_sets import WildcardSets
@@ -33,6 +34,7 @@ class FieldPair(
 
         IB2DFileElement.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -46,6 +48,7 @@ class FieldPair(
         return f'{self.source} | {self.target}'
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -76,6 +79,7 @@ class FieldPair(
 
         return instance
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

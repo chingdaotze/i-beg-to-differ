@@ -15,6 +15,10 @@ from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule impo
     FieldPairCompareRuleLinkage,
 )
 from ...wildcards_sets import WildcardSets
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 
 
 class FieldCompareRuleCustom(
@@ -37,6 +41,7 @@ class FieldCompareRuleCustom(
 
         FieldPairCompareRule.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
             linkage=linkage,
         )
@@ -44,6 +49,8 @@ class FieldCompareRuleCustom(
         self._file_name = file_name
         self._wildcard_sets = wildcard_sets
 
+    @log_exception
+    @log_runtime
     def compare(
         self,
         raw_table: DataFrame,
@@ -66,6 +73,7 @@ class FieldCompareRuleCustom(
         pass
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -82,6 +90,7 @@ class FieldCompareRuleCustom(
             wildcard_sets=wildcard_sets,
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

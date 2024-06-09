@@ -14,8 +14,12 @@ from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule impo
     FieldPairCompareRule,
     FieldPairCompareRuleLinkage,
 )
-from ...wildcards_sets import WildcardSets
 from ...wildcards_sets.wildcard_field import WildcardField
+from ...wildcards_sets import WildcardSets
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 
 
 class FieldCompareRuleAbsoluteTolerance(
@@ -37,6 +41,7 @@ class FieldCompareRuleAbsoluteTolerance(
 
         FieldPairCompareRule.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
             linkage=linkage,
         )
@@ -47,6 +52,7 @@ class FieldCompareRuleAbsoluteTolerance(
         )
 
     @property
+    @log_exception
     def tolerance(
         self,
     ) -> float:
@@ -60,6 +66,8 @@ class FieldCompareRuleAbsoluteTolerance(
             self._tolerance.value,
         )
 
+    @log_exception
+    @log_runtime
     def compare(
         self,
         raw_table: DataFrame,
@@ -82,6 +90,7 @@ class FieldCompareRuleAbsoluteTolerance(
         pass
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -99,6 +108,7 @@ class FieldCompareRuleAbsoluteTolerance(
             wildcard_sets=wildcard_sets,
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

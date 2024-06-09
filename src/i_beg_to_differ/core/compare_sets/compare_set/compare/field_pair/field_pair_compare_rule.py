@@ -15,7 +15,9 @@ from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....extensions.extension import Extension
 
 
-class FieldPairCompareRuleLinkage(StrEnum):
+class FieldPairCompareRuleLinkage(
+    StrEnum,
+):
     AND = 'and'
     OR = 'or'
 
@@ -41,11 +43,13 @@ class FieldPairCompareRule(
 
     def __init__(
         self,
+        module_name: str,
         working_dir_path: Path,
         linkage: FieldPairCompareRuleLinkage,
     ):
         IB2DFileElement.__init__(
             self=self,
+            module_name=module_name,
             working_dir_path=working_dir_path,
         )
 

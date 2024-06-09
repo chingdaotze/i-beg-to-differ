@@ -6,6 +6,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
+from ..base import log_exception
 from .compare_set import CompareSet
 from ..wildcards_sets import WildcardSets
 
@@ -27,6 +28,7 @@ class CompareSets(
     ):
         IB2DFileElement.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -46,6 +48,7 @@ class CompareSets(
                 self.compare_sets,
             )
 
+    @log_exception
     def __setitem__(
         self,
         key: str,
@@ -61,6 +64,7 @@ class CompareSets(
 
         self.compare_sets[key] = value
 
+    @log_exception
     def __getitem__(
         self,
         item: str,
@@ -79,6 +83,7 @@ class CompareSets(
         return self.compare_sets[item]
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -100,6 +105,7 @@ class CompareSets(
             },
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

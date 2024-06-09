@@ -11,6 +11,10 @@ from pandas import (
 )
 
 from ...compare_sets.compare_set.compare.table.data_source import DataSource
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
@@ -36,6 +40,7 @@ class DataSourceCsv(
 
         DataSource.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -50,14 +55,8 @@ class DataSourceCsv(
 
         return f'{self.extension_name}: \'{self.path.base_value}\''
 
-    def __repr__(
-        self,
-    ):
-
-        return str(
-            self,
-        )
-
+    @log_exception
+    @log_runtime
     def load(
         self,
     ) -> DataFrame:
@@ -71,6 +70,7 @@ class DataSourceCsv(
         return data_frame
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -85,6 +85,7 @@ class DataSourceCsv(
             wildcard_sets=wildcard_sets,
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

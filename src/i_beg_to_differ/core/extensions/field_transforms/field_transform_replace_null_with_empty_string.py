@@ -14,6 +14,10 @@ from ...compare_sets.compare_set.compare.field_pair.field.field_transform import
     FieldTransform,
 )
 from ...wildcards_sets import WildcardSets
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 
 
 class FieldTransformReplaceNullWithEmptyString(
@@ -30,9 +34,12 @@ class FieldTransformReplaceNullWithEmptyString(
 
         FieldTransform.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
+    @log_exception
+    @log_runtime
     def transform(
         self,
         raw_table: DataFrame,
@@ -53,6 +60,7 @@ class FieldTransformReplaceNullWithEmptyString(
         pass
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -65,6 +73,7 @@ class FieldTransformReplaceNullWithEmptyString(
             working_dir_path=working_dir_path,
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

@@ -57,6 +57,7 @@ def setup_logger(
         file_handler.setLevel(
             level=logger.level,
         )
+
         file_handler.setFormatter(
             fmt=fmt,
         )

@@ -7,6 +7,10 @@ from typing import (
 from zipfile import ZipFile
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....base import (
+    log_exception,
+    log_runtime,
+)
 from .table import Table
 from .field_pair import FieldPair
 from ....wildcards_sets import WildcardSets
@@ -61,6 +65,7 @@ class Compare(
     ):
         IB2DFileElement.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
@@ -78,6 +83,8 @@ class Compare(
 
         return f'{self.source} | {self.target}'
 
+    @log_exception
+    @log_runtime
     def load(
         self,
     ) -> None:
@@ -94,6 +101,7 @@ class Compare(
         return self.pk_fields + self.dt_fields
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -157,6 +165,7 @@ class Compare(
             description=instance_data['description'],
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

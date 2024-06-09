@@ -6,21 +6,19 @@ from json import (
     load,
     dumps,
 )
-from os import (
-    PathLike,
-    getenv,
-)
+from os import getenv
 from contextlib import contextmanager
 from uuid import uuid4
 from typing import Self
 
-from ..base import Base
+from .ib2d_file_base import IB2DFileBase
+from ..base import log_exception
 from ..wildcards_sets import WildcardSets
 from ..compare_sets import CompareSets
 
 
 class IB2DFile(
-    Base,
+    IB2DFileBase,
 ):
     """
     ``*.ib2d`` file object.
@@ -36,21 +34,36 @@ class IB2DFile(
     Comparison sets object.
     """
 
+    path: Path | None
+    """
+    Path to the ``*.ib2d`` file.
+    """
+
     def __init__(
         self,
         working_dir_path: Path,
         wildcard_sets: WildcardSets,
         compare_sets: CompareSets,
+        path: Path | None = None,
     ):
 
-        Base.__init__(
+        IB2DFileBase.__init__(
             self=self,
+            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
         self.wildcard_sets = wildcard_sets
         self.compare_sets = compare_sets
+        self.path = path
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'Path: {self.path}'
+
+    @log_exception
     def __del__(
         self,
     ) -> None:
@@ -66,10 +79,11 @@ class IB2DFile(
 
     @classmethod
     @contextmanager
+    @log_exception
     def open(
         cls,
-        path: str | PathLike,
-        working_dir_path: str | PathLike | None = None,
+        path: str | Path,
+        working_dir_path: str | Path | None = None,
     ) -> Self:
         """
         Reads a ``*.ib2d`` file from disk and creates an instance. Also initializes the working directory.
@@ -179,6 +193,7 @@ class IB2DFile(
                 working_dir_path=working_dir_path,
                 wildcard_sets=wildcard_sets,
                 compare_sets=compare_sets,
+                path=path,
             )
 
             yield ib2d_file
@@ -187,9 +202,10 @@ class IB2DFile(
 
             pass
 
+    @log_exception
     def save(
         self,
-        path: str | PathLike,
+        path: str | Path,
     ) -> None:
         """
         Writes a ``*.ib2d`` file to disk.
@@ -233,17 +249,19 @@ class IB2DFile(
                 ib2d_file_bytes.getvalue(),
             )
 
+        self.path = path
+
         # Add paths to wildcard set
         self.wildcard_sets.update_global_wildcard(
             key='ib2d_file_path',
             value=str(
-                path.absolute(),
+                self.path.absolute(),
             ),
         )
 
         self.wildcard_sets.update_global_wildcard(
             key='ib2d_file_dir_path',
             value=str(
-                path.parent.absolute(),
+                self.path.parent.absolute(),
             ),
         )
