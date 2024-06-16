@@ -88,8 +88,8 @@ class Compare(
     def load(
         self,
     ) -> None:
-
         # TODO: Multiprocess load source and target
+
         self.source.load()
         self.target.load()
 
