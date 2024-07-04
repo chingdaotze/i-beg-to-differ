@@ -88,10 +88,16 @@ class Compare(
     def load(
         self,
     ) -> None:
-        # TODO: Multiprocess load source and target
+        source_df = self.pool.apply_async(
+            func=self.source.data_source.load,
+        )
 
-        self.source.load()
-        self.target.load()
+        target_df = self.pool.apply_async(
+            func=self.target.data_source.load
+        )
+
+        self.source.data = source_df.get()
+        self.target.data = target_df.get()
 
     @property
     def fields(

@@ -11,10 +11,7 @@ from pandas import (
 )
 
 from ...compare_sets.compare_set.compare.table.data_source import DataSource
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
@@ -55,8 +52,6 @@ class DataSourceCsv(
 
         return f'{self.extension_name}: \'{self.path.base_value}\''
 
-    @log_exception
-    @log_runtime
     def load(
         self,
     ) -> DataFrame:

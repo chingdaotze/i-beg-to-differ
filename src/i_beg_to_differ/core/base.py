@@ -2,7 +2,6 @@ from typing import (
     Callable,
     Any,
     ClassVar,
-    List,
 )
 from time import time
 from abc import ABC
@@ -15,7 +14,6 @@ from multiprocessing import (
     Pool,
 )
 from psutil import cpu_count
-from functools import partialmethod
 
 
 def log_runtime(
@@ -107,18 +105,7 @@ class Base(
     Global multiprocessing lock.
     """
 
-    pool: ClassVar[Pool] = Pool(
-        processes=max(
-            cpu_count(
-                logical=False,
-            )
-            - 1,
-            1,
-        ),
-    )
-    """
-    Global multiprocessing pool.
-    """
+    __pool: ClassVar[Pool] = None
 
     logger: Logger
     """
@@ -141,3 +128,26 @@ class Base(
         self.logger = getLogger(
             name=module_name,
         )
+
+    @classmethod
+    @property
+    def pool(
+        cls,
+    ) -> Pool:
+        """
+        Global multiprocessing pool.
+        """
+
+        if cls.__pool is None:
+
+            cls.__pool = Pool(
+                processes=max(
+                    cpu_count(
+                        logical=False,
+                    )
+                    - 1,
+                    1,
+                ),
+            )
+
+        return cls.__pool
