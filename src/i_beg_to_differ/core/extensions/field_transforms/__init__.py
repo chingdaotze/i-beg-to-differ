@@ -1,7 +1,4 @@
 from .. import Extensions
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
-    FieldTransform,
-)
 
 
 class FieldTransforms[FieldTransform](

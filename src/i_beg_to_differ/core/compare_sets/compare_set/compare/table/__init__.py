@@ -1,3 +1,8 @@
+from typing import (
+    List,
+    Self,
+)
+
 from pandas import DataFrame
 
 from .....base import (
@@ -5,14 +10,14 @@ from .....base import (
     log_exception,
     log_runtime,
 )
-from .data_source import DataSource
+from .....data_sources.data_source import DataSource
 
 
 class Table(
     Base,
 ):
     """
-    Table object.
+    Transformed raw data source.
     """
 
     data_source: DataSource
@@ -20,10 +25,12 @@ class Table(
     Data source object.
     """
 
-    data: DataFrame
+    data: DataFrame | None
     """
     Data source data as a DataFrame.
     """
+
+    transforms: List[Transform]
 
     def __init__(
         self,
@@ -35,6 +42,7 @@ class Table(
         )
 
         self.data_source = data_source
+        self.data = None
 
     def __str__(
         self,
@@ -44,6 +52,30 @@ class Table(
             self.data_source,
         )
 
+    def __eq__(
+        self,
+        other: Self,
+    ) -> bool:
+
+        if (
+            self.data_source == other.data_source
+            and self.transforms == other.transforms
+        ):
+            return True
+
+        else:
+            return False
+
+    def __ne__(
+        self,
+        other: Self,
+    ) -> bool:
+
+        if self == other:
+            return False
+        else:
+            return True
+
     @log_exception
     @log_runtime
     def load(
@@ -51,5 +83,3 @@ class Table(
     ) -> None:
 
         self.data = self.data_source.load()
-
-    # TODO: Implement compare methods

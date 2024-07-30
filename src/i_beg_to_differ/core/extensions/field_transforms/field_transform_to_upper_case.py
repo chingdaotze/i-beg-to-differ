@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
+from ...data_sources.data_source.field.field_transform import (
     FieldTransform,
 )
 from ...base import (
@@ -24,8 +24,8 @@ class FieldTransformToUpperCase(
     FieldTransform,
 ):
 
-    extension_id = 'bdcb04a0-cf74-47c4-9cdc-59b78c8b9034'
-    extension_name = 'Convert to upper case'
+    extension_id = "bdcb04a0-cf74-47c4-9cdc-59b78c8b9034"
+    extension_name = "Convert to upper case"
 
     def __init__(
         self,
@@ -80,6 +80,6 @@ class FieldTransformToUpperCase(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
-            'parameters': None,
+            "extension_id": str(self),
+            "parameters": None,
         }

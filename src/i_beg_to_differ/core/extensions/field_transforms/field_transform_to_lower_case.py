@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
+from ...data_sources.data_source.field.field_transform import (
     FieldTransform,
 )
 from ...base import (
@@ -24,8 +24,8 @@ class FieldTransformToLowerCase(
     FieldTransform,
 ):
 
-    extension_id = 'a0111629-8038-4cca-aae9-9748adb758ba'
-    extension_name = 'Convert to lower case'
+    extension_id = "a0111629-8038-4cca-aae9-9748adb758ba"
+    extension_name = "Convert to lower case"
 
     def __init__(
         self,
@@ -80,6 +80,6 @@ class FieldTransformToLowerCase(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
-            'parameters': None,
+            "extension_id": str(self),
+            "parameters": None,
         }

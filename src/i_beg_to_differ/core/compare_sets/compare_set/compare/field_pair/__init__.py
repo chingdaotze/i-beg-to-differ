@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....base import log_exception
-from .field import Field
+from .....data_sources.data_source.field import Field
 from .field_pair_compare_rule import FieldPairCompareRule
 from .....wildcards_sets import WildcardSets
 
@@ -45,7 +45,7 @@ class FieldPair(
         self,
     ) -> str:
 
-        return f'{self.source} | {self.target}'
+        return f"{self.source} | {self.target}"
 
     @classmethod
     @log_exception
@@ -58,14 +58,14 @@ class FieldPair(
     ) -> Self:
 
         source = Field.deserialize(
-            instance_data=instance_data['source'],
+            instance_data=instance_data["source"],
             working_dir_path=working_dir_path,
             ib2d_file=ib2d_file,
             wildcard_sets=wildcard_sets,
         )
 
         target = Field.deserialize(
-            instance_data=instance_data['target'],
+            instance_data=instance_data["target"],
             working_dir_path=working_dir_path,
             ib2d_file=ib2d_file,
             wildcard_sets=wildcard_sets,
@@ -86,13 +86,13 @@ class FieldPair(
     ) -> Dict:
 
         instance_data = {
-            'source': self.source.serialize(
+            "source": self.source.serialize(
                 ib2d_file=ib2d_file,
             ),
-            'target': self.target.serialize(
+            "target": self.target.serialize(
                 ib2d_file=ib2d_file,
             ),
-            'compare_rules': [
+            "compare_rules": [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )

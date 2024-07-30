@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
+from ...data_sources.data_source.field.field_transform import (
     FieldTransform,
 )
 from ...wildcards_sets import WildcardSets
@@ -27,8 +27,8 @@ class FieldTransformCustom(
     _file_name: str
     _wildcard_sets: WildcardSets | None
 
-    extension_id = '6b8d572d-49bb-4d15-b612-98ab2f81cb5a'
-    extension_name = 'Custom'
+    extension_id = "6b8d572d-49bb-4d15-b612-98ab2f81cb5a"
+    extension_name = "Custom"
 
     def __init__(
         self,
@@ -79,7 +79,7 @@ class FieldTransformCustom(
 
         return FieldTransformCustom(
             working_dir_path=working_dir_path,
-            file_name=instance_data['parameters']['file_name'],
+            file_name=instance_data["parameters"]["file_name"],
             wildcard_sets=wildcard_sets,
         )
 
@@ -90,8 +90,8 @@ class FieldTransformCustom(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
-            'parameters': {
-                'file_name': self._file_name,
+            "extension_id": str(self),
+            "parameters": {
+                "file_name": self._file_name,
             },
         }

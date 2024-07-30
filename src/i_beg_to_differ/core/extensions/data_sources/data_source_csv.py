@@ -10,7 +10,7 @@ from pandas import (
     read_csv,
 )
 
-from ...compare_sets.compare_set.compare.table.data_source import DataSource
+from ...data_sources.data_source import DataSource
 from ...base import log_exception
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
@@ -25,8 +25,8 @@ class DataSourceCsv(
     Path to the ``*.csv`` file.
     """
 
-    extension_id = 'ba6cb274-e274-475a-bed3-6b7cb6f48247'
-    extension_name = '*.csv file'
+    extension_id = "ba6cb274-e274-475a-bed3-6b7cb6f48247"
+    extension_name = "*.csv file"
 
     def __init__(
         self,
@@ -50,7 +50,7 @@ class DataSourceCsv(
         self,
     ):
 
-        return f'{self.extension_name}: \'{self.path.base_value}\''
+        return f"{self.extension_name}: '{self.path.base_value}'"
 
     def load(
         self,
@@ -58,8 +58,8 @@ class DataSourceCsv(
 
         data_frame = read_csv(
             filepath_or_buffer=str(self.path),
-            engine='pyarrow',
-            dtype_backend='pyarrow',
+            engine="pyarrow",
+            dtype_backend="pyarrow",
         )
 
         return data_frame
@@ -76,7 +76,7 @@ class DataSourceCsv(
 
         return DataSourceCsv(
             working_dir_path=working_dir_path,
-            path=instance_data['parameters']['path'],
+            path=instance_data["parameters"]["path"],
             wildcard_sets=wildcard_sets,
         )
 
@@ -91,13 +91,13 @@ class DataSourceCsv(
             ib2d_file=ib2d_file,
         )
 
-        instance_data['parameters'] = {
-            'path': self.path.base_value,
+        instance_data["parameters"] = {
+            "path": self.path.base_value,
         }
 
         return {
-            'extension_id': str(self),
-            'parameters': {
-                'path': self.path.base_value,
+            "extension_id": str(self),
+            "parameters": {
+                "path": self.path.base_value,
             },
         }

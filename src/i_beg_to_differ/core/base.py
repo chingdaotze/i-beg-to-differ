@@ -2,9 +2,13 @@ from typing import (
     Callable,
     Any,
     ClassVar,
+    Self,
 )
 from time import time
-from abc import ABC
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from logging import (
     getLogger,
     Logger,
@@ -45,7 +49,7 @@ def log_runtime(
 
         self.lock.acquire()
         self.logger.info(
-            msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
+            msg=f"Function - {f.__name__}, Runtime - {runtime:.2f} seconds.",
         )
         self.lock.release()
 
@@ -84,7 +88,7 @@ def log_exception(
 
             self.lock.acquire()
             self.logger.exception(
-                msg='Encountered exception. Traceback below:',
+                msg="Encountered exception. Traceback below:",
             )
             self.lock.release()
 
@@ -112,6 +116,15 @@ class Base(
     Module-level logger.
     """
 
+    @abstractmethod
+    def __str__(
+        self,
+    ) -> str:
+        """
+        Method that returns a string representation of this object.
+        This string value is used for hashing and equality tests.
+        """
+
     def __repr__(
         self,
     ) -> str:
@@ -119,6 +132,38 @@ class Base(
         return str(
             self,
         )
+
+    def __hash__(
+        self,
+    ) -> int:
+
+        return hash(
+            str(
+                self,
+            ),
+        )
+
+    def __eq__(
+        self,
+        other: Self,
+    ) -> bool:
+
+        if hash(self) == hash(other):
+            return True
+
+        else:
+            return False
+
+    def __ne__(
+        self,
+        other: Self,
+    ) -> bool:
+
+        if self == other:
+            return False
+
+        else:
+            return True
 
     def __init__(
         self,

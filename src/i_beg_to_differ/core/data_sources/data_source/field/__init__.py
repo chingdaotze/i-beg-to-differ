@@ -3,14 +3,21 @@ from typing import (
     List,
     Dict,
     Self,
+    TYPE_CHECKING,
 )
 from zipfile import ZipFile
+from functools import cached_property
 
-from ......ib2d_file.ib2d_file_element import IB2DFileElement
-from ......base import log_exception
-from ......wildcards_sets.wildcard_field import WildcardField
-from ......wildcards_sets import WildcardSets
+from pandas import Series
+
+from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....base import log_exception
+from ....wildcards_sets.wildcard_field import WildcardField
+from ....wildcards_sets import WildcardSets
 from .field_transform import FieldTransform
+
+if TYPE_CHECKING:
+    from ...data_source import DataSource
 
 
 class Field(
@@ -25,14 +32,9 @@ class Field(
     Name of this field.
     """
 
-    py_type: str | None
+    data_source: 'DataSource'
     """
-    Python data type.
-    """
-
-    native_type: str | None
-    """
-    Original data type.
+    Parent data source.
     """
 
     transforms: List[FieldTransform] | None
@@ -44,6 +46,7 @@ class Field(
         self,
         working_dir_path: Path,
         name: str,
+        data_source: DataSource,
         transforms: List[FieldTransform] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
@@ -59,17 +62,19 @@ class Field(
             wildcard_sets=wildcard_sets,
         )
 
+        self.data_source = data_source
         self.transforms = transforms
-
-        self.py_type = None
-        self.native_type = None
 
     def __str__(
         self,
     ) -> str:
 
-        return str(
-            self.name,
+        return (
+            str(self.name)
+            + ' >> '
+            + ' | '.join(
+                [str(transform) for transform in self.transforms],
+            )
         )
 
     @classmethod
@@ -79,12 +84,14 @@ class Field(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        data_source: 'DataSource',
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
         return Field(
             working_dir_path=working_dir_path,
-            name=instance_data['name'],
+            name=instance_data["name"],
+            data_source=data_source,
             transforms=[
                 FieldTransform.deserialize(
                     instance_data=field_transform_data,
@@ -92,7 +99,7 @@ class Field(
                     ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
                 )
-                for field_transform_data in instance_data['transforms']
+                for field_transform_data in instance_data["transforms"]
             ],
         )
 
@@ -103,11 +110,35 @@ class Field(
     ) -> Dict:
 
         return {
-            'name': self.name.base_value,
-            'transforms': [
+            "name": self.name.base_value,
+            "transforms": [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
                 for instance in self.transforms
             ],
         }
+
+    @cached_property
+    def native_type(
+        self,
+    ) -> str:
+
+        # TODO: Get native type from data frame
+        ...
+
+    @cached_property
+    def py_type(
+        self,
+    ) -> str:
+
+        # TODO: Get Python type from data frame
+        ...
+
+    @cached_property
+    def value(
+        self,
+    ) -> Series:
+
+        # TODO: Get series from data frame and apply transformations
+        ...

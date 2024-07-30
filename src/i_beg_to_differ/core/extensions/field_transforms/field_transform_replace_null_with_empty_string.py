@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
+from ...data_sources.data_source.field.field_transform import (
     FieldTransform,
 )
 from ...wildcards_sets import WildcardSets
@@ -24,8 +24,8 @@ class FieldTransformReplaceNullWithEmptyString(
     FieldTransform,
 ):
 
-    extension_id = '34e57999-9021-4dff-88e2-14f62d21a646'
-    extension_name = 'Replace null with empty string'
+    extension_id = "34e57999-9021-4dff-88e2-14f62d21a646"
+    extension_name = "Replace null with empty string"
 
     def __init__(
         self,
@@ -80,6 +80,6 @@ class FieldTransformReplaceNullWithEmptyString(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
-            'parameters': None,
+            "extension_id": str(self),
+            "parameters": None,
         }

@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...compare_sets.compare_set.compare.field_pair.field.field_transform import (
+from ...data_sources.data_source.field.field_transform import (
     FieldTransform,
 )
 from ...base import (
@@ -24,8 +24,8 @@ class FieldTransformReplaceNullWithZero(
     FieldTransform,
 ):
 
-    extension_id = '52383a39-fd66-4724-a762-62f5f276d467'
-    extension_name = 'Replace null with zero'
+    extension_id = "52383a39-fd66-4724-a762-62f5f276d467"
+    extension_name = "Replace null with zero"
 
     def __init__(
         self,
@@ -80,6 +80,6 @@ class FieldTransformReplaceNullWithZero(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
-            'parameters': None,
+            "extension_id": str(self),
+            "parameters": None,
         }

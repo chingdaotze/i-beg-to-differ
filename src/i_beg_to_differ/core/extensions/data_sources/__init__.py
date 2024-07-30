@@ -1,5 +1,4 @@
 from .. import Extensions
-from ...compare_sets.compare_set.compare.table.data_source import DataSource
 
 
 class DataSources[DataSource](

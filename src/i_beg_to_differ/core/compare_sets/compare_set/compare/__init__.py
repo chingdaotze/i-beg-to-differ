@@ -5,6 +5,9 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
+from functools import cached_property
+
+from pandas import DataFrame
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from ....base import (
@@ -81,7 +84,7 @@ class Compare(
         self,
     ) -> str:
 
-        return f'{self.source} | {self.target}'
+        return f"{self.source} | {self.target}"
 
     @log_exception
     @log_runtime
@@ -92,9 +95,7 @@ class Compare(
             func=self.source.data_source.load,
         )
 
-        target_df = self.pool.apply_async(
-            func=self.target.data_source.load
-        )
+        target_df = self.pool.apply_async(func=self.target.data_source.load)
 
         self.source.data = source_df.get()
         self.target.data = target_df.get()
@@ -118,8 +119,8 @@ class Compare(
 
         data_sources = DataSources()
 
-        source_data = instance_data['source']
-        source_class = data_sources[source_data['extension_id']]
+        source_data = instance_data["source"]
+        source_class = data_sources[source_data["extension_id"]]
         source_data_source = source_class.deserialize(
             instance_data=source_data,
             working_dir_path=working_dir_path,
@@ -130,8 +131,8 @@ class Compare(
             data_source=source_data_source,
         )
 
-        target_data = instance_data['target']
-        target_class = data_sources[target_data['extension_id']]
+        target_data = instance_data["target"]
+        target_class = data_sources[target_data["extension_id"]]
         target_data_source = target_class.deserialize(
             instance_data=target_data,
             working_dir_path=working_dir_path,
@@ -149,7 +150,7 @@ class Compare(
                 ib2d_file=ib2d_file,
                 wildcard_sets=wildcard_sets,
             )
-            for pk_field_data in instance_data['pk_fields']
+            for pk_field_data in instance_data["pk_fields"]
         ]
 
         dt_fields = [
@@ -159,7 +160,7 @@ class Compare(
                 ib2d_file=ib2d_file,
                 wildcard_sets=wildcard_sets,
             )
-            for dt_field_data in instance_data['dt_fields']
+            for dt_field_data in instance_data["dt_fields"]
         ]
 
         return Compare(
@@ -168,7 +169,7 @@ class Compare(
             target=target,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
-            description=instance_data['description'],
+            description=instance_data["description"],
         )
 
     @log_exception
@@ -178,23 +179,74 @@ class Compare(
     ) -> Dict:
 
         return {
-            'description': self.description,
-            'source': self.source.data_source.serialize(
+            "description": self.description,
+            "source": self.source.data_source.serialize(
                 ib2d_file=ib2d_file,
             ),
-            'target': self.source.data_source.serialize(
+            "target": self.source.data_source.serialize(
                 ib2d_file=ib2d_file,
             ),
-            'pk_fields': [
+            "pk_fields": [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
                 for instance in self.pk_fields
             ],
-            'dt_fields': [
+            "dt_fields": [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
                 for instance in self.dt_fields
             ],
         }
+
+    @cached_property
+    def source_data(
+        self,
+    ) -> DataFrame:
+
+        if self.source.data is None:
+            self.load()
+
+        return self.source.data
+
+    @cached_property
+    def target_data(
+        self,
+    ) -> DataFrame:
+
+        if self.target.data is None:
+            self.load()
+
+        return self.target.data
+
+    # TODO: Implement compare methods
+    @cached_property
+    def schema_comparison(
+        self,
+    ) -> DataFrame:
+
+        self.__lazy_load()
+
+        pass
+
+    @cached_property
+    def values_comparison(
+        self,
+    ) -> DataFrame:
+
+        pass
+
+    @cached_property
+    def source_only_records(
+        self,
+    ) -> DataFrame:
+
+        pass
+
+    @cached_property
+    def target_only_records(
+        self,
+    ) -> DataFrame:
+
+        pass

@@ -9,8 +9,8 @@ from pandas import (
     Series,
 )
 
-from ......ib2d_file.ib2d_file_element import IB2DFileElement
-from ......extensions.extension import Extension
+from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....extensions.extension import Extension
 
 
 class FieldTransform(
