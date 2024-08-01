@@ -4,13 +4,10 @@ from abc import (
 )
 from pathlib import Path
 
-from pandas import (
-    DataFrame,
-    Series,
-)
+from pandas import Series
 
-from ....ib2d_file.ib2d_file_element import IB2DFileElement
-from ....extensions.extension import Extension
+from .....ib2d_file.ib2d_file_element import IB2DFileElement
+from .....extensions.extension import Extension
 
 
 class FieldTransform(
@@ -37,15 +34,11 @@ class FieldTransform(
     @abstractmethod
     def transform(
         self,
-        raw_table: DataFrame,
-        transformed_table: DataFrame,
-        field: Series,
+        values: Series,
     ) -> Series:
         """
         Transforms values in a single Field.
 
-        :param raw_table: Read-only copy of the original table.
-        :param transformed_table: Read-only copy of the transformed table.
-        :param field: Values to transform.
+        :param values: Values to transform.
         :return: Transformed values.
         """

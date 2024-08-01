@@ -2,17 +2,17 @@ from abc import (
     ABC,
     abstractmethod,
 )
-from typing import List
+from typing import Dict
 from pathlib import Path
 from functools import cached_property
 
 from pandas import DataFrame
 
+from .field.field_transforms import FieldTransforms
 from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
 from ...wildcards_sets import WildcardSets
-from .field.field_transform import FieldTransform
 
 
 class DataSource(
@@ -24,7 +24,7 @@ class DataSource(
     Abstract filtered data source.
     """
 
-    __fields: List[Field]
+    fields: Dict[str, Field]
     """
     Collection of Fields, specific to this data source.
     """
@@ -38,7 +38,6 @@ class DataSource(
         self,
         module_name: str,
         working_dir_path: Path,
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         IB2DFileElement.__init__(
@@ -67,26 +66,40 @@ class DataSource(
         :return: Dataframe of loaded data.
         """
 
-    def get_field(
+    @abstractmethod
+    @property
+    def native_types(
+        self,
+    ) -> Dict[str, str]:
+        """
+        Dictionary of native types. Keys are column names.
+
+        :return: Dictionary of native types.
+        """
+
+    @abstractmethod
+    @property
+    def py_types(
+        self,
+    ) -> Dict[str, str]:
+        """
+        Dictionary of python types. Keys are column names.
+
+        :return: Dictionary of python types.
+        """
+
+    def __getitem__(
         self,
         name: str,
-        transforms: List[FieldTransform] | None = None,
     ) -> Field:
 
-        instance = Field(
-            working_dir_path=self.working_dir_path,
-            name=name,
-            data_source=self,
-            transforms=transforms,
-            wildcard_sets=self.__wildcard_sets,
-        )
+        if name not in self.fields:
 
-        if instance not in self.__fields:
-
-            self.__fields.append(
-                instance,
+            self.fields[name] = Field(
+                working_dir_path=self.working_dir_path,
+                name=name,
+                data_source=self,
+                wildcard_sets=self.__wildcard_sets,
             )
 
-        instance = [field_ for field_ in self.__fields if field_ == instance][0]
-
-        return instance
+        return self.fields[name]
