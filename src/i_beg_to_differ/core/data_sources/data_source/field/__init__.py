@@ -84,18 +84,18 @@ class Field(
 
     def __getitem__(
         self,
-        transforms: FieldTransforms,
+        __field_transforms: FieldTransforms,
     ) -> Series:
 
-        if transforms not in self.transforms:
+        if __field_transforms not in self.transforms:
             self.append(
-                transforms=transforms,
+                __field_transforms=__field_transforms,
             )
 
-        values = self.transforms[transforms]
+        values = self.transforms[__field_transforms]
 
         if values is None:
-            values = transforms.apply(
+            values = __field_transforms.apply(
                 values=self.transforms[
                     FieldTransforms(
                         working_dir_path=self.working_dir_path,
@@ -103,47 +103,47 @@ class Field(
                 ]
             )
 
-            self.transforms[transforms] = values
+            self.transforms[__field_transforms] = values
 
         return values
 
     def append(
         self,
-        transforms: FieldTransforms | List[FieldTransform],
+        __field_transforms: FieldTransforms | List[FieldTransform],
     ) -> None:
         """
-        Add transforms to the collection of transforms for this field.
+        Add field transforms to the collection of field transforms for this field.
 
-        :param transforms: Transforms to add.
+        :param __field_transforms: Transforms to add.
         :return:
         """
 
-        if isinstance(transforms, list):
-            transforms = FieldTransforms(
+        if isinstance(__field_transforms, list):
+            __field_transforms = FieldTransforms(
                 working_dir_path=self.working_dir_path,
-                transforms=transforms,
+                transforms=__field_transforms,
             )
 
-        self.transforms[transforms] = None
+        self.transforms[__field_transforms] = None
 
     def remove(
         self,
-        transforms: FieldTransforms | List[FieldTransforms],
+        __field_transforms: FieldTransforms | List[FieldTransforms],
     ) -> None:
         """
-        Delete transforms from the collection of transforms for this field.
+        Delete field transforms from the collection of field transforms for this field.
 
-        :param transforms: Transforms to delete.
+        :param __field_transforms: Transforms to delete.
         :return:
         """
 
-        if isinstance(transforms, list):
-            transforms = FieldTransforms(
+        if isinstance(__field_transforms, list):
+            __field_transforms = FieldTransforms(
                 working_dir_path=self.working_dir_path,
-                transforms=transforms,
+                transforms=__field_transforms,
             )
 
-        del self.transforms[transforms]
+        del self.transforms[__field_transforms]
 
     @classmethod
     @log_exception

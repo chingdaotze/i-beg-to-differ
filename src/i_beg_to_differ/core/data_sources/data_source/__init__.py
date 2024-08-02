@@ -46,6 +46,24 @@ class DataSource(
             working_dir_path=working_dir_path,
         )
 
+        self.fields = {}
+
+    def __getitem__(
+        self,
+        name: str,
+    ) -> Field:
+
+        if name not in self.fields:
+
+            self.fields[name] = Field(
+                working_dir_path=self.working_dir_path,
+                name=name,
+                data_source=self,
+                wildcard_sets=self.__wildcard_sets,
+            )
+
+        return self.fields[name]
+
     @cached_property
     def data(
         self,
@@ -87,19 +105,3 @@ class DataSource(
 
         :return: Dictionary of python types.
         """
-
-    def __getitem__(
-        self,
-        name: str,
-    ) -> Field:
-
-        if name not in self.fields:
-
-            self.fields[name] = Field(
-                working_dir_path=self.working_dir_path,
-                name=name,
-                data_source=self,
-                wildcard_sets=self.__wildcard_sets,
-            )
-
-        return self.fields[name]
