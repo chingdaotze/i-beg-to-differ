@@ -26,7 +26,6 @@ class WildcardField(
     ):
         Base.__init__(
             self=self,
-            module_name=__name__,
         )
 
         self._base_value = base_value

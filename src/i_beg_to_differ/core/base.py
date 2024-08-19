@@ -116,8 +116,6 @@ class Base(
     Module-level logger.
     """
 
-    _module_name: str
-
     @abstractmethod
     def __str__(
         self,
@@ -169,15 +167,11 @@ class Base(
 
     def __init__(
         self,
-        module_name: str,
     ):
-
-        self._module_name = type(
-            self,
-        ).__module__
-
         self.logger = getLogger(
-            name=module_name,
+            name=type(
+                self,
+            ).__module__,
         )
 
     @property

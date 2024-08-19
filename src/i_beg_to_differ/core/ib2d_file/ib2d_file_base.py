@@ -23,13 +23,11 @@ class IB2DFileBase(
 
     def __init__(
         self,
-        module_name: str,
         working_dir_path: Path,
     ):
 
         Base.__init__(
             self=self,
-            module_name=module_name,
         )
 
         self.working_dir_path = working_dir_path

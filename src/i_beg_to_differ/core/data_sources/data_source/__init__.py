@@ -45,7 +45,6 @@ class DataSource(
 
     def __init__(
         self,
-        module_name: str,
         working_dir_path: Path,
         description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -53,7 +52,6 @@ class DataSource(
 
         IB2DFileElement.__init__(
             self=self,
-            module_name=module_name,
             working_dir_path=working_dir_path,
         )
 

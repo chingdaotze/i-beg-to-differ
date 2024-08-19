@@ -40,7 +40,6 @@ class FieldCompareRuleAbsoluteTolerance(
 
         FieldPairCompareRule.__init__(
             self=self,
-            module_name=__name__,
             working_dir_path=working_dir_path,
             linkage=linkage,
         )

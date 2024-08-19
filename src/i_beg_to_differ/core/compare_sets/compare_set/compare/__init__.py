@@ -68,7 +68,6 @@ class Compare(
     ):
         IB2DFileElement.__init__(
             self=self,
-            module_name=__name__,
             working_dir_path=working_dir_path,
         )
 
