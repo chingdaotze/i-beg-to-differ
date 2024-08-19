@@ -15,6 +15,7 @@ from .ib2d_file_base import IB2DFileBase
 from ..base import log_exception
 from ..wildcards_sets import WildcardSets
 from ..compare_sets import CompareSets
+from ..data_sources import DataSources
 
 
 class IB2DFile(
@@ -34,6 +35,11 @@ class IB2DFile(
     Comparison sets object.
     """
 
+    data_sources: DataSources
+    """
+    Data sources object.
+    """
+
     path: Path | None
     """
     Path to the ``*.ib2d`` file.
@@ -44,6 +50,7 @@ class IB2DFile(
         working_dir_path: Path,
         wildcard_sets: WildcardSets,
         compare_sets: CompareSets,
+        data_sources: DataSources,
         path: Path | None = None,
     ):
 
@@ -55,13 +62,14 @@ class IB2DFile(
 
         self.wildcard_sets = wildcard_sets
         self.compare_sets = compare_sets
+        self.data_sources = data_sources
         self.path = path
 
     def __str__(
         self,
     ) -> str:
 
-        return f'Path: {self.path}'
+        return f'*.ib2d file [{self.path}]'
 
     @log_exception
     def __del__(
@@ -157,7 +165,7 @@ class IB2DFile(
                 ib2d_file=ib2d_file,
             )
 
-            # Add paths to wildcard set
+            # Add system paths to wildcard set
             wildcard_sets.update_global_wildcard(
                 key='ib2d_file_path',
                 value=str(
@@ -170,6 +178,22 @@ class IB2DFile(
                 value=str(
                     path.parent.absolute(),
                 ),
+            )
+
+            # Create data sources
+            data_sources_file = ib2d_file.open(
+                name='data_sources.json',
+            )
+
+            data_sources_data = load(
+                fp=data_sources_file,
+            )
+
+            data_sources = DataSources.deserialize(
+                instance_data=data_sources_data,
+                working_dir_path=working_dir_path,
+                ib2d_file=ib2d_file,
+                wildcard_sets=wildcard_sets,
             )
 
             # Create compare sets
@@ -185,6 +209,7 @@ class IB2DFile(
                 instance_data=compare_set_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
+                data_sources=data_sources,
                 wildcard_sets=wildcard_sets,
             )
 
@@ -193,6 +218,7 @@ class IB2DFile(
                 working_dir_path=working_dir_path,
                 wildcard_sets=wildcard_sets,
                 compare_sets=compare_sets,
+                data_sources=data_sources,
                 path=path,
             )
 

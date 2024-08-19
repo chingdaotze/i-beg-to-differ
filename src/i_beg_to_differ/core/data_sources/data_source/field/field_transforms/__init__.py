@@ -1,20 +1,19 @@
 from typing import (
     List,
+    ClassVar,
     Dict,
     Self,
 )
 from pathlib import Path
 
 from zipfile import ZipFile
-from pandas import (
-    Series,
-    DataFrame,
-)
+from pandas import Series
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
+from .field_transform import FieldTransform
+from .....extensions.field_transforms import FieldTransformExtensions
 from .....base import log_exception
 from .....wildcards_sets import WildcardSets
-from .field_transform import FieldTransform
 
 
 class FieldTransforms(
@@ -27,6 +26,13 @@ class FieldTransforms(
     transforms: List[FieldTransform]
     """
     List of transforms.
+    """
+
+    transform_extensions: ClassVar[FieldTransformExtensions] = (
+        FieldTransformExtensions()
+    )
+    """
+    All field transform extensions for this package.
     """
 
     def __init__(
@@ -50,9 +56,27 @@ class FieldTransforms(
         self,
     ) -> str:
 
-        return ' | '.join(
-            [str(transform) for transform in self.transforms],
-        )
+        if self.transforms:
+            return ' | '.join(
+                [str(transform) for transform in self.transforms],
+            )
+        else:
+            return 'None'
+
+    def __getitem__(
+        self,
+        index: int,
+    ) -> FieldTransform:
+
+        return self.transforms[index]
+
+    def __setitem__(
+        self,
+        index: int,
+        transform: FieldTransform,
+    ) -> None:
+
+        self.transforms[index] = transform
 
     def __iter__(
         self,
@@ -67,6 +91,36 @@ class FieldTransforms(
         for transform in self.transforms:
             yield transform
 
+    def append(
+        self,
+        transform: FieldTransform,
+    ) -> None:
+        """
+        Add field transform to the collection of field transforms.
+
+        :param transform: Field transform to add.
+        :return:
+        """
+
+        self.transforms.append(
+            transform,
+        )
+
+    def remove(
+        self,
+        transform: FieldTransform,
+    ) -> None:
+        """
+        Delete field transform from the collection of field transforms.
+
+        :param transform: Field transform to delete.
+        :return:
+        """
+
+        self.transforms.remove(
+            transform,
+        )
+
     @classmethod
     @log_exception
     def deserialize(
@@ -77,17 +131,24 @@ class FieldTransforms(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransforms(
-            working_dir_path=working_dir_path,
-            transforms=[
-                FieldTransform.deserialize(
-                    instance_data=field_transform_data,
+        transforms = []
+
+        for transform_data in instance_data:
+            extension_id = transform_data['extension_id']
+            field_transform_ = cls.transform_extensions[extension_id]
+
+            transforms.append(
+                field_transform_.deserialize(
+                    instance_data=transform_data,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
-                )
-                for field_transform_data in instance_data["transforms"]
-            ],
+                ),
+            )
+
+        return FieldTransforms(
+            working_dir_path=working_dir_path,
+            transforms=transforms,
         )
 
     @log_exception

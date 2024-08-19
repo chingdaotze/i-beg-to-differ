@@ -30,13 +30,11 @@ class Extensions[T](
             path=path,
             prefix=f'{name}.',
         ):
-
             extension_module = import_module(
                 name=module.name,
             )
 
             for _, member in getmembers(object=extension_module):
-
                 if (
                     isclass(
                         member,
@@ -47,25 +45,24 @@ class Extensions[T](
                     )
                     and member.__module__ == extension_module.__name__
                 ):
-
                     self.register(
-                        extension_type=member,
+                        extension_type=member, extension_id=module.name.split('.')[-1]
                     )
 
     def register(
         self,
         extension_type: Type[Extension],
+        extension_id: str,
     ) -> None:
 
-        if extension_type.extension_id in self._collection:
-
+        if extension_id in self._collection:
             raise KeyError(
-                f"Extension: {extension_type.extension_id} has already been registered!",
+                f'Extension: {extension_id} has already been registered!',
             )
 
         else:
-
-            self._collection[extension_type.extension_id] = extension_type
+            extension_type.extension_id = extension_id
+            self._collection[extension_id] = extension_type
 
     def __getitem__(
         self,
@@ -73,11 +70,9 @@ class Extensions[T](
     ) -> Type[T]:
 
         if extension_id in self._collection:
-
             return self._collection[extension_id]
 
         else:
-
             raise KeyError(
-                f"Extension: {extension_id} has not been registered!",
+                f'Extension: {extension_id} has not been registered!',
             )

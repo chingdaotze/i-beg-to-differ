@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...data_sources.data_source.field.field_transform import (
+from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
 from ...base import (
@@ -24,8 +24,7 @@ class FieldTransformReplaceNullWithZero(
     FieldTransform,
 ):
 
-    extension_id = "52383a39-fd66-4724-a762-62f5f276d467"
-    extension_name = "Replace null with zero"
+    extension_name = "Replace Null with Zero"
 
     def __init__(
         self,
@@ -37,6 +36,12 @@ class FieldTransformReplaceNullWithZero(
             module_name=__name__,
             working_dir_path=working_dir_path,
         )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.extension_name
 
     @log_exception
     @log_runtime

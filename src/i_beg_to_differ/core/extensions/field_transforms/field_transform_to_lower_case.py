@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...data_sources.data_source.field.field_transform import (
+from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
 from ...base import (
@@ -24,8 +24,7 @@ class FieldTransformToLowerCase(
     FieldTransform,
 ):
 
-    extension_id = "a0111629-8038-4cca-aae9-9748adb758ba"
-    extension_name = "Convert to lower case"
+    extension_name = "Convert to Lower Case"
 
     def __init__(
         self,
@@ -37,6 +36,12 @@ class FieldTransformToLowerCase(
             module_name=__name__,
             working_dir_path=working_dir_path,
         )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.extension_name
 
     @log_exception
     @log_runtime

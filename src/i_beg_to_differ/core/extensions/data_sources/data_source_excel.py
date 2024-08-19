@@ -30,14 +30,14 @@ class DataSourceExcel(
     Name of the worksheet within the ``*.xlsx`` file.
     """
 
-    extension_id = "44054bc8-978d-4f9a-b3d9-9e539fde5651"
-    extension_name = "*.xlsx file"
+    extension_name = '*.xlsx File'
 
     def __init__(
         self,
         working_dir_path: Path,
         path: str,
         sheet: str,
+        description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -45,6 +45,7 @@ class DataSourceExcel(
             self=self,
             module_name=__name__,
             working_dir_path=working_dir_path,
+            description=description,
         )
 
         self.path = WildcardField(
@@ -59,11 +60,9 @@ class DataSourceExcel(
 
     def __str__(
         self,
-    ):
+    ) -> str:
 
-        return (
-            f"{self.extension_name}: '[{self.path.base_value}]{self.sheet.base_value}'"
-        )
+        return f'{self.extension_name}: \'[{self.path.base_value}]{self.sheet.base_value}\''
 
     def load(
         self,
@@ -88,8 +87,8 @@ class DataSourceExcel(
 
         return DataSourceExcel(
             working_dir_path=working_dir_path,
-            path=instance_data["parameters"]["path"],
-            sheet=instance_data["parameters"]["sheet"],
+            path=instance_data['parameters']['path'],
+            sheet=instance_data['parameters']['sheet'],
             wildcard_sets=wildcard_sets,
         )
 
@@ -100,9 +99,23 @@ class DataSourceExcel(
     ) -> Dict:
 
         return {
-            "extension_id": str(self),
-            "parameters": {
-                "path": self.path.base_value,
-                "sheet": self.sheet.base_value,
+            'extension_id': str(self),
+            'parameters': {
+                'path': self.path.base_value,
+                'sheet': self.sheet.base_value,
             },
         }
+
+    def py_types(
+        self,
+    ) -> Dict[str, str]:
+        # TODO: Implement py_types
+
+        return {}
+
+    def native_types(
+        self,
+    ) -> Dict[str, str]:
+        # TODO: Implement native_types
+
+        return {}

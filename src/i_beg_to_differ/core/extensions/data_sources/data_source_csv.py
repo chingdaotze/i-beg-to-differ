@@ -25,13 +25,13 @@ class DataSourceCsv(
     Path to the ``*.csv`` file.
     """
 
-    extension_id = "ba6cb274-e274-475a-bed3-6b7cb6f48247"
-    extension_name = "*.csv file"
+    extension_name = '*.csv File'
 
     def __init__(
         self,
         working_dir_path: Path,
         path: str,
+        description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -39,6 +39,7 @@ class DataSourceCsv(
             self=self,
             module_name=__name__,
             working_dir_path=working_dir_path,
+            description=description,
         )
 
         self.path = WildcardField(
@@ -48,9 +49,9 @@ class DataSourceCsv(
 
     def __str__(
         self,
-    ):
+    ) -> str:
 
-        return f"{self.extension_name}: '{self.path.base_value}'"
+        return f'{self.extension_name}: "{self.path.base_value}"'
 
     def load(
         self,
@@ -58,8 +59,8 @@ class DataSourceCsv(
 
         data_frame = read_csv(
             filepath_or_buffer=str(self.path),
-            engine="pyarrow",
-            dtype_backend="pyarrow",
+            engine='pyarrow',
+            dtype_backend='pyarrow',
         )
 
         return data_frame
@@ -76,7 +77,7 @@ class DataSourceCsv(
 
         return DataSourceCsv(
             working_dir_path=working_dir_path,
-            path=instance_data["parameters"]["path"],
+            path=instance_data['parameters']['path'],
             wildcard_sets=wildcard_sets,
         )
 
@@ -91,13 +92,27 @@ class DataSourceCsv(
             ib2d_file=ib2d_file,
         )
 
-        instance_data["parameters"] = {
-            "path": self.path.base_value,
+        instance_data['parameters'] = {
+            'path': self.path.base_value,
         }
 
         return {
-            "extension_id": str(self),
-            "parameters": {
-                "path": self.path.base_value,
+            'extension_id': str(self),
+            'parameters': {
+                'path': self.path.base_value,
             },
         }
+
+    def py_types(
+        self,
+    ) -> Dict[str, str]:
+        # TODO: Implement py_types
+
+        return {}
+
+    def native_types(
+        self,
+    ) -> Dict[str, str]:
+        # TODO: Implement native_types
+
+        return {}

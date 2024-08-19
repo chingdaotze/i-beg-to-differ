@@ -10,7 +10,7 @@ from pandas import (
     Series,
 )
 
-from ...data_sources.data_source.field.field_transform import (
+from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
 from ...wildcards_sets import WildcardSets
@@ -24,8 +24,7 @@ class FieldTransformReplaceNullWithEmptyString(
     FieldTransform,
 ):
 
-    extension_id = "34e57999-9021-4dff-88e2-14f62d21a646"
-    extension_name = "Replace null with empty string"
+    extension_name = 'Replace Null with Empty String'
 
     def __init__(
         self,
@@ -37,6 +36,12 @@ class FieldTransformReplaceNullWithEmptyString(
             module_name=__name__,
             working_dir_path=working_dir_path,
         )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.extension_name
 
     @log_exception
     @log_runtime

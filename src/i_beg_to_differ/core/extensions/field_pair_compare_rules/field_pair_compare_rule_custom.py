@@ -25,11 +25,10 @@ class FieldCompareRuleCustom(
     FieldPairCompareRule,
 ):
 
-    _file_name: str
+    file_name: str
     _wildcard_sets: WildcardSets | None
 
-    extension_id = '5e932dfc-9d46-485b-8697-b02d850ddad2'
-    extension_name = 'Custom'
+    extension_name = 'Custom Python Script'
 
     def __init__(
         self,
@@ -46,8 +45,14 @@ class FieldCompareRuleCustom(
             linkage=linkage,
         )
 
-        self._file_name = file_name
+        self.file_name = file_name
         self._wildcard_sets = wildcard_sets
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'{self.extension_name}: {self.file_name}'
 
     @log_exception
     @log_runtime
@@ -99,7 +104,7 @@ class FieldCompareRuleCustom(
         return {
             'extension_id': str(self),
             'parameters': {
-                'file_name': self._file_name,
+                'file_name': self.file_name,
             },
             'linkage': str(self.linkage),
         }

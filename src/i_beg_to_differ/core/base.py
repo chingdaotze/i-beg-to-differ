@@ -109,12 +109,14 @@ class Base(
     Global multiprocessing lock.
     """
 
-    __pool: ClassVar[Pool] = None
+    __pool: Pool = None
 
     logger: Logger
     """
     Module-level logger.
     """
+
+    _module_name: str
 
     @abstractmethod
     def __str__(
@@ -170,22 +172,25 @@ class Base(
         module_name: str,
     ):
 
+        self._module_name = type(
+            self,
+        ).__module__
+
         self.logger = getLogger(
             name=module_name,
         )
 
-    @classmethod
     @property
     def pool(
-        cls,
+        self,
     ) -> Pool:
         """
         Global multiprocessing pool.
         """
 
-        if cls.__pool is None:
+        if self.__pool is None:
 
-            cls.__pool = Pool(
+            self.__pool = Pool(
                 processes=max(
                     cpu_count(
                         logical=False,
@@ -195,4 +200,4 @@ class Base(
                 ),
             )
 
-        return cls.__pool
+        return self.__pool

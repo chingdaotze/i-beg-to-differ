@@ -47,7 +47,7 @@ class Field(
         self,
         working_dir_path: Path,
         name: str,
-        data_source: DataSource,
+        data_source: 'DataSource',
         transforms: List[FieldTransforms] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
@@ -80,7 +80,7 @@ class Field(
         self,
     ) -> str:
 
-        return f'{str(self.name)} >> {str(self.transforms)}'
+        return str(self.name)
 
     def __getitem__(
         self,
@@ -155,7 +155,7 @@ class Field(
         data_source: 'DataSource',
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
-
+        # Get field
         return Field(
             working_dir_path=working_dir_path,
             name=instance_data["name"],

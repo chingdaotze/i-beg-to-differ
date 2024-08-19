@@ -25,7 +25,6 @@ class FieldCompareRuleEquals(
     FieldPairCompareRule,
 ):
 
-    extension_id = 'eeb407c8-de62-42ad-ab32-3532cd428f6a'
     extension_name = 'Equals'
 
     def __init__(
@@ -40,6 +39,12 @@ class FieldCompareRuleEquals(
             working_dir_path=working_dir_path,
             linkage=linkage,
         )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.extension_name
 
     @log_exception
     @log_runtime

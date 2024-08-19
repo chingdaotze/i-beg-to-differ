@@ -8,6 +8,7 @@ from zipfile import ZipFile
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
 from ..base import log_exception
 from .compare_set import CompareSet
+from ..data_sources import DataSources
 from ..wildcards_sets import WildcardSets
 
 
@@ -89,6 +90,7 @@ class CompareSets(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        data_sources: DataSources,
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
@@ -99,6 +101,7 @@ class CompareSets(
                     instance_data=compare_set_values,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
+                    data_sources=data_sources,
                     wildcard_sets=wildcard_sets,
                 )
                 for name, compare_set_values in instance_data.items()

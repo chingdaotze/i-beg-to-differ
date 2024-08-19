@@ -1,10 +1,10 @@
-from .. import Extensions
 from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule import (
     FieldPairCompareRule,
 )
+from .. import Extensions
 
 
-class FieldPairCompareRules[FieldPairCompareRule](
+class FieldPairCompareRuleExtensions[FieldPairCompareRule](
     Extensions,
 ):
     """

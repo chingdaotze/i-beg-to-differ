@@ -1,7 +1,10 @@
+from ...data_sources.data_source.field.field_transforms.field_transform import (
+    FieldTransform,
+)
 from .. import Extensions
 
 
-class FieldTransforms[FieldTransform](
+class FieldTransformExtensions[FieldTransform](
     Extensions,
 ):
     """

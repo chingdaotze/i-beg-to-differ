@@ -4,7 +4,6 @@ from abc import (
 )
 from typing import Dict
 from pathlib import Path
-from functools import cached_property
 
 from pandas import DataFrame
 
@@ -29,15 +28,27 @@ class DataSource(
     Collection of Fields, specific to this data source.
     """
 
-    __wildcard_sets: WildcardSets | None
+    description: str | None
+    """
+    Human-readable description of this data source.
+    """
+
+    _wildcard_sets: WildcardSets | None
     """
     Attribute, used to initialize Fields on-demand.
+    """
+
+    _data: DataFrame | None
+    """
+    Cached copy of the data.
     """
 
     def __init__(
         self,
         module_name: str,
         working_dir_path: Path,
+        description: str | None = None,
+        wildcard_sets: WildcardSets | None = None,
     ):
 
         IB2DFileElement.__init__(
@@ -46,7 +57,10 @@ class DataSource(
             working_dir_path=working_dir_path,
         )
 
+        self.description = description
         self.fields = {}
+        self._wildcard_sets = wildcard_sets
+        self._data = None
 
     def __getitem__(
         self,
@@ -59,12 +73,12 @@ class DataSource(
                 working_dir_path=self.working_dir_path,
                 name=name,
                 data_source=self,
-                wildcard_sets=self.__wildcard_sets,
+                wildcard_sets=self._wildcard_sets,
             )
 
         return self.fields[name]
 
-    @cached_property
+    @property
     def data(
         self,
     ) -> DataFrame:
@@ -72,7 +86,18 @@ class DataSource(
         Cached copy of the data source, for quicker local processing.
         """
 
-        return self.load()
+        if self._data is None:
+            self._data = self.load()
+
+        return self._data
+
+    @data.setter
+    def data(
+        self,
+        value: DataFrame,
+    ) -> None:
+
+        self._data = value
 
     @abstractmethod
     def load(
@@ -84,8 +109,8 @@ class DataSource(
         :return: Dataframe of loaded data.
         """
 
-    @abstractmethod
     @property
+    @abstractmethod
     def native_types(
         self,
     ) -> Dict[str, str]:
@@ -95,8 +120,8 @@ class DataSource(
         :return: Dictionary of native types.
         """
 
-    @abstractmethod
     @property
+    @abstractmethod
     def py_types(
         self,
     ) -> Dict[str, str]:

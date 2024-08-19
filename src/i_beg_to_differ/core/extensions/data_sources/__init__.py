@@ -1,7 +1,8 @@
+from ...data_sources.data_source import DataSource
 from .. import Extensions
 
 
-class DataSources[DataSource](
+class DataSourceExtensions[DataSource](
     Extensions,
 ):
     """

@@ -28,7 +28,6 @@ class FieldCompareRuleAbsoluteTolerance(
 
     _tolerance: WildcardField
 
-    extension_id = 'ec4928d1-a745-49d0-a0db-efaf2ecc3262'
     extension_name = 'Absolute Tolerance'
 
     def __init__(
@@ -50,6 +49,12 @@ class FieldCompareRuleAbsoluteTolerance(
             base_value=str(tolerance),
             wildcard_sets=wildcard_sets,
         )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'{self.extension_name}: {self.tolerance}'
 
     @property
     @log_exception
