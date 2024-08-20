@@ -49,7 +49,7 @@ def log_runtime(
 
         self.lock.acquire()
         self.logger.info(
-            msg=f"Function - {f.__name__}, Runtime - {runtime:.2f} seconds.",
+            msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
         )
         self.lock.release()
 
@@ -88,7 +88,7 @@ def log_exception(
 
             self.lock.acquire()
             self.logger.exception(
-                msg="Encountered exception. Traceback below:",
+                msg='Encountered exception. Traceback below:\n\n',
             )
             self.lock.release()
 

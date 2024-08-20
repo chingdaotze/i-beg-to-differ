@@ -57,9 +57,15 @@ class Compare(
     All field pairs.
     """
 
+    _data_sources: DataSources
+    """
+    All data sources.
+    """
+
     def __init__(
         self,
         working_dir_path: Path,
+        data_sources: DataSources,
         source: DataSource,
         target: DataSource,
         pk_fields: List[FieldPair] | None = None,
@@ -73,6 +79,7 @@ class Compare(
 
         self.description = description
 
+        self._data_sources = data_sources
         self.source = source
         self.target = target
 
@@ -85,21 +92,21 @@ class Compare(
 
         return f'{self.source} | {self.target}'
 
-    @log_exception
-    @log_runtime
-    def load_cache(
+    def init_caches(
         self,
     ) -> None:
-        source_future = self.pool.apply_async(
-            func=self.source.load_cache,
-        )
+        """
+        Prepares the source and target caches for reading.
 
-        target_future = self.pool.apply_async(
-            func=self.target.load_cache,
-        )
+        :return:
+        """
 
-        source_future.wait()
-        target_future.wait()
+        self._data_sources.init_caches(
+            data_sources=[
+                self.source,
+                self.target,
+            ]
+        )
 
     @property
     def fields(
@@ -151,6 +158,7 @@ class Compare(
 
         return Compare(
             working_dir_path=working_dir_path,
+            data_sources=data_sources,
             source=source_data_source,
             target=target_data_source,
             pk_fields=pk_fields,

@@ -7,7 +7,6 @@ from pathlib import Path
 
 from pandas import DataFrame
 
-from .field.field_transforms import FieldTransforms
 from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
@@ -77,26 +76,40 @@ class DataSource(
         return self.fields[name]
 
     @property
-    def data(
+    def cache(
         self,
     ) -> DataFrame:
         """
         Cached copy of the data source, for quicker local processing.
         """
 
-        self.load_cache(
-            force_reload=False,
-        )
+        if self.empty:
+            self._data = self.load()
 
         return self._data
 
-    @data.setter
-    def data(
+    @cache.setter
+    def cache(
         self,
         value: DataFrame,
     ) -> None:
 
         self._data = value
+
+    @property
+    def empty(
+        self,
+    ) -> bool:
+        """
+        Boolean flag that indicates whether the cache is empty.
+        ``True`` if the cache is empty, otherwise ``False``.
+        """
+
+        if self._data is None:
+            return True
+
+        else:
+            return False
 
     def clear(
         self,
@@ -108,23 +121,6 @@ class DataSource(
         """
 
         self._data = None
-
-    def load_cache(
-        self,
-        force_reload: bool = False,
-    ) -> None:
-        """
-        Loads data from a data source to the cache, if the cache is empty. Optionally, force
-        a reload into the cache.
-
-        :param force_reload: Set to ``True`` to force a cache reload.
-        :return:
-        """
-
-        if force_reload or self._data is None:
-            self._data = self.load()
-
-        return self._data
 
     @abstractmethod
     def load(
