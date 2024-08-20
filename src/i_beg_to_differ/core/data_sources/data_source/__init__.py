@@ -84,8 +84,9 @@ class DataSource(
         Cached copy of the data source, for quicker local processing.
         """
 
-        if self._data is None:
-            self._data = self.load()
+        self.load_cache(
+            force_reload=False,
+        )
 
         return self._data
 
@@ -97,14 +98,42 @@ class DataSource(
 
         self._data = value
 
+    def clear(
+        self,
+    ) -> None:
+        """
+        Clears the cache.
+
+        :return:
+        """
+
+        self._data = None
+
+    def load_cache(
+        self,
+        force_reload: bool = False,
+    ) -> None:
+        """
+        Loads data from a data source to the cache, if the cache is empty. Optionally, force
+        a reload into the cache.
+
+        :param force_reload: Set to ``True`` to force a cache reload.
+        :return:
+        """
+
+        if force_reload or self._data is None:
+            self._data = self.load()
+
+        return self._data
+
     @abstractmethod
     def load(
         self,
     ) -> DataFrame:
         """
-        Loads data to a dataframe. Must be multiprocess-safe.
+        Reads data from a data source and returns a DataFrame. Must be multiprocess-safe.
 
-        :return: Dataframe of loaded data.
+        :return: DataFrame of loaded data.
         """
 
     @property

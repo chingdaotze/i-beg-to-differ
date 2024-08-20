@@ -87,19 +87,19 @@ class Compare(
 
     @log_exception
     @log_runtime
-    def load(
+    def load_cache(
         self,
     ) -> None:
-        source_df = self.pool.apply_async(
-            func=self.source.load,
+        source_future = self.pool.apply_async(
+            func=self.source.load_cache,
         )
 
-        target_df = self.pool.apply_async(
-            func=self.target.load,
+        target_future = self.pool.apply_async(
+            func=self.target.load_cache,
         )
 
-        self.source.data = source_df.get()
-        self.target.data = target_df.get()
+        source_future.wait()
+        target_future.wait()
 
     @property
     def fields(
@@ -185,26 +185,6 @@ class Compare(
                 for instance in self.dt_fields
             ],
         }
-
-    @cached_property
-    def source_data(
-        self,
-    ) -> DataFrame:
-
-        if self.source.data is None:
-            self.load()
-
-        return self.source.data
-
-    @cached_property
-    def target_data(
-        self,
-    ) -> DataFrame:
-
-        if self.target.data is None:
-            self.load()
-
-        return self.target.data
 
     # TODO: Implement compare methods
     @cached_property
