@@ -2,7 +2,10 @@ from abc import (
     ABC,
     abstractmethod,
 )
-from typing import Dict
+from typing import (
+    Dict,
+    Self,
+)
 from pathlib import Path
 
 from pandas import DataFrame
@@ -19,7 +22,7 @@ class DataSource(
     ABC,
 ):
     """
-    Abstract filtered data source.
+    Abstract filtered data source. This class must be pickleable.
     """
 
     fields: Dict[str, Field]
@@ -84,7 +87,7 @@ class DataSource(
         """
 
         if self.empty:
-            self._data = self.load()
+            self.load()
 
         return self._data
 
@@ -125,9 +128,9 @@ class DataSource(
     @abstractmethod
     def load(
         self,
-    ) -> DataFrame:
+    ) -> Self:
         """
-        Reads data from a data source and returns a DataFrame. Must be multiprocess-safe.
+        Reads data from a data source and sets the cache attribute. Must be multiprocess-safe.
 
         :return: DataFrame of loaded data.
         """
@@ -144,7 +147,6 @@ class DataSource(
         """
 
     @property
-    @abstractmethod
     def py_types(
         self,
     ) -> Dict[str, str]:
@@ -153,3 +155,8 @@ class DataSource(
 
         :return: Dictionary of python types.
         """
+
+        return {
+            str(column): dtype.type.__name__
+            for column, dtype in self.cache.dtypes.items()
+        }

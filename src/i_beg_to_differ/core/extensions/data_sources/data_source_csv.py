@@ -5,10 +5,7 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import (
-    DataFrame,
-    read_csv,
-)
+from pandas import read_csv
 
 from ...data_sources.data_source import DataSource
 from ...base import log_exception
@@ -54,15 +51,15 @@ class DataSourceCsv(
 
     def load(
         self,
-    ) -> DataFrame:
+    ) -> Self:
 
-        data_frame = read_csv(
+        self.cache = read_csv(
             filepath_or_buffer=str(self.path),
             engine='pyarrow',
             dtype_backend='pyarrow',
         )
 
-        return data_frame
+        return self
 
     @classmethod
     @log_exception
@@ -102,16 +99,9 @@ class DataSourceCsv(
             },
         }
 
-    def py_types(
-        self,
-    ) -> Dict[str, str]:
-        # TODO: Implement py_types
-
-        return {}
-
+    @property
     def native_types(
         self,
     ) -> Dict[str, str]:
-        # TODO: Implement native_types
 
-        return {}
+        return {column: str.__name__ for column in self.cache}

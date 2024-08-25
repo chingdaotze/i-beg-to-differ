@@ -113,20 +113,22 @@ class DataSources(
         :return:
         """
 
-        futures = {}
+        futures = []
 
         for data_source_ in data_sources:
             data_source_ = self[data_source_]
 
             if data_source_.empty or force_reload:
-                futures[str(data_source_)] = self.pool.apply_async(
-                    func=data_source_.load
+                futures.append(
+                    self.pool.apply_async(
+                        func=data_source_.load,
+                    ),
                 )
 
-        for data_source_, future in futures.items():
-
-            data_source_ = self[data_source_]
-            data_source_.cache = future.get()
+        for future in futures:
+            self.append(
+                future.get(),
+            )
 
     @classmethod
     @log_exception

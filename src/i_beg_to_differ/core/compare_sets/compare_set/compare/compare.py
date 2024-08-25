@@ -200,7 +200,11 @@ class Compare(
         self,
     ) -> DataFrame:
 
-        self.__lazy_load()
+        source_native_types = self.source.native_types
+        source_py_types = self.source.py_types
+
+        target_native_types = self.target.native_types
+        target_py_types = self.target.py_types
 
         pass
 

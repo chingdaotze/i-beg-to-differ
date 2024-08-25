@@ -11,4 +11,6 @@ def test_core() -> None:
 
         compare.init_caches()
 
+        schema_comparison = compare.schema_comparison
+
         pass

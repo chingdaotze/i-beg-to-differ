@@ -6,7 +6,6 @@ from typing import (
     TYPE_CHECKING,
 )
 from zipfile import ZipFile
-from functools import cached_property
 
 from pandas import Series
 
@@ -174,8 +173,8 @@ class Field(
     ) -> Dict:
 
         return {
-            "name": self.name.base_value,
-            "transforms": [
+            'name': self.name.base_value,
+            'transforms': [
                 transform.serialize(
                     ib2d_file=ib2d_file,
                 )
@@ -183,7 +182,7 @@ class Field(
             ],
         }
 
-    @cached_property
+    @property
     def native_type(
         self,
     ) -> str:
@@ -195,7 +194,7 @@ class Field(
 
         return self.data_source.native_types[str(self.name)]
 
-    @cached_property
+    @property
     def py_type(
         self,
     ) -> str:
