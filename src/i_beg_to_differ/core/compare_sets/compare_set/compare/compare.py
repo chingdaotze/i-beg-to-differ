@@ -10,13 +10,10 @@ from functools import cached_property
 from pandas import DataFrame
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
-from ....base import (
-    log_exception,
-    log_runtime,
-)
-from ....data_sources.data_source import DataSource
-from ....data_sources import DataSources
+from .data_source_pair import DataSourcePair
 from .field_pair import FieldPair
+from ....base import log_exception
+from ....data_sources import DataSources
 from ....wildcards_sets import WildcardSets
 
 
@@ -32,14 +29,9 @@ class Compare(
     Human-readable description.
     """
 
-    source: DataSource
+    data_sources: DataSourcePair
     """
-    Source table object.
-    """
-
-    target: DataSource
-    """
-    Target table object.
+    Data source pair.
     """
 
     pk_fields: List[FieldPair]
@@ -52,22 +44,10 @@ class Compare(
     Data field pairs.
     """
 
-    fields: List[FieldPair]
-    """
-    All field pairs.
-    """
-
-    _data_sources: DataSources
-    """
-    All data sources.
-    """
-
     def __init__(
         self,
         working_dir_path: Path,
-        data_sources: DataSources,
-        source: DataSource,
-        target: DataSource,
+        data_sources: DataSourcePair,
         pk_fields: List[FieldPair] | None = None,
         dt_fields: List[FieldPair] | None = None,
         description: str | None = None,
@@ -78,34 +58,17 @@ class Compare(
         )
 
         self.description = description
-
-        self._data_sources = data_sources
-        self.source = source
-        self.target = target
-
+        self.data_sources = data_sources
         self.pk_fields = pk_fields
         self.dt_fields = dt_fields
 
     def __str__(
         self,
     ) -> str:
+        # TODO: Implement hash to make this unique
 
-        return f'{self.source} | {self.target}'
-
-    def init_caches(
-        self,
-    ) -> None:
-        """
-        Prepares the source and target caches for reading.
-
-        :return:
-        """
-
-        self._data_sources.init_caches(
-            data_sources=[
-                self.source,
-                self.target,
-            ]
+        return str(
+            self.data_sources,
         )
 
     @property
@@ -126,19 +89,21 @@ class Compare(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        source_data_source_id = instance_data['source']
-        source_data_source = data_sources[source_data_source_id]
-
-        target_data_source_id = instance_data['target']
-        target_data_source = data_sources[target_data_source_id]
+        data_sources = DataSourcePair.deserialize(
+            instance_data=instance_data,
+            working_dir_path=working_dir_path,
+            ib2d_file=ib2d_file,
+            data_sources=data_sources,
+            wildcard_sets=wildcard_sets,
+        )
 
         pk_fields = [
             FieldPair.deserialize(
                 instance_data=pk_field_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
-                source_data_source=source_data_source,
-                target_data_source=target_data_source,
+                source_data_source=data_sources.source,
+                target_data_source=data_sources.target,
                 wildcard_sets=wildcard_sets,
             )
             for pk_field_data in instance_data['pk_fields']
@@ -149,8 +114,8 @@ class Compare(
                 instance_data=dt_field_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
-                source_data_source=source_data_source,
-                target_data_source=target_data_source,
+                source_data_source=data_sources.source,
+                target_data_source=data_sources.target,
                 wildcard_sets=wildcard_sets,
             )
             for dt_field_data in instance_data['dt_fields']
@@ -159,8 +124,6 @@ class Compare(
         return Compare(
             working_dir_path=working_dir_path,
             data_sources=data_sources,
-            source=source_data_source,
-            target=target_data_source,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             description=instance_data['description'],
@@ -174,10 +137,10 @@ class Compare(
 
         return {
             'description': self.description,
-            'source': self.source.serialize(
+            'source': self.data_sources.source.serialize(
                 ib2d_file=ib2d_file,
             ),
-            'target': self.source.serialize(
+            'target': self.data_sources.target.serialize(
                 ib2d_file=ib2d_file,
             ),
             'pk_fields': [
@@ -196,19 +159,6 @@ class Compare(
 
     # TODO: Implement compare methods
     @cached_property
-    def schema_comparison(
-        self,
-    ) -> DataFrame:
-
-        source_native_types = self.source.native_types
-        source_py_types = self.source.py_types
-
-        target_native_types = self.target.native_types
-        target_py_types = self.target.py_types
-
-        pass
-
-    @cached_property
     def values_comparison(
         self,
     ) -> DataFrame:
@@ -224,6 +174,13 @@ class Compare(
 
     @cached_property
     def target_only_records(
+        self,
+    ) -> DataFrame:
+
+        pass
+
+    @cached_property
+    def duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
