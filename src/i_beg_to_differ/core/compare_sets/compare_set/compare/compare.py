@@ -1,15 +1,17 @@
+from functools import cached_property
 from pathlib import Path
 from typing import (
+    Callable,
     List,
     Dict,
     Self,
 )
 from zipfile import ZipFile
-from functools import cached_property
 
 from pandas import DataFrame
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
+from ....compare_engine import CompareEngine
 from .data_source_pair import DataSourcePair
 from .field_pair import FieldPair
 from ....base import log_exception
@@ -19,6 +21,7 @@ from ....wildcards_sets import WildcardSets
 
 class Compare(
     IB2DFileElement,
+    CompareEngine,
 ):
     """
     Compare object.
@@ -34,14 +37,9 @@ class Compare(
     Data source pair.
     """
 
-    pk_fields: List[FieldPair]
+    init_caches: Callable
     """
-    Primary key field pairs.
-    """
-
-    dt_fields: List[FieldPair]
-    """
-    Data field pairs.
+    Convenience stub to underlying data_sources.init_caches.
     """
 
     def __init__(
@@ -57,10 +55,15 @@ class Compare(
             working_dir_path=working_dir_path,
         )
 
+        CompareEngine.__init__(
+            self=self,
+            pk_fields=pk_fields,
+            dt_fields=dt_fields,
+        )
+
         self.description = description
         self.data_sources = data_sources
-        self.pk_fields = pk_fields
-        self.dt_fields = dt_fields
+        self.init_caches = self.data_sources.init_caches
 
     def __str__(
         self,
@@ -70,13 +73,6 @@ class Compare(
         return str(
             self.data_sources,
         )
-
-    @property
-    def fields(
-        self,
-    ) -> List[FieldPair]:
-
-        return self.pk_fields + self.dt_fields
 
     @classmethod
     @log_exception
@@ -157,31 +153,18 @@ class Compare(
             ],
         }
 
-    # TODO: Implement compare methods
     @cached_property
-    def values_comparison(
+    def src_df(
         self,
     ) -> DataFrame:
+        self.init_caches()
 
-        pass
-
-    @cached_property
-    def source_only_records(
-        self,
-    ) -> DataFrame:
-
-        pass
+        return self.data_sources.source.cache
 
     @cached_property
-    def target_only_records(
+    def tgt_df(
         self,
     ) -> DataFrame:
+        self.init_caches()
 
-        pass
-
-    @cached_property
-    def duplicate_primary_key_records(
-        self,
-    ) -> DataFrame:
-
-        pass
+        return self.data_sources.target.cache

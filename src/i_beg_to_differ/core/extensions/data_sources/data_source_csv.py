@@ -47,11 +47,14 @@ class DataSourceCsv(
         self,
     ) -> str:
 
-        return f'{self.extension_name}: "{self.path.base_value}"'
+        return f'{self.extension_name}: \'{self.path.base_value}\''
 
     def load(
         self,
     ) -> Self:
+        self.log_info(
+            msg=f'Loading *.csv file: {str(self.path)} ...',
+        )
 
         self.cache = read_csv(
             filepath_or_buffer=str(self.path),

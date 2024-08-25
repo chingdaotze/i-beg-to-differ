@@ -174,6 +174,23 @@ class Base(
             ).__module__,
         )
 
+    def log_info(
+        self,
+        msg: str,
+    ) -> None:
+        """
+        Logs a message to the log file. Multiprocess-safe.
+
+        :param msg: Message to log.
+        :return:
+        """
+
+        self.lock.acquire()
+        self.logger.info(
+            msg=msg,
+        )
+        self.lock.release()
+
     @property
     def pool(
         self,

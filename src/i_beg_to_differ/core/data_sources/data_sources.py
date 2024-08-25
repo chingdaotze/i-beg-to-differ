@@ -125,6 +125,11 @@ class DataSources(
                     ),
                 )
 
+            else:
+                self.log_info(
+                    msg=f'Using cached data for data source: {str(data_source_)} ...',
+                )
+
         for future in futures:
             self.append(
                 future.get(),

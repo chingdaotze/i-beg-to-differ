@@ -9,14 +9,17 @@ from functools import cached_property
 from pandas import DataFrame
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
+from .....compare_engine import CompareEngine
 from .....data_sources.data_source import DataSource
 from .....data_sources import DataSources
 from .....base import log_exception
 from .....wildcards_sets import WildcardSets
+from .....utils.dataframe import dict_to_dataframe
 
 
 class DataSourcePair(
     IB2DFileElement,
+    CompareEngine,
 ):
     source: DataSource
     """
@@ -43,6 +46,10 @@ class DataSourcePair(
         IB2DFileElement.__init__(
             self=self,
             working_dir_path=working_dir_path,
+        )
+
+        CompareEngine.__init__(
+            self=self,
         )
 
         self.source = source
@@ -94,15 +101,29 @@ class DataSourcePair(
             ),
         }
 
+    @cached_property
+    def src_df(
+        self,
+    ) -> DataFrame:
+        self.init_caches()
+
+        return self.types_to_dataframe(
+            data_source=self.source,
+        )
+
+    @cached_property
+    def tgt_df(
+        self,
+    ) -> DataFrame:
+        self.init_caches()
+
+        return self.types_to_dataframe(
+            data_source=self.target,
+        )
+
     def init_caches(
         self,
     ) -> None:
-        """
-        Prepares the source and target caches for reading.
-
-        :return:
-        """
-
         self._data_sources.init_caches(
             data_sources=[
                 self.source,
@@ -110,15 +131,35 @@ class DataSourcePair(
             ]
         )
 
+    @staticmethod
+    def types_to_dataframe(
+        data_source: DataSource,
+    ) -> DataFrame:
+        native_types = dict_to_dataframe(
+            data=data_source.native_types,
+            index='column_name',
+            column='native_type',
+        )
+
+        py_types = dict_to_dataframe(
+            data=data_source.py_types,
+            index='column_name',
+            column='py_type',
+        )
+
+        types = native_types.join(
+            other=py_types,
+            how='inner',
+        )
+
+        return types
+
     @cached_property
     def schema_comparison(
         self,
     ) -> DataFrame:
 
-        source_native_types = self.source.native_types
-        source_py_types = self.source.py_types
-
-        target_native_types = self.target.native_types
-        target_py_types = self.target.py_types
+        source_types = self.src_df
+        target_types = self.tgt_df
 
         pass

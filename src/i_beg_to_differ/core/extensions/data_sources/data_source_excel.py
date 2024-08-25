@@ -19,7 +19,10 @@ from openpyxl.cell.cell import (
 )
 
 from ...data_sources.data_source import DataSource
-from ...base import log_exception
+from ...base import (
+    log_exception,
+    log_runtime,
+)
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
@@ -96,6 +99,10 @@ class DataSourceExcel(
     def load(
         self,
     ) -> Self:
+        self.log_info(
+            msg=f'Loading Excel file: {str(self.path)} ...',
+        )
+
         # Load worksheet
         workbook = load_workbook(
             filename=str(self.path),
