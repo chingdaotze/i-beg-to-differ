@@ -6,7 +6,6 @@ from typing import (
     Dict,
     Self,
 )
-from pathlib import Path
 
 from pandas import DataFrame
 
@@ -22,7 +21,11 @@ class DataSource(
     ABC,
 ):
     """
-    Abstract filtered data source. This class must be pickleable.
+    Abstract data source that functions as cached data storage. Primarily responsible for:
+        #. Loading data into a DataFrame.
+        #. Managing Fields, which serve as an abstraction layer over the data.
+
+    This class must be pickleable.
     """
 
     fields: Dict[str, Field]
@@ -47,14 +50,12 @@ class DataSource(
 
     def __init__(
         self,
-        working_dir_path: Path,
         description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.description = description
@@ -70,7 +71,6 @@ class DataSource(
         if name not in self.fields:
 
             self.fields[name] = Field(
-                working_dir_path=self.working_dir_path,
                 name=name,
                 data_source=self,
                 wildcard_sets=self._wildcard_sets,

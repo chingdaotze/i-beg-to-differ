@@ -32,7 +32,6 @@ class FieldCompareRuleCustom(
 
     def __init__(
         self,
-        working_dir_path: Path,
         linkage: FieldPairCompareRuleLinkage,
         file_name: str,
         wildcard_sets: WildcardSets | None = None,
@@ -40,7 +39,6 @@ class FieldCompareRuleCustom(
 
         FieldPairCompareRule.__init__(
             self=self,
-            working_dir_path=working_dir_path,
             linkage=linkage,
         )
 
@@ -87,10 +85,10 @@ class FieldCompareRuleCustom(
     ) -> Self:
 
         return FieldCompareRuleCustom(
-            working_dir_path=working_dir_path,
             linkage=FieldPairCompareRuleLinkage(
                 instance_data['parameters']['linkage'],
             ),
+            file_name=instance_data['parameters']['file_name'],
             wildcard_sets=wildcard_sets,
         )
 

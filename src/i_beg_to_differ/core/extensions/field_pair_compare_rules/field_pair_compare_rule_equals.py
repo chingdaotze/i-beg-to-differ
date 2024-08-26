@@ -29,13 +29,11 @@ class FieldCompareRuleEquals(
 
     def __init__(
         self,
-        working_dir_path: Path,
         linkage: FieldPairCompareRuleLinkage,
     ):
 
         FieldPairCompareRule.__init__(
             self=self,
-            working_dir_path=working_dir_path,
             linkage=linkage,
         )
 
@@ -79,7 +77,6 @@ class FieldCompareRuleEquals(
     ) -> Self:
 
         return FieldCompareRuleEquals(
-            working_dir_path=working_dir_path,
             linkage=FieldPairCompareRuleLinkage(
                 instance_data['parameters']['linkage'],
             ),

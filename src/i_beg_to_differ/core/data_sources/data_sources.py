@@ -37,13 +37,11 @@ class DataSources(
 
     def __init__(
         self,
-        working_dir_path: Path,
         data_sources: Dict[str, DataSource],
     ):
 
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.data_sources = data_sources
@@ -159,7 +157,6 @@ class DataSources(
             )
 
         return DataSources(
-            working_dir_path=working_dir_path,
             data_sources=data_sources,
         )
 

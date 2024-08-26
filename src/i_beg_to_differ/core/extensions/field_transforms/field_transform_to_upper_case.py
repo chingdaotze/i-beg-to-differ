@@ -28,12 +28,10 @@ class FieldTransformToUpperCase(
 
     def __init__(
         self,
-        working_dir_path: Path,
     ):
 
         FieldTransform.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
     def __str__(
@@ -73,9 +71,7 @@ class FieldTransformToUpperCase(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformToUpperCase(
-            working_dir_path=working_dir_path,
-        )
+        return FieldTransformToUpperCase()
 
     @log_exception
     def serialize(

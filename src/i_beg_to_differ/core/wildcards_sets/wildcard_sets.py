@@ -23,12 +23,10 @@ class WildcardSets(
 
     def __init__(
         self,
-        working_dir_path: Path,
         wildcard_sets: Dict[str, WildcardSet] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         if wildcard_sets is None:
@@ -124,7 +122,6 @@ class WildcardSets(
     ) -> Self:
 
         return WildcardSets(
-            working_dir_path=working_dir_path,
             wildcard_sets={
                 name: WildcardSet.deserialize(
                     instance_data=wildcard_set_values,

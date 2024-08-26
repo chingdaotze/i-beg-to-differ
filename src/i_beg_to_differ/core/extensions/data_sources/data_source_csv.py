@@ -26,7 +26,6 @@ class DataSourceCsv(
 
     def __init__(
         self,
-        working_dir_path: Path,
         path: str,
         description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -34,7 +33,6 @@ class DataSourceCsv(
 
         DataSource.__init__(
             self=self,
-            working_dir_path=working_dir_path,
             description=description,
         )
 
@@ -75,7 +73,6 @@ class DataSourceCsv(
     ) -> Self:
 
         return DataSourceCsv(
-            working_dir_path=working_dir_path,
             path=instance_data['parameters']['path'],
             wildcard_sets=wildcard_sets,
         )

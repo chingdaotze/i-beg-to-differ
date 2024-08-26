@@ -87,8 +87,14 @@ class CompareEngine(
         pass
 
     @cached_property
-    def duplicate_primary_key_records(
+    def source_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
+        pass
+
+    @cached_property
+    def target_duplicate_primary_key_records(
+        self,
+    ) -> DataFrame:
         pass

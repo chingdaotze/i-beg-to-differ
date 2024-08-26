@@ -14,11 +14,11 @@ from typing import (
 if TYPE_CHECKING:
     from ..wildcards_sets import WildcardSets
 
-from .ib2d_file_base import IB2DFileBase
+from ..base import Base
 
 
 class IB2DFileElement(
-    IB2DFileBase,
+    Base,
     ABC,
 ):
     """
@@ -27,11 +27,9 @@ class IB2DFileElement(
 
     def __init__(
         self,
-        working_dir_path: Path,
     ):
-        IB2DFileBase.__init__(
+        Base.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
     @classmethod

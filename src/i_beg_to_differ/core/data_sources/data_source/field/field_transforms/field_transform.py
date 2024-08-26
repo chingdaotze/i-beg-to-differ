@@ -2,7 +2,6 @@ from abc import (
     ABC,
     abstractmethod,
 )
-from pathlib import Path
 
 from pandas import Series
 
@@ -21,12 +20,10 @@ class FieldTransform(
 
     def __init__(
         self,
-        working_dir_path: Path,
     ):
 
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
     @abstractmethod

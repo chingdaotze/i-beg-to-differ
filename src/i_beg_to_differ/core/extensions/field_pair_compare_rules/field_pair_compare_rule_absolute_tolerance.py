@@ -32,7 +32,6 @@ class FieldCompareRuleAbsoluteTolerance(
 
     def __init__(
         self,
-        working_dir_path: Path,
         linkage: FieldPairCompareRuleLinkage,
         tolerance: float | str = 0.0,
         wildcard_sets: WildcardSets | None = None,
@@ -40,7 +39,6 @@ class FieldCompareRuleAbsoluteTolerance(
 
         FieldPairCompareRule.__init__(
             self=self,
-            working_dir_path=working_dir_path,
             linkage=linkage,
         )
 
@@ -104,7 +102,6 @@ class FieldCompareRuleAbsoluteTolerance(
     ) -> Self:
 
         return FieldCompareRuleAbsoluteTolerance(
-            working_dir_path=working_dir_path,
             linkage=FieldPairCompareRuleLinkage(
                 instance_data['parameters']['linkage'],
             ),

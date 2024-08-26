@@ -34,13 +34,11 @@ class CompareSet(
 
     def __init__(
         self,
-        working_dir_path: Path,
         description: str | None = None,
         compares: Dict[str, Compare] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.description = description
@@ -115,7 +113,6 @@ class CompareSet(
     ) -> Self:
 
         return CompareSet(
-            working_dir_path=working_dir_path,
             description=instance_data['description'],
             compares={
                 name: Compare.deserialize(

@@ -19,10 +19,7 @@ from openpyxl.cell.cell import (
 )
 
 from ...data_sources.data_source import DataSource
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
@@ -65,7 +62,6 @@ class DataSourceExcel(
 
     def __init__(
         self,
-        working_dir_path: Path,
         path: str,
         sheet: str,
         description: str | None = None,
@@ -74,7 +70,6 @@ class DataSourceExcel(
 
         DataSource.__init__(
             self=self,
-            working_dir_path=working_dir_path,
             description=description,
         )
 
@@ -176,7 +171,6 @@ class DataSourceExcel(
     ) -> Self:
 
         return DataSourceExcel(
-            working_dir_path=working_dir_path,
             path=instance_data['parameters']['path'],
             sheet=instance_data['parameters']['sheet'],
             wildcard_sets=wildcard_sets,

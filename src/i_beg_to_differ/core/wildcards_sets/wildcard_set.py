@@ -30,13 +30,11 @@ class WildcardSet(
 
     def __init__(
         self,
-        working_dir_path: Path,
         description: str | None = None,
         replacement_values: Dict[str, str] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.description = description
@@ -107,7 +105,6 @@ class WildcardSet(
     ) -> Self:
 
         return WildcardSet(
-            working_dir_path=working_dir_path,
             description=instance_data['description'],
             replacement_values=instance_data['replacement_values'],
         )

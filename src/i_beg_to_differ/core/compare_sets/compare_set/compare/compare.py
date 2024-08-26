@@ -44,7 +44,6 @@ class Compare(
 
     def __init__(
         self,
-        working_dir_path: Path,
         data_sources: DataSourcePair,
         pk_fields: List[FieldPair] | None = None,
         dt_fields: List[FieldPair] | None = None,
@@ -52,7 +51,6 @@ class Compare(
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         CompareEngine.__init__(
@@ -98,8 +96,6 @@ class Compare(
                 instance_data=pk_field_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
-                source_data_source=data_sources.source,
-                target_data_source=data_sources.target,
                 wildcard_sets=wildcard_sets,
             )
             for pk_field_data in instance_data['pk_fields']
@@ -110,15 +106,12 @@ class Compare(
                 instance_data=dt_field_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
-                source_data_source=data_sources.source,
-                target_data_source=data_sources.target,
                 wildcard_sets=wildcard_sets,
             )
             for dt_field_data in instance_data['dt_fields']
         ]
 
         return Compare(
-            working_dir_path=working_dir_path,
             data_sources=data_sources,
             pk_fields=pk_fields,
             dt_fields=dt_fields,

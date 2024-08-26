@@ -8,23 +8,24 @@ from zipfile import ZipFile
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....base import log_exception
-from .....data_sources.data_source.field import Field
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .field_pair_compare_rule import FieldPairCompareRule
-from .....data_sources.data_source import DataSource
 from .....wildcards_sets import WildcardSets
+from .....wildcards_sets.wildcard_field import WildcardField
+from .....data_sources.data_source import DataSource
 
 
 class FieldPair(
     IB2DFileElement,
 ):
     """
-    Pair of Fields for comparison.
+    Pair of Fields for comparison. Functions as a pointer to underlying
+    Data Source > Field > Transform data structure.
     """
 
-    source_field: Field
+    source_field: WildcardField
     """
-    Source field object. Contains source data for compare.
+    Source field name. Used as a pointer to the source field.
     """
 
     source_transforms: FieldTransforms
@@ -32,9 +33,9 @@ class FieldPair(
     List of transformations applied to the source field.
     """
 
-    target_field: Field
+    target_field: WildcardField
     """
-    Target field object. Contains target data for compare.
+    Source field name. Used as a pointer to the target field.
     """
 
     target_transforms: FieldTransforms
@@ -46,28 +47,56 @@ class FieldPair(
 
     def __init__(
         self,
-        working_dir_path: Path,
-        source_field: Field,
-        source_transforms: FieldTransforms,
-        target_field: Field,
-        target_transforms: FieldTransforms,
+        source_field: str,
+        target_field: str,
+        source_transforms: FieldTransforms | None = None,
+        target_transforms: FieldTransforms | None = None,
+        wildcard_sets: WildcardSets | None = None,
     ):
 
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
-        self.source_field = source_field
-        self.source_transforms = source_transforms
-        self.target_field = target_field
-        self.target_transforms = target_transforms
+        self.source_field = WildcardField(
+            base_value=source_field,
+            wildcard_sets=wildcard_sets,
+        )
+
+        self.target_field = WildcardField(
+            base_value=target_field,
+            wildcard_sets=wildcard_sets,
+        )
+
+        if source_transforms is None:
+            self.source_transforms = FieldTransforms()
+
+        else:
+            self.source_transforms = source_transforms
+
+        if target_transforms is None:
+            self.target_transforms = FieldTransforms()
+
+        else:
+            self.target_transforms = target_transforms
 
     def __str__(
         self,
     ) -> str:
 
-        return f'{self.source_field} | {self.target_field}'
+        if self.source_transforms:
+            source = f'{self.source_field} >> {str(self.source_transforms)}'
+
+        else:
+            source = f'{self.source_field}'
+
+        if self.target_transforms:
+            target = f'{self.target_field} >> {str(self.target_transforms)}'
+
+        else:
+            target = f'{self.target_field}'
+
+        return f'{source} | {target}'
 
     @classmethod
     @log_exception
@@ -76,13 +105,10 @@ class FieldPair(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
-        source_data_source: DataSource,
-        target_data_source: DataSource,
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        source_field_name = instance_data['source']['name']
-        source_field = source_data_source[source_field_name]
+        source_field = instance_data['source']['name']
         source_transforms = FieldTransforms.deserialize(
             instance_data=instance_data['source']['transforms'],
             working_dir_path=working_dir_path,
@@ -90,8 +116,7 @@ class FieldPair(
             wildcard_sets=wildcard_sets,
         )
 
-        target_field_name = instance_data['target']['name']
-        target_field = target_data_source[target_field_name]
+        target_field = instance_data['target']['name']
         target_transforms = FieldTransforms.deserialize(
             instance_data=instance_data['target']['transforms'],
             working_dir_path=working_dir_path,
@@ -100,7 +125,6 @@ class FieldPair(
         )
 
         instance = FieldPair(
-            working_dir_path=working_dir_path,
             source_field=source_field,
             source_transforms=source_transforms,
             target_field=target_field,
@@ -116,12 +140,14 @@ class FieldPair(
     ) -> Dict:
 
         instance_data = {
-            'source': self.source_field.serialize(
-                ib2d_file=ib2d_file,
-            ),
-            'target': self.target_field.serialize(
-                ib2d_file=ib2d_file,
-            ),
+            'source': {
+                'name': self.source_field,
+            }
+            | self.source_transforms.serialize(),
+            'target': {
+                'name': self.target_field,
+            }
+            | self.target_transforms.serialize(),
             'compare_rules': [
                 instance.serialize(
                     ib2d_file=ib2d_file,
@@ -131,3 +157,17 @@ class FieldPair(
         }
 
         return instance_data
+
+    @property
+    def source_qualified_name(
+        self,
+    ) -> str:
+
+        return f'source|{str(self.source_field)}'
+
+    @property
+    def target_qualified_name(
+        self,
+    ) -> str:
+
+        return f'target|{str(self.source_field)}'

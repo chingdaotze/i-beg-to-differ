@@ -43,12 +43,10 @@ class FieldPairCompareRule(
 
     def __init__(
         self,
-        working_dir_path: Path,
         linkage: FieldPairCompareRuleLinkage,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.linkage = linkage

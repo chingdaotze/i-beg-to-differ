@@ -28,12 +28,10 @@ class FieldTransformReplaceNullWithEmptyString(
 
     def __init__(
         self,
-        working_dir_path: Path,
     ):
 
         FieldTransform.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
     def __str__(
@@ -73,9 +71,7 @@ class FieldTransformReplaceNullWithEmptyString(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformReplaceNullWithEmptyString(
-            working_dir_path=working_dir_path,
-        )
+        return FieldTransformReplaceNullWithEmptyString()
 
     @log_exception
     def serialize(

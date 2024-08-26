@@ -37,12 +37,10 @@ class FieldTransforms(
 
     def __init__(
         self,
-        working_dir_path: Path,
         transforms: List[FieldTransform] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         if transforms is None:
@@ -56,11 +54,20 @@ class FieldTransforms(
     ) -> str:
 
         if self.transforms:
-            return ' | '.join(
+            return ' >> '.join(
                 [str(transform) for transform in self.transforms],
             )
         else:
             return 'None'
+
+    def __bool__(
+        self,
+    ) -> bool:
+        if self.transforms:
+            return True
+
+        else:
+            return False
 
     def __getitem__(
         self,
@@ -146,7 +153,6 @@ class FieldTransforms(
             )
 
         return FieldTransforms(
-            working_dir_path=working_dir_path,
             transforms=transforms,
         )
 

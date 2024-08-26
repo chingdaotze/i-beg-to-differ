@@ -8,7 +8,7 @@ from ..base import (
 )
 
 
-class IB2DFileBase(
+class IB2DFileWorkingDir(
     Base,
     ABC,
 ):

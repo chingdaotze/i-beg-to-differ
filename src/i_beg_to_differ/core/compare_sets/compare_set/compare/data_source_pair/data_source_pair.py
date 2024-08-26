@@ -12,6 +12,7 @@ from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....compare_engine import CompareEngine
 from .....data_sources.data_source import DataSource
 from .....data_sources import DataSources
+from .....compare_sets.compare_set.compare.field_pair import FieldPair
 from .....base import log_exception
 from .....wildcards_sets import WildcardSets
 from .....utils.dataframe import dict_to_dataframe
@@ -38,18 +39,32 @@ class DataSourcePair(
 
     def __init__(
         self,
-        working_dir_path: Path,
         source: DataSource,
         target: DataSource,
         data_sources: DataSources,
     ):
         IB2DFileElement.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         CompareEngine.__init__(
             self=self,
+            pk_fields=[
+                FieldPair(
+                    source_field='column',
+                    target_field='column',
+                ),
+            ],
+            dt_fields=[
+                FieldPair(
+                    source_field='native_type',
+                    target_field='native_type',
+                ),
+                FieldPair(
+                    source_field='py_type',
+                    target_field='py_type',
+                ),
+            ],
         )
 
         self.source = source
@@ -80,7 +95,6 @@ class DataSourcePair(
         target = data_sources[target_data_source_id]
 
         return DataSourcePair(
-            working_dir_path=working_dir_path,
             source=source,
             target=target,
             data_sources=data_sources,

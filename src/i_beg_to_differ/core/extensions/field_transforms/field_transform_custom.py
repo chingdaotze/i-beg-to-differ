@@ -13,6 +13,7 @@ from pandas import (
 from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
+from ...ib2d_file.ib2d_file_working_dir import IB2DFileWorkingDir
 from ...wildcards_sets import WildcardSets
 from ...base import (
     log_exception,
@@ -21,6 +22,7 @@ from ...base import (
 
 
 class FieldTransformCustom(
+    IB2DFileWorkingDir,
     FieldTransform,
 ):
 
@@ -35,10 +37,13 @@ class FieldTransformCustom(
         file_name: str,
         wildcard_sets: WildcardSets | None = None,
     ):
+        IB2DFileWorkingDir.__init__(
+            self=self,
+            working_dir_path=working_dir_path,
+        )
 
         FieldTransform.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.file_name = file_name

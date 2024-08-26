@@ -9,8 +9,10 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ....ib2d_file.ib2d_file_element import IB2DFileElement
-from ....base import log_exception
+from ....base import (
+    Base,
+    log_exception,
+)
 from ....wildcards_sets.wildcard_field import WildcardField
 from ....wildcards_sets import WildcardSets
 from .field_transforms import FieldTransforms
@@ -21,10 +23,11 @@ if TYPE_CHECKING:
 
 
 class Field(
-    IB2DFileElement,
+    Base,
 ):
     """
-    Field object.
+    Abstraction layer over the data. Primarily responsible for
+    managing transforms over the base data layer.
     """
 
     name: WildcardField
@@ -34,7 +37,7 @@ class Field(
 
     data_source: 'DataSource'
     """
-    Parent data source.
+    Base data layer.
     """
 
     transforms: Dict[FieldTransforms, Series | None]
@@ -44,35 +47,21 @@ class Field(
 
     def __init__(
         self,
-        working_dir_path: Path,
         name: str,
         data_source: 'DataSource',
-        transforms: List[FieldTransforms] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        IB2DFileElement.__init__(
+        Base.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
         self.name = WildcardField(
             base_value=name,
             wildcard_sets=wildcard_sets,
         )
-
         self.data_source = data_source
-
-        self.transforms = {
-            FieldTransforms(
-                working_dir_path=self.working_dir_path,
-            ): None,
-        }
-
-        if transforms is not None:
-            self.transforms |= dict.fromkeys(
-                transforms,
-            )
+        self.transforms = {}
 
     def __str__(
         self,
@@ -93,13 +82,7 @@ class Field(
         values = self.transforms[__field_transforms]
 
         if values is None:
-            values = __field_transforms.apply(
-                values=self.transforms[
-                    FieldTransforms(
-                        working_dir_path=self.working_dir_path,
-                    )
-                ]
-            )
+            values = __field_transforms.apply(values=self.transforms[FieldTransforms()])
 
             self.transforms[__field_transforms] = values
 
@@ -118,7 +101,6 @@ class Field(
 
         if isinstance(__field_transforms, list):
             __field_transforms = FieldTransforms(
-                working_dir_path=self.working_dir_path,
                 transforms=__field_transforms,
             )
 
@@ -137,7 +119,6 @@ class Field(
 
         if isinstance(__field_transforms, list):
             __field_transforms = FieldTransforms(
-                working_dir_path=self.working_dir_path,
                 transforms=__field_transforms,
             )
 
@@ -155,7 +136,6 @@ class Field(
     ) -> Self:
         # Get field
         return Field(
-            working_dir_path=working_dir_path,
             name=instance_data["name"],
             data_source=data_source,
             transforms=FieldTransforms.deserialize(

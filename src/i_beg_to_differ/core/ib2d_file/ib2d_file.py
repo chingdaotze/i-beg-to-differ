@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from uuid import uuid4
 from typing import Self
 
-from .ib2d_file_base import IB2DFileBase
+from .ib2d_file_working_dir import IB2DFileWorkingDir
 from ..base import log_exception
 from ..wildcards_sets import WildcardSets
 from ..compare_sets import CompareSets
@@ -19,7 +19,7 @@ from ..data_sources import DataSources
 
 
 class IB2DFile(
-    IB2DFileBase,
+    IB2DFileWorkingDir,
 ):
     """
     ``*.ib2d`` file object.
@@ -54,7 +54,7 @@ class IB2DFile(
         path: Path | None = None,
     ):
 
-        IB2DFileBase.__init__(
+        IB2DFileWorkingDir.__init__(
             self=self,
             working_dir_path=working_dir_path,
         )
@@ -223,8 +223,10 @@ class IB2DFile(
 
             yield ib2d_file
 
-        finally:
+        except Exception as e:
+            raise e
 
+        finally:
             pass
 
     @log_exception

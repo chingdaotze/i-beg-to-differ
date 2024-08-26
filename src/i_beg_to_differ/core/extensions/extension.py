@@ -1,8 +1,11 @@
 from abc import ABC
 from typing import ClassVar
 
+from ..base import Base
+
 
 class Extension(
+    Base,
     ABC,
 ):
     """
@@ -18,6 +21,13 @@ class Extension(
     """
     Unique identifier for this extension. Set when the extension is registered.
     """
+
+    def __init__(
+        self,
+    ):
+        Base.__init__(
+            self=self,
+        )
 
     def __str__(
         self,
