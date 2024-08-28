@@ -5,33 +5,31 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import read_csv
+from pandas import DataFrame
 
 from ...data_sources.data_source import DataSource
 from ...base import log_exception
-from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
 
-class DataSourceCsv(
+class DataSourceDataFrame(
     DataSource,
 ):
     """
-    *.csv file Data Source.
+    DataFrame data source.
     """
 
-    path: WildcardField
+    data: DataFrame
     """
-    Path to the ``*.csv`` file.
+    DataFrame.
     """
 
-    extension_name = '*.csv File'
+    extension_name = 'DataFrame'
 
     def __init__(
         self,
-        path: str,
+        data: DataFrame,
         description: str | None = None,
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         DataSource.__init__(
@@ -39,29 +37,18 @@ class DataSourceCsv(
             description=description,
         )
 
-        self.path = WildcardField(
-            base_value=path,
-            wildcard_sets=wildcard_sets,
-        )
+        self.data = data
 
     def __str__(
         self,
     ) -> str:
 
-        return f'{self.extension_name}: \'{self.path.base_value}\''
+        return f'{self.extension_name}: {id(self)}'
 
     def load(
         self,
     ) -> Self:
-        self.log_info(
-            msg=f'Loading *.csv file: {str(self.path)} ...',
-        )
-
-        self.cache = read_csv(
-            filepath_or_buffer=str(self.path),
-            engine='pyarrow',
-            dtype_backend='pyarrow',
-        )
+        self.cache = self.data
 
         return self
 
@@ -75,9 +62,10 @@ class DataSourceCsv(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return DataSourceCsv(
-            path=instance_data['parameters']['path'],
-            wildcard_sets=wildcard_sets,
+        return DataSourceDataFrame(
+            data=DataFrame(
+                data=instance_data['parameters']['data'],
+            ),
         )
 
     @log_exception
@@ -86,19 +74,10 @@ class DataSourceCsv(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        instance_data = DataSource.serialize(
-            self=self,
-            ib2d_file=ib2d_file,
-        )
-
-        instance_data['parameters'] = {
-            'path': self.path.base_value,
-        }
-
         return {
             'extension_id': str(self),
             'parameters': {
-                'path': self.path.base_value,
+                'data': self.data.to_dict(),
             },
         }
 

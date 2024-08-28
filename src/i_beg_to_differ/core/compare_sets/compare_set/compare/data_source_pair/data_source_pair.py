@@ -9,67 +9,49 @@ from functools import cached_property
 from pandas import DataFrame
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
-from .....compare_engine import CompareEngine
-from .....data_sources.data_source import DataSource
 from .....data_sources import DataSources
-from .....compare_sets.compare_set.compare.field_pair import FieldPair
 from .....base import log_exception
 from .....wildcards_sets import WildcardSets
+from .....data_sources.data_source import DataSource
 from .....utils.dataframe import dict_to_dataframe
+from .....extensions.data_sources.data_source_dataframe import DataSourceDataFrame
+from .....compare_engine import CompareEngine
+from .....compare_sets.compare_set.compare.field_pair import FieldPair
 
 
 class DataSourcePair(
     IB2DFileElement,
-    CompareEngine,
 ):
-    source: DataSource
     """
-    Source data source object.
-    """
-
-    target: DataSource
-    """
-    Target data source object.
+    Pair of data sources for comparison. Functions as a pointer to underlying
+    Data Sources.
     """
 
-    _data_sources: DataSources
+    data_sources: DataSources
+
+    source: str
     """
-    All data sources.
+    Pointer to source data source.
+    """
+
+    target: str
+    """
+    Pointer to target data source.
     """
 
     def __init__(
         self,
-        source: DataSource,
-        target: DataSource,
         data_sources: DataSources,
+        source: str,
+        target: str,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
 
-        CompareEngine.__init__(
-            self=self,
-            pk_fields=[
-                FieldPair(
-                    source_field='column',
-                    target_field='column',
-                ),
-            ],
-            dt_fields=[
-                FieldPair(
-                    source_field='native_type',
-                    target_field='native_type',
-                ),
-                FieldPair(
-                    source_field='py_type',
-                    target_field='py_type',
-                ),
-            ],
-        )
-
+        self.data_sources = data_sources
         self.source = source
         self.target = target
-        self._data_sources = data_sources
 
     def __str__(
         self,
@@ -88,16 +70,10 @@ class DataSourcePair(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        source_data_source_id = instance_data['source']
-        source = data_sources[source_data_source_id]
-
-        target_data_source_id = instance_data['target']
-        target = data_sources[target_data_source_id]
-
         return DataSourcePair(
-            source=source,
-            target=target,
             data_sources=data_sources,
+            source=instance_data['source'],
+            target=instance_data['target'],
         )
 
     @log_exception
@@ -107,43 +83,9 @@ class DataSourcePair(
     ) -> Dict:
 
         return {
-            'source': self.source.serialize(
-                ib2d_file=ib2d_file,
-            ),
-            'target': self.source.serialize(
-                ib2d_file=ib2d_file,
-            ),
+            'source': self.source,
+            'target': self.target,
         }
-
-    @cached_property
-    def src_df(
-        self,
-    ) -> DataFrame:
-        self.init_caches()
-
-        return self.types_to_dataframe(
-            data_source=self.source,
-        )
-
-    @cached_property
-    def tgt_df(
-        self,
-    ) -> DataFrame:
-        self.init_caches()
-
-        return self.types_to_dataframe(
-            data_source=self.target,
-        )
-
-    def init_caches(
-        self,
-    ) -> None:
-        self._data_sources.init_caches(
-            data_sources=[
-                self.source,
-                self.target,
-            ]
-        )
 
     @staticmethod
     def types_to_dataframe(
@@ -173,7 +115,49 @@ class DataSourcePair(
         self,
     ) -> DataFrame:
 
-        source_types = self.src_df
-        target_types = self.tgt_df
+        source_types = self.types_to_dataframe(
+            data_source=self.data_sources[self.source],
+        )
+
+        target_types = self.types_to_dataframe(
+            data_source=self.data_sources[self.target],
+        )
+
+        source_types = DataSourceDataFrame(
+            data=source_types,
+        )
+
+        target_types = DataSourceDataFrame(
+            data=target_types,
+        )
+
+        data_sources = DataSources(
+            data_sources={
+                'source': source_types,
+                'target': target_types,
+            }
+        )
+
+        compare_engine = CompareEngine(
+            data_sources=data_sources,
+            source='source',
+            target='target',
+            pk_fields=[
+                FieldPair(
+                    source_field='column',
+                    target_field='column',
+                ),
+            ],
+            dt_fields=[
+                FieldPair(
+                    source_field='native_type',
+                    target_field='native_type',
+                ),
+                FieldPair(
+                    source_field='py_type',
+                    target_field='py_type',
+                ),
+            ],
+        )
 
         pass

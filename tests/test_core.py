@@ -9,6 +9,6 @@ def test_core() -> None:
         compare_set = ib2d_file.compare_sets['CompareSet0']
         compare = compare_set['Compare1']
 
-        schema_comparison = compare.data_sources.schema_comparison
+        schema_comparison = compare.data_source_pair.schema_comparison
 
         pass

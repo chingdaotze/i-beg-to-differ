@@ -1,4 +1,3 @@
-from functools import cached_property
 from pathlib import Path
 from typing import (
     Callable,
@@ -7,8 +6,6 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
-
-from pandas import DataFrame
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from ....compare_engine import CompareEngine
@@ -32,7 +29,7 @@ class Compare(
     Human-readable description.
     """
 
-    data_sources: DataSourcePair
+    data_source_pair: DataSourcePair
     """
     Data source pair.
     """
@@ -44,7 +41,8 @@ class Compare(
 
     def __init__(
         self,
-        data_sources: DataSourcePair,
+        data_sources: DataSources,
+        data_source_pair: DataSourcePair,
         pk_fields: List[FieldPair] | None = None,
         dt_fields: List[FieldPair] | None = None,
         description: str | None = None,
@@ -55,12 +53,15 @@ class Compare(
 
         CompareEngine.__init__(
             self=self,
+            data_sources=data_sources,
+            source=data_source_pair.source,
+            target=data_source_pair.target,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
         )
 
         self.description = description
-        self.data_sources = data_sources
+        self.data_source_pair = data_source_pair
         self.init_caches = self.data_sources.init_caches
 
     def __str__(
@@ -69,7 +70,7 @@ class Compare(
         # TODO: Implement hash to make this unique
 
         return str(
-            self.data_sources,
+            self.data_source_pair,
         )
 
     @classmethod
@@ -83,7 +84,7 @@ class Compare(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        data_sources = DataSourcePair.deserialize(
+        data_source_pair = DataSourcePair.deserialize(
             instance_data=instance_data,
             working_dir_path=working_dir_path,
             ib2d_file=ib2d_file,
@@ -113,6 +114,7 @@ class Compare(
 
         return Compare(
             data_sources=data_sources,
+            data_source_pair=data_source_pair,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             description=instance_data['description'],
@@ -126,12 +128,8 @@ class Compare(
 
         return {
             'description': self.description,
-            'source': self.data_sources.source.serialize(
-                ib2d_file=ib2d_file,
-            ),
-            'target': self.data_sources.target.serialize(
-                ib2d_file=ib2d_file,
-            ),
+            'source': self.source,
+            'target': self.target,
             'pk_fields': [
                 instance.serialize(
                     ib2d_file=ib2d_file,
@@ -145,19 +143,3 @@ class Compare(
                 for instance in self.dt_fields
             ],
         }
-
-    @cached_property
-    def src_df(
-        self,
-    ) -> DataFrame:
-        self.init_caches()
-
-        return self.data_sources.source.cache
-
-    @cached_property
-    def tgt_df(
-        self,
-    ) -> DataFrame:
-        self.init_caches()
-
-        return self.data_sources.target.cache

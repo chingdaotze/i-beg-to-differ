@@ -5,6 +5,7 @@ from typing import (
     Union,
     Self,
 )
+from multiprocessing import Manager
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -35,6 +36,8 @@ class DataSources(
     All data source extensions for this package.
     """
 
+    _manager: Manager
+
     def __init__(
         self,
         data_sources: Dict[str, DataSource],
@@ -44,7 +47,13 @@ class DataSources(
             self=self,
         )
 
-        self.data_sources = data_sources
+        self._manager = Manager()
+        self.data_sources = self._manager.dict()
+
+        for data_source in data_sources.values():
+            self.append(
+                data_source,
+            )
 
     def __str__(
         self,

@@ -12,7 +12,6 @@ from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .field_pair_compare_rule import FieldPairCompareRule
 from .....wildcards_sets import WildcardSets
 from .....wildcards_sets.wildcard_field import WildcardField
-from .....data_sources.data_source import DataSource
 
 
 class FieldPair(
@@ -162,6 +161,11 @@ class FieldPair(
     def source_qualified_name(
         self,
     ) -> str:
+        """
+        Fully qualified source field name.
+
+        :return:
+        """
 
         return f'source|{str(self.source_field)}'
 
@@ -169,5 +173,10 @@ class FieldPair(
     def target_qualified_name(
         self,
     ) -> str:
+        """
+        Fully qualified target field name.
+
+        :return:
+        """
 
         return f'target|{str(self.source_field)}'

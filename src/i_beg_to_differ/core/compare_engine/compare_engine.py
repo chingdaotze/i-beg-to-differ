@@ -1,17 +1,32 @@
-from abc import ABC, abstractmethod
 from typing import List
 from functools import cached_property
 
 from pandas import DataFrame
 
 from ..base import Base
+from ..data_sources import DataSources
 from ..compare_sets.compare_set.compare.field_pair import FieldPair
 
 
 class CompareEngine(
     Base,
-    ABC,
 ):
+
+    data_sources: DataSources
+    """
+    Global data sources.
+    """
+
+    source: str
+    """
+    Pointer to source data source.
+    """
+
+    target: str
+    """
+    Pointer to target data source.
+    """
+
     pk_fields: List[FieldPair]
     """
     Primary key field pairs.
@@ -24,6 +39,9 @@ class CompareEngine(
 
     def __init__(
         self,
+        data_sources: DataSources,
+        source: str,
+        target: str,
         pk_fields: List[FieldPair] | None = None,
         dt_fields: List[FieldPair] | None = None,
     ):
@@ -32,11 +50,19 @@ class CompareEngine(
             self=self,
         )
 
+        self.data_sources = data_sources
+        self.source = source
+        self.target = target
         self.pk_fields = pk_fields
         self.dt_fields = dt_fields
 
+    def __str__(
+        self,
+    ) -> str:
+
+        return f'Compare Engine: {id(self)}'
+
     @cached_property
-    @abstractmethod
     def src_df(
         self,
     ) -> DataFrame:
@@ -46,8 +72,9 @@ class CompareEngine(
         :return:
         """
 
+        # TODO: Init cache
+
     @cached_property
-    @abstractmethod
     def tgt_df(
         self,
     ) -> DataFrame:
@@ -56,6 +83,8 @@ class CompareEngine(
 
         :return:
         """
+
+        # TODO: Init cache
 
     @property
     def fields(

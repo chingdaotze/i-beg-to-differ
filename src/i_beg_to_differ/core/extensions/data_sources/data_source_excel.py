@@ -42,6 +42,9 @@ Openpyxl data types.
 class DataSourceExcel(
     DataSource,
 ):
+    """
+    Excel file data source.
+    """
 
     path: WildcardField
     """
