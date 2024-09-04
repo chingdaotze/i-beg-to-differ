@@ -4,7 +4,6 @@ from abc import (
     abstractmethod,
 )
 from typing import Dict
-from pathlib import Path
 
 from pandas import (
     DataFrame,
@@ -12,7 +11,7 @@ from pandas import (
 )
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
-from .....extensions.extension import Extension
+from .....extensions.data_type_extension import DataTypeExtension
 
 
 class FieldPairCompareRuleLinkage(
@@ -24,7 +23,7 @@ class FieldPairCompareRuleLinkage(
 
 class FieldPairCompareRule(
     IB2DFileElement,
-    Extension,
+    DataTypeExtension,
     ABC,
 ):
     """

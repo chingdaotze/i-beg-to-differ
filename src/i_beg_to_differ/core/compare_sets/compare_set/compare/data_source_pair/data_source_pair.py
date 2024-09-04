@@ -87,6 +87,23 @@ class DataSourcePair(
             'target': self.target,
         }
 
+    def init_caches(
+        self,
+    ) -> None:
+        """
+        Initializes caches for this instance. More performant than lazy loading,
+        as it performs cache initialization in parallel.
+
+        :return:
+        """
+
+        self.data_sources.init_caches(
+            data_sources=[
+                self.source,
+                self.target,
+            ]
+        )
+
     @staticmethod
     def types_to_dataframe(
         data_source: DataSource,
@@ -114,6 +131,8 @@ class DataSourcePair(
     def schema_comparison(
         self,
     ) -> DataFrame:
+
+        self.init_caches()
 
         source_types = self.types_to_dataframe(
             data_source=self.data_sources[self.source],

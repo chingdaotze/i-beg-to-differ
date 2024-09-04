@@ -1,18 +1,12 @@
-from pathlib import Path
 from typing import (
     Dict,
     List,
-    Self,
     TYPE_CHECKING,
 )
-from zipfile import ZipFile
 
 from pandas import Series
 
-from ....base import (
-    Base,
-    log_exception,
-)
+from ....base import Base
 from ....wildcards_sets.wildcard_field import WildcardField
 from ....wildcards_sets import WildcardSets
 from .field_transforms import FieldTransforms
@@ -108,7 +102,7 @@ class Field(
 
     def remove(
         self,
-        __field_transforms: FieldTransforms | List[FieldTransforms],
+        __field_transforms: FieldTransforms | List[FieldTransform],
     ) -> None:
         """
         Delete field transforms from the collection of field transforms for this field.
@@ -123,44 +117,6 @@ class Field(
             )
 
         del self.transforms[__field_transforms]
-
-    @classmethod
-    @log_exception
-    def deserialize(
-        cls,
-        instance_data: Dict,
-        working_dir_path: Path,
-        ib2d_file: ZipFile,
-        data_source: 'DataSource',
-        wildcard_sets: WildcardSets | None = None,
-    ) -> Self:
-        # Get field
-        return Field(
-            name=instance_data["name"],
-            data_source=data_source,
-            transforms=FieldTransforms.deserialize(
-                instance_data=instance_data["transforms"],
-                working_dir_path=working_dir_path,
-                ib2d_file=ib2d_file,
-                wildcard_sets=wildcard_sets,
-            ),
-        )
-
-    @log_exception
-    def serialize(
-        self,
-        ib2d_file: ZipFile,
-    ) -> Dict:
-
-        return {
-            'name': self.name.base_value,
-            'transforms': [
-                transform.serialize(
-                    ib2d_file=ib2d_file,
-                )
-                for transform in self.transforms.keys()
-            ],
-        }
 
     @property
     def native_type(

@@ -7,11 +7,11 @@ from typing import (
 from zipfile import ZipFile
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
+from .....wildcards_sets.wildcard_field import WildcardField
 from .....base import log_exception
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .field_pair_compare_rule import FieldPairCompareRule
 from .....wildcards_sets import WildcardSets
-from .....wildcards_sets.wildcard_field import WildcardField
 
 
 class FieldPair(
@@ -83,19 +83,7 @@ class FieldPair(
         self,
     ) -> str:
 
-        if self.source_transforms:
-            source = f'{self.source_field} >> {str(self.source_transforms)}'
-
-        else:
-            source = f'{self.source_field}'
-
-        if self.target_transforms:
-            target = f'{self.target_field} >> {str(self.target_transforms)}'
-
-        else:
-            target = f'{self.target_field}'
-
-        return f'{source} | {target}'
+        return f'{self.source_field_name} | {self.target_field_name}'
 
     @classmethod
     @log_exception
@@ -158,25 +146,33 @@ class FieldPair(
         return instance_data
 
     @property
-    def source_qualified_name(
+    def source_field_name(
         self,
     ) -> str:
         """
-        Fully qualified source field name.
+        Unique identifier for the source field.
 
         :return:
         """
 
-        return f'source|{str(self.source_field)}'
+        if self.source_transforms:
+            return f'{self.source_field} >> {str(self.source_transforms)}'
+
+        else:
+            return f'{self.source_field}'
 
     @property
-    def target_qualified_name(
+    def target_field_name(
         self,
     ) -> str:
         """
-        Fully qualified target field name.
+        Unique identifier for the target field.
 
         :return:
         """
 
-        return f'target|{str(self.source_field)}'
+        if self.target_transforms:
+            return f'{self.target_field} >> {str(self.target_transforms)}'
+
+        else:
+            return f'{self.target_field}'

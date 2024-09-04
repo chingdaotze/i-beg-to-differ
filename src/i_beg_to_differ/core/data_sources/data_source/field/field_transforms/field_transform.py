@@ -6,12 +6,12 @@ from abc import (
 from pandas import Series
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
-from .....extensions.extension import Extension
+from .....extensions.data_type_extension import DataTypeExtension
 
 
 class FieldTransform(
     IB2DFileElement,
-    Extension,
+    DataTypeExtension,
     ABC,
 ):
     """

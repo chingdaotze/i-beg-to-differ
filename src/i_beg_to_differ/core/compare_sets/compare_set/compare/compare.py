@@ -62,7 +62,7 @@ class Compare(
 
         self.description = description
         self.data_source_pair = data_source_pair
-        self.init_caches = self.data_sources.init_caches
+        self.init_caches = self.data_source_pair.init_caches
 
     def __str__(
         self,
