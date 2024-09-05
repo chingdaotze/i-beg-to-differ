@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from ..compare_sets.compare_set.compare.field_pair import FieldPair
 
 
@@ -10,21 +12,31 @@ class CompareEngineFieldPair(
     field names.
     """
 
-    _source_field_name: str
+    source_field_index: int
     """
-    Source field name used in the compare engine.
+    Source field index, used to guarantee a unique source field name within a compare.
     """
 
-    _target_field_name: str
+    target_field_index: int
     """
-    Target field name used in the compare engine.
+    Target field index, used to guarantee a unique source field name within a compare.
+    """
+
+    _SOURCE_PREFIX: ClassVar[str] = 'src'
+    """
+    Prefix to assign to source fields.
+    """
+
+    _TARGET_PREFIX: ClassVar[str] = 'tgt'
+    """
+    Prefix to assign to target fields.
     """
 
     def __init__(
         self,
         field_pair: FieldPair,
-        source_field_name: str | None = None,
-        target_field_name: str | None = None,
+        source_field_index: int,
+        target_field_index: int,
     ):
 
         FieldPair.__init__(
@@ -35,38 +47,37 @@ class CompareEngineFieldPair(
             target_transforms=field_pair.target_transforms,
         )
 
-        if source_field_name is None:
-            self._source_field_name = str(
-                self.source_field,
-            )
-
-        else:
-            self._source_field_name = source_field_name
-
-        if target_field_name is None:
-            self._target_field_name = str(
-                self.target_field,
-            )
-
-        else:
-            self._target_field_name = target_field_name
+        self.source_field_index = source_field_index
+        self.target_field_index = target_field_index
 
     @property
     def source_field_name(
         self,
     ) -> str:
-        if self.source_transforms:
-            return f'{self._source_field_name}(T*)'
+        source_field_name = str(
+            self.source_field,
+        )
 
-        else:
-            return self._source_field_name
+        if self.source_transforms:
+            source_field_name = f'{source_field_name}(T*)'
+
+        if self.source_field_index > 1:
+            source_field_name = f'{source_field_name}({self.source_field_index})'
+
+        return source_field_name
 
     @property
     def target_field_name(
         self,
     ) -> str:
-        if self.target_transforms:
-            return f'{self._target_field_name}(T*)'
+        target_field_name = str(
+            self.target_field,
+        )
 
-        else:
-            return self._target_field_name
+        if self.target_transforms:
+            target_field_name = f'{target_field_name}(T*)'
+
+        if self.target_field_index > 1:
+            target_field_name = f'{target_field_name}({self.target_field_index})'
+
+        return target_field_name
