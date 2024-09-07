@@ -132,7 +132,7 @@ class DataSource(
         """
         Reads data from a data source and sets the cache attribute. Must be multiprocess-safe.
 
-        :return: DataFrame of loaded data.
+        :return: Instance where cache has been loaded.
         """
 
     @property

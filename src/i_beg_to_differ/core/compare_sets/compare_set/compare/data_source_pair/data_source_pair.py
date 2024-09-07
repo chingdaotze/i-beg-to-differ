@@ -179,4 +179,4 @@ class DataSourcePair(
             ],
         )
 
-        pass
+        values_comparison = compare_engine.values_comparison

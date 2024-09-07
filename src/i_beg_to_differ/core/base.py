@@ -16,6 +16,7 @@ from logging import (
 from multiprocessing import (
     Lock,
     Pool,
+    Manager,
 )
 from psutil import cpu_count
 
@@ -109,12 +110,14 @@ class Base(
     Global multiprocessing lock.
     """
 
-    __pool: Pool = None
-
     logger: Logger
     """
     Module-level logger.
     """
+
+    __pool: ClassVar[Pool] = None
+
+    __manager: ClassVar[Manager] = None
 
     @abstractmethod
     def __str__(
@@ -197,11 +200,14 @@ class Base(
     ) -> Pool:
         """
         Global multiprocessing pool.
+
+        :return:
         """
 
-        if self.__pool is None:
+        # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
 
-            self.__pool = Pool(
+        if Base.__pool is None:
+            Base.__pool = Pool(
                 processes=max(
                     cpu_count(
                         logical=False,
@@ -211,4 +217,21 @@ class Base(
                 ),
             )
 
-        return self.__pool
+        return Base.__pool
+
+    @property
+    def manager(
+        self,
+    ) -> Manager:
+        """
+        Global multiprocessing manager.
+
+        :return:
+        """
+
+        # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
+
+        if Base.__manager is None:
+            Base.__manager = Manager()
+
+        return Base.__manager

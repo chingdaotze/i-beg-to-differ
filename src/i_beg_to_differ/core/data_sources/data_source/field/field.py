@@ -55,7 +55,7 @@ class Field(
             wildcard_sets=wildcard_sets,
         )
         self.data_source = data_source
-        self.transforms = {}
+        self.transforms = self.manager.dict()
 
     def __str__(
         self,
@@ -70,17 +70,43 @@ class Field(
 
         if __field_transforms not in self.transforms:
             self.append(
-                __field_transforms=__field_transforms,
+                __field_transforms,
             )
 
         values = self.transforms[__field_transforms]
 
         if values is None:
-            values = __field_transforms.apply(values=self.transforms[FieldTransforms()])
+            values = __field_transforms.apply(
+                values=self.transforms[FieldTransforms()],
+            )
 
             self.transforms[__field_transforms] = values
 
         return values
+
+    def init_transform(
+        self,
+        field_transform: FieldTransform,
+    ) -> None:
+        """
+        Initializes a single field transform.
+
+        :param field_transform: Field transform to initialize.
+        :return:
+        """
+
+    def init_transforms(
+        self,
+        field_transforms: List[FieldTransform],
+    ) -> None:
+        """
+        Initializes a list of field transforms in parallel.
+
+        :param field_transforms: List of field transforms to initialize.
+        :return:
+        """
+
+        pass
 
     def append(
         self,

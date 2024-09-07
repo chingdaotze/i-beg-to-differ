@@ -154,13 +154,15 @@ class CompareEngine(
         # TODO: Construct an intermediate dataframe by assigning transformed fields to fully-qualified keys
         # TODO: Perform data type promotion
 
+        pass
+
     # TODO: Implement compare methods
     @cached_property
     def values_comparison(
         self,
     ) -> DataFrame:
 
-        pass
+        cache = self.cache
 
     @cached_property
     def source_only_records(
