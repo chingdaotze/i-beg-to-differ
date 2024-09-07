@@ -155,11 +155,12 @@ class FieldPair(
         :return:
         """
 
-        if self.source_transforms:
-            return f'{self.source_field} >> {str(self.source_transforms)}'
+        source_field_name = f'[{str(self.source_field)}]'
 
-        else:
-            return f'{self.source_field}'
+        if self.source_transforms:
+            source_field_name = f'{source_field_name} >> {str(self.source_transforms)}'
+
+        return source_field_name
 
     @property
     def target_field_name(
@@ -171,8 +172,9 @@ class FieldPair(
         :return:
         """
 
-        if self.target_transforms:
-            return f'{self.target_field} >> {str(self.target_transforms)}'
+        target_field_name = f'[{str(self.target_field)}]'
 
-        else:
-            return f'{self.target_field}'
+        if self.target_transforms:
+            target_field_name = f'{target_field_name} >> {str(self.target_transforms)}'
+
+        return target_field_name

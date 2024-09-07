@@ -152,7 +152,8 @@ class CompareEngine(
         """
 
         # TODO: Construct an intermediate dataframe by assigning transformed fields to fully-qualified keys
-        # TODO: Perform data type promotion
+        # TODO: Perform data type conversions as transforms are applied - this should happen in the field pair
+        # TODO: Perform final data type conversion for compare rule
 
         pass
 
