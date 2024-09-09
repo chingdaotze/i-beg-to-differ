@@ -4,7 +4,10 @@ from typing import (
 )
 from functools import cached_property
 
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    concat,
+)
 
 from ..base import (
     Base,
@@ -45,16 +48,6 @@ class CompareEngine(
     dt_fields: List[CompareEngineFieldPair]
     """
     Data field pairs.
-    """
-
-    _source_dataframe: DataFrame | None
-    """
-    DataFrame containing transformed source fields.
-    """
-
-    _target_dataframe: DataFrame | None
-    """
-    DataFrame containing transformed target fields.
     """
 
     def __init__(
@@ -123,9 +116,6 @@ class CompareEngine(
             target_field_counts=_target_field_counts,
         )
 
-        self._source_dataframe = None
-        self._target_dataframe = None
-
     def __str__(
         self,
     ) -> str:
@@ -154,15 +144,7 @@ class CompareEngine(
         :return:
         """
 
-        # TODO: Remove duplicate field / transform combinations, and skip ones that already exist
-        # TODO: Pass list of these combinations to init
-
-        # TODO: Each field initializes all the transforms expected within itself. The initialize routine sets values in the shared dictionary
-        # TODO: Fields within a data source are processed in parallel
-        # TODO: Both data sources are processed at the same time
-
-        # TODO: Retrieve transformed fields to construct DataFrame? Or perhaps this isn't necessary and we can skip this whole cache thing... might save on RAM
-        # TODO: Final data type conversion for compare should be performed outside the scope of this
+        # TODO: Final data type conversion for compare rule should be performed outside the scope of this
 
         source_data_source = self.data_sources[self.source]
         target_data_source = self.data_sources[self.target]
@@ -213,7 +195,61 @@ class CompareEngine(
         for future in futures:
             future.get()
 
-        pass
+    @cached_property
+    def source_dataframe(
+        self,
+    ) -> DataFrame:
+        """
+        DataFrame containing transformed source fields.
+        """
+
+        self.init_field_transforms()
+
+        dataframe = concat(
+            objs=[
+                self.data_sources[self.source][str(field_pair.source_field)][
+                    field_pair.source_transforms
+                ]
+                for field_pair in self.fields
+            ],
+            axis=1,
+        )
+
+        if self.pk_fields:
+            dataframe.set_index(
+                keys=[str(field_pair.source_field) for field_pair in self.pk_fields],
+                inplace=True,
+            )
+
+        return dataframe
+
+    @cached_property
+    def target_dataframe(
+        self,
+    ) -> DataFrame:
+        """
+        DataFrame containing transformed target fields.
+        """
+
+        self.init_field_transforms()
+
+        dataframe = concat(
+            objs=[
+                self.data_sources[self.target][str(field_pair.target_field)][
+                    field_pair.target_transforms
+                ]
+                for field_pair in self.fields
+            ],
+            axis=1,
+        )
+
+        if self.pk_fields:
+            dataframe.set_index(
+                keys=[str(field_pair.target_field) for field_pair in self.pk_fields],
+                inplace=True,
+            )
+
+        return dataframe
 
     # TODO: Implement compare methods
     @cached_property
@@ -221,32 +257,35 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
-        self.init_field_transforms()
+        source = self.source_dataframe
+        target = self.target_dataframe
+
+        pass
 
     @cached_property
     def source_only_records(
         self,
     ) -> DataFrame:
 
-        self.init_field_transforms()
+        pass
 
     @cached_property
     def target_only_records(
         self,
     ) -> DataFrame:
 
-        self.init_field_transforms()
+        pass
 
     @cached_property
     def source_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
-        self.init_field_transforms()
+        pass
 
     @cached_property
     def target_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
-        self.init_field_transforms()
+        pass
