@@ -1,7 +1,4 @@
-from ..base import (
-    Base,
-    log_exception,
-)
+from ..base import Base
 from . import WildcardSets
 
 
@@ -12,7 +9,10 @@ class WildcardField(
     Wildcard-linked text field.
     """
 
-    _base_value: str
+    base_value: str
+    """
+    Base value, without wildcard replacement.
+    """
 
     wildcard_sets: WildcardSets | None
     """
@@ -28,31 +28,12 @@ class WildcardField(
             self=self,
         )
 
-        self._base_value = base_value
+        self.base_value = base_value
         self.wildcard_sets = wildcard_sets
 
-    @property
-    def base_value(
+    def __str__(
         self,
-    ) -> str:
-        """
-        Base value, without wildcard replacement.
-
-        :return: Base value.
-        """
-
-        return self._base_value
-
-    @property
-    @log_exception
-    def value(
-        self,
-    ) -> str:
-        """
-        Base value, with wildcard replacement.
-
-        :return: Replaced value.
-        """
+    ):
 
         if self.wildcard_sets is not None:
             return self.wildcard_sets.replace_wildcards(
@@ -61,15 +42,3 @@ class WildcardField(
 
         else:
             return self.base_value
-
-    def __repr__(
-        self,
-    ) -> str:
-
-        return self.base_value
-
-    def __str__(
-        self,
-    ):
-
-        return self.value

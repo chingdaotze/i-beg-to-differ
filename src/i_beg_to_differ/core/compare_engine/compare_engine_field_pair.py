@@ -1,5 +1,3 @@
-from typing import ClassVar
-
 from ..compare_sets.compare_set.compare.field_pair import FieldPair
 
 
@@ -20,21 +18,6 @@ class CompareEngineFieldPair(
     target_field_index: int
     """
     Target field index, used to guarantee a unique source field name within a compare.
-    """
-
-    _SOURCE_PREFIX: ClassVar[str] = 'src'
-    """
-    Prefix to assign to source fields.
-    """
-
-    _TARGET_PREFIX: ClassVar[str] = 'tgt'
-    """
-    Prefix to assign to target fields.
-    """
-
-    _DIFF_PREFIX: ClassVar[str] = 'dif'
-    """
-    Prefix to assign to diff fields.
     """
 
     def __init__(
@@ -59,7 +42,7 @@ class CompareEngineFieldPair(
     def source_field_name(
         self,
     ) -> str:
-        source_field_name = f'{self._SOURCE_PREFIX}.[{str(self.source_field)}]'
+        source_field_name = f'src.[{self.source_field}]'
 
         if self.source_transforms:
             source_field_name = f'{source_field_name}(T*)'
@@ -73,7 +56,7 @@ class CompareEngineFieldPair(
     def target_field_name(
         self,
     ) -> str:
-        target_field_name = f'{self._TARGET_PREFIX}.[{str(self.target_field)}]'
+        target_field_name = f'tgt.[{self.target_field}]'
 
         if self.target_transforms:
             target_field_name = f'{target_field_name}(T*)'
@@ -93,4 +76,4 @@ class CompareEngineFieldPair(
         :return:
         """
 
-        return f'{self._DIFF_PREFIX}.{{{str(self)}}}'
+        return f'dif.{{{self!s}}}'

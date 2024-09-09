@@ -116,7 +116,7 @@ class FieldCompareRuleAbsoluteTolerance(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
+            'extension_id': self,
             'parameters': {
                 'tolerance': self._tolerance.base_value,
             },

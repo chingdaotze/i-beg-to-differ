@@ -155,10 +155,10 @@ class FieldPair(
         :return:
         """
 
-        source_field_name = f'[{str(self.source_field)}]'
+        source_field_name = f'[{self.source_field}]'
 
         if self.source_transforms:
-            source_field_name = f'{source_field_name} >> {str(self.source_transforms)}'
+            source_field_name = f'{source_field_name} >> {self.source_transforms}'
 
         return source_field_name
 
@@ -172,9 +172,9 @@ class FieldPair(
         :return:
         """
 
-        target_field_name = f'[{str(self.target_field)}]'
+        target_field_name = f'[{self.target_field}]'
 
         if self.target_transforms:
-            target_field_name = f'{target_field_name} >> {str(self.target_transforms)}'
+            target_field_name = f'{target_field_name} >> {self.target_transforms}'
 
         return target_field_name

@@ -97,13 +97,17 @@ class DataSourceExcel(
     def load(
         self,
     ) -> Self:
+        path = str(
+            self.path,
+        )
+
         self.log_info(
-            msg=f'Loading Excel file: {str(self.path)} ...',
+            msg=f'Loading Excel file: {path} ...',
         )
 
         # Load worksheet
         workbook = load_workbook(
-            filename=str(self.path),
+            filename=path,
             read_only=True,
             data_only=True,
         )
@@ -186,7 +190,7 @@ class DataSourceExcel(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
+            'extension_id': self,
             'parameters': {
                 'path': self.path.base_value,
                 'sheet': self.sheet.base_value,

@@ -125,6 +125,10 @@ class DataSourcePair(
             how='inner',
         )
 
+        types.reset_index(
+            inplace=True,
+        )
+
         return types
 
     @cached_property
@@ -163,8 +167,8 @@ class DataSourcePair(
             target='target',
             pk_fields=[
                 FieldPair(
-                    source_field='column',
-                    target_field='column',
+                    source_field='column_name',
+                    target_field='column_name',
                 ),
             ],
             dt_fields=[

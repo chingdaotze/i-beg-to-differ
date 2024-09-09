@@ -59,7 +59,7 @@ class DataSource(
         )
 
         self.description = description
-        self.fields = {}
+        self.fields = self.manager.dict()
         self._wildcard_sets = wildcard_sets
         self._data = None
 

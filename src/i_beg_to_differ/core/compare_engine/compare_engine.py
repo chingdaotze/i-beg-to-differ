@@ -6,7 +6,10 @@ from functools import cached_property
 
 from pandas import DataFrame
 
-from ..base import Base
+from ..base import (
+    Base,
+    log_exception,
+)
 from ..data_sources import DataSources
 from .compare_engine_field_pair import CompareEngineFieldPair
 from ..compare_sets.compare_set.compare.field_pair import FieldPair
@@ -141,19 +144,74 @@ class CompareEngine(
 
         return self.pk_fields + self.dt_fields
 
-    @cached_property
-    def cache(
+    @log_exception
+    def init_field_transforms(
         self,
-    ) -> DataFrame:
+    ) -> None:
         """
-        DataFrame for comparisons. Calculates field transformations in parallel.
+        Calculates field transformations in parallel, if they do not already exist.
 
         :return:
         """
 
-        # TODO: Construct an intermediate dataframe by assigning transformed fields to fully-qualified keys
-        # TODO: Perform data type conversions as transforms are applied - this should happen in the field pair
-        # TODO: Perform final data type conversion for compare rule
+        # TODO: Remove duplicate field / transform combinations, and skip ones that already exist
+        # TODO: Pass list of these combinations to init
+
+        # TODO: Each field initializes all the transforms expected within itself. The initialize routine sets values in the shared dictionary
+        # TODO: Fields within a data source are processed in parallel
+        # TODO: Both data sources are processed at the same time
+
+        # TODO: Retrieve transformed fields to construct DataFrame? Or perhaps this isn't necessary and we can skip this whole cache thing... might save on RAM
+        # TODO: Final data type conversion for compare should be performed outside the scope of this
+
+        source_data_source = self.data_sources[self.source]
+        target_data_source = self.data_sources[self.target]
+
+        futures = []
+
+        for field_pair in self.fields:
+            source_field = source_data_source[str(field_pair.source_field)]
+
+            source_field.append(
+                field_pair.source_transforms,
+            )
+
+            source_field_transformed = source_field.field_transforms[
+                field_pair.source_transforms
+            ]
+
+            if source_field_transformed is None:
+                futures.append(
+                    self.pool.apply_async(
+                        func=source_field.init_field_transforms,
+                        kwds={
+                            'field_transforms': field_pair.source_transforms,
+                        },
+                    ),
+                )
+
+            target_field = target_data_source[str(field_pair.target_field)]
+
+            target_field.append(
+                field_pair.target_transforms,
+            )
+
+            target_field_transformed = target_field.field_transforms[
+                field_pair.target_transforms
+            ]
+
+            if target_field_transformed is None:
+                futures.append(
+                    self.pool.apply_async(
+                        func=target_field.init_field_transforms,
+                        kwds={
+                            'field_transforms': field_pair.target_transforms,
+                        },
+                    ),
+                )
+
+        for future in futures:
+            future.get()
 
         pass
 
@@ -163,31 +221,32 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
-        cache = self.cache
+        self.init_field_transforms()
 
     @cached_property
     def source_only_records(
         self,
     ) -> DataFrame:
 
-        pass
+        self.init_field_transforms()
 
     @cached_property
     def target_only_records(
         self,
     ) -> DataFrame:
 
-        pass
+        self.init_field_transforms()
 
     @cached_property
     def source_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
-        pass
+        self.init_field_transforms()
 
     @cached_property
     def target_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
-        pass
+
+        self.init_field_transforms()

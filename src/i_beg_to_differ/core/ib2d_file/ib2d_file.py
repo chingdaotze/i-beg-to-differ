@@ -109,7 +109,7 @@ class IB2DFile(
 
             if not path.exists():
                 raise FileNotFoundError(
-                    f'Unable to locate *.ib2d file: "{str(path)}"!',
+                    f'Unable to locate *.ib2d file: "{path!s}"!',
                 )
 
             # Get working directory
@@ -128,7 +128,7 @@ class IB2DFile(
                     working_dir_path,
                 )
 
-                working_dir_path /= f'ib2d_{str(uuid4())}'
+                working_dir_path /= f'ib2d_{uuid4()!s}'
 
                 working_dir_path.mkdir()
 

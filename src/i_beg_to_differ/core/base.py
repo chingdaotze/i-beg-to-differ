@@ -136,6 +136,15 @@ class Base(
             self,
         )
 
+    def __format__(
+        self,
+        format_spec,
+    ) -> str:
+
+        return str(
+            self,
+        )
+
     def __hash__(
         self,
     ) -> int:

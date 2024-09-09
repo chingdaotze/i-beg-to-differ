@@ -46,10 +46,8 @@ class DataSources(
 
         self.data_sources = self.manager.dict()
 
-        for data_source in data_sources.values():
-            self.append(
-                data_source,
-            )
+        for key, data_source in data_sources.items():
+            self.data_sources[key] = data_source
 
     def __str__(
         self,
@@ -130,7 +128,7 @@ class DataSources(
 
             else:
                 self.log_info(
-                    msg=f'Using cached data for data source: {str(data_source_)} ...',
+                    msg=f'Using cached data for data source: {data_source_} ...',
                 )
 
         for future in futures:

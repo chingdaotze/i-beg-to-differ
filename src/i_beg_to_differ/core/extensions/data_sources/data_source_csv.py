@@ -53,12 +53,16 @@ class DataSourceCsv(
     def load(
         self,
     ) -> Self:
+        path = str(
+            self.path,
+        )
+
         self.log_info(
-            msg=f'Loading *.csv file: {str(self.path)} ...',
+            msg=f'Loading *.csv file: {path} ...',
         )
 
         self.cache = read_csv(
-            filepath_or_buffer=str(self.path),
+            filepath_or_buffer=path,
             engine='pyarrow',
             dtype_backend='pyarrow',
         )
@@ -96,7 +100,7 @@ class DataSourceCsv(
         }
 
         return {
-            'extension_id': str(self),
+            'extension_id': self,
             'parameters': {
                 'path': self.path.base_value,
             },

@@ -99,7 +99,7 @@ class FieldTransformCustom(
     ) -> Dict:
 
         return {
-            "extension_id": str(self),
+            "extension_id": self,
             "parameters": {
                 "file_name": self.file_name,
             },

@@ -6,7 +6,7 @@ from typing import (
 
 from pandas import Series
 
-from ....base import Base
+from ....base import Base, log_exception
 from ....wildcards_sets.wildcard_field import WildcardField
 from ....wildcards_sets import WildcardSets
 from .field_transforms import FieldTransforms
@@ -34,7 +34,7 @@ class Field(
     Base data layer.
     """
 
-    transforms: Dict[FieldTransforms, Series | None]
+    field_transforms: Dict[FieldTransforms, Series | None]
     """
     Dictionary of transformations that apply to this field, and corresponding values.
     """
@@ -55,80 +55,100 @@ class Field(
             wildcard_sets=wildcard_sets,
         )
         self.data_source = data_source
-        self.transforms = self.manager.dict()
+        self.field_transforms = self.manager.dict()
 
     def __str__(
         self,
     ) -> str:
 
-        return str(self.name)
+        return str(
+            self.name,
+        )
 
     def __getitem__(
         self,
-        __field_transforms: FieldTransforms,
+        __field_transforms: FieldTransforms | List[FieldTransform] | None,
     ) -> Series:
 
-        if __field_transforms not in self.transforms:
-            self.append(
-                __field_transforms,
-            )
+        field_transforms = self.__convert_field_transforms(
+            field_transforms=__field_transforms,
+        )
 
-        values = self.transforms[__field_transforms]
+        self.init_field_transforms(
+            field_transforms=field_transforms,
+        )
 
-        if values is None:
-            values = __field_transforms.apply(
-                values=self.transforms[FieldTransforms()],
-            )
-
-            self.transforms[__field_transforms] = values
+        values = self.field_transforms[field_transforms]
 
         return values
 
-    def init_transform(
+    @staticmethod
+    def __convert_field_transforms(
+        field_transforms: FieldTransforms | List[FieldTransform] | None,
+    ) -> FieldTransforms:
+
+        if field_transforms is None:
+            field_transforms = FieldTransforms()
+
+        elif isinstance(field_transforms, list):
+            field_transforms = FieldTransforms(
+                transforms=field_transforms,
+            )
+
+        return field_transforms
+
+    def init_field_transforms(
         self,
-        field_transform: FieldTransform,
+        field_transforms: FieldTransforms | List[FieldTransform] | None,
     ) -> None:
         """
-        Initializes a single field transform.
+        Initializes a sequence of field transforms.
 
-        :param field_transform: Field transform to initialize.
+        :param field_transforms: Field transforms to initialize.
         :return:
         """
 
-    def init_transforms(
-        self,
-        field_transforms: List[FieldTransform],
-    ) -> None:
-        """
-        Initializes a list of field transforms in parallel.
+        field_transforms = self.__convert_field_transforms(
+            field_transforms=field_transforms,
+        )
 
-        :param field_transforms: List of field transforms to initialize.
-        :return:
-        """
+        self.append(
+            field_transforms,
+        )
 
-        pass
+        values = self.field_transforms[field_transforms]
 
+        if values is None:
+            values = field_transforms.apply(
+                values=self.data_source.cache[str(self.name)],
+            )
+
+            self.field_transforms[field_transforms] = values
+
+    @log_exception
     def append(
         self,
-        __field_transforms: FieldTransforms | List[FieldTransform],
+        field_transforms: FieldTransforms | List[FieldTransform] | None,
     ) -> None:
         """
         Add field transforms to the collection of field transforms for this field.
+        Field transform will not be calculated.
 
-        :param __field_transforms: Transforms to add.
+        :param field_transforms: Transforms to add.
         :return:
         """
 
-        if isinstance(__field_transforms, list):
-            __field_transforms = FieldTransforms(
-                transforms=__field_transforms,
-            )
+        field_transforms = self.__convert_field_transforms(
+            field_transforms=field_transforms,
+        )
 
-        self.transforms[__field_transforms] = None
+        if field_transforms not in self.field_transforms:
+            self.field_transforms[field_transforms] = None
 
+    @log_exception
     def remove(
         self,
-        __field_transforms: FieldTransforms | List[FieldTransform],
+        __field_transforms: FieldTransforms | List[FieldTransform] | None,
     ) -> None:
         """
         Delete field transforms from the collection of field transforms for this field.
@@ -137,14 +157,14 @@ class Field(
         :return:
         """
 
-        if isinstance(__field_transforms, list):
-            __field_transforms = FieldTransforms(
-                transforms=__field_transforms,
-            )
+        field_transforms = self.__convert_field_transforms(
+            field_transforms=__field_transforms,
+        )
 
-        del self.transforms[__field_transforms]
+        del self.field_transforms[field_transforms]
 
     @property
+    @log_exception
     def native_type(
         self,
     ) -> str:
@@ -157,6 +177,7 @@ class Field(
         return self.data_source.native_types[str(self.name)]
 
     @property
+    @log_exception
     def py_type(
         self,
     ) -> str:

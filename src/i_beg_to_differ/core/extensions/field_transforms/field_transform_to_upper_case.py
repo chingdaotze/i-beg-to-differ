@@ -80,6 +80,6 @@ class FieldTransformToUpperCase(
     ) -> Dict:
 
         return {
-            "extension_id": str(self),
+            "extension_id": self,
             "parameters": None,
         }

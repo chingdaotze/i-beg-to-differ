@@ -3,6 +3,7 @@ from typing import (
     ClassVar,
     Dict,
     Self,
+    Iterator,
 )
 from pathlib import Path
 
@@ -86,45 +87,10 @@ class FieldTransforms(
 
     def __iter__(
         self,
-    ) -> Self:
+    ) -> Iterator:
 
-        return self
-
-    def __next__(
-        self,
-    ) -> FieldTransform:
-
-        for transform in self.transforms:
-            yield transform
-
-    def append(
-        self,
-        transform: FieldTransform,
-    ) -> None:
-        """
-        Add field transform to the collection of field transforms.
-
-        :param transform: Field transform to add.
-        :return:
-        """
-
-        self.transforms.append(
-            transform,
-        )
-
-    def remove(
-        self,
-        transform: FieldTransform,
-    ) -> None:
-        """
-        Delete field transform from the collection of field transforms.
-
-        :param transform: Field transform to delete.
-        :return:
-        """
-
-        self.transforms.remove(
-            transform,
+        return iter(
+            self.transforms,
         )
 
     @classmethod
@@ -171,6 +137,39 @@ class FieldTransforms(
             ],
         }
 
+    @log_exception
+    def append(
+        self,
+        transform: FieldTransform,
+    ) -> None:
+        """
+        Add field transform to the collection of field transforms.
+
+        :param transform: Field transform to add.
+        :return:
+        """
+
+        self.transforms.append(
+            transform,
+        )
+
+    @log_exception
+    def remove(
+        self,
+        transform: FieldTransform,
+    ) -> None:
+        """
+        Delete field transform from the collection of field transforms.
+
+        :param transform: Field transform to delete.
+        :return:
+        """
+
+        self.transforms.remove(
+            transform,
+        )
+
+    @log_exception
     def apply(
         self,
         values: Series,
