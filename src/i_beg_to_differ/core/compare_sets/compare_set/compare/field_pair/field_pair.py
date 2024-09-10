@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import (
-    List,
     Dict,
     Self,
+    ClassVar,
 )
 from zipfile import ZipFile
 
@@ -11,7 +11,11 @@ from .....wildcards_sets.wildcard_field import WildcardField
 from .....base import log_exception
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .field_pair_compare_rule import FieldPairCompareRule
+from .....extensions.field_pair_compare_rules.field_pair_compare_rule_equals import (
+    FieldCompareRuleEquals,
+)
 from .....wildcards_sets import WildcardSets
+from .....extensions.field_pair_compare_rules import FieldPairCompareRuleExtensions
 
 
 class FieldPair(
@@ -42,7 +46,14 @@ class FieldPair(
     List of transformations applied to the target field
     """
 
-    compare_rules: List[FieldPairCompareRule]
+    compare_rule: FieldPairCompareRule
+    """
+    Comparison rule used to compare the source and target fields.
+    """
+
+    _field_pair_compare_rule_extensions: ClassVar[FieldPairCompareRuleExtensions] = (
+        FieldPairCompareRuleExtensions()
+    )
 
     def __init__(
         self,
@@ -50,6 +61,7 @@ class FieldPair(
         target_field: str,
         source_transforms: FieldTransforms | None = None,
         target_transforms: FieldTransforms | None = None,
+        compare_rule: FieldPairCompareRule | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -78,6 +90,12 @@ class FieldPair(
 
         else:
             self.target_transforms = target_transforms
+
+        if compare_rule is None:
+            self.compare_rule = FieldCompareRuleEquals()
+
+        else:
+            self.compare_rule = compare_rule
 
     def __str__(
         self,
@@ -111,11 +129,23 @@ class FieldPair(
             wildcard_sets=wildcard_sets,
         )
 
+        compare_rule = FieldPair._field_pair_compare_rule_extensions[
+            instance_data['compare_rule']['extension_id']
+        ]
+
+        compare_rule = compare_rule.deserialize(
+            instance_data=instance_data['compare_rule'],
+            working_dir_path=working_dir_path,
+            ib2d_file=ib2d_file,
+            wildcard_sets=wildcard_sets,
+        )
+
         instance = FieldPair(
             source_field=source_field,
             source_transforms=source_transforms,
             target_field=target_field,
             target_transforms=target_transforms,
+            compare_rule=compare_rule,
         )
 
         return instance

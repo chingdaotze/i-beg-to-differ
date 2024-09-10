@@ -5,14 +5,10 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import (
-    DataFrame,
-    Series,
-)
+from pandas import Series
 
 from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule import (
     FieldPairCompareRule,
-    FieldPairCompareRuleLinkage,
 )
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
@@ -32,14 +28,12 @@ class FieldCompareRuleAbsoluteTolerance(
 
     def __init__(
         self,
-        linkage: FieldPairCompareRuleLinkage,
         tolerance: float | str = 0.0,
         wildcard_sets: WildcardSets | None = None,
     ):
 
         FieldPairCompareRule.__init__(
             self=self,
-            linkage=linkage,
         )
 
         self._tolerance = WildcardField(
@@ -65,23 +59,19 @@ class FieldCompareRuleAbsoluteTolerance(
         """
 
         return float(
-            self._tolerance.value,
+            self._tolerance,
         )
 
     @log_exception
     @log_runtime
     def compare(
         self,
-        raw_table: DataFrame,
-        transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
     ) -> Series:
         """
         Compares values between source and target fields, using strict equality.
 
-        :param raw_table: Read-only copy of the original table.
-        :param transformed_table: Read-only copy of the transformed table.
         :param source_field: Source field to compare.
         :param target_field: Target field to compare.
         :return: Series of booleans, where True indicates a match.
@@ -102,9 +92,6 @@ class FieldCompareRuleAbsoluteTolerance(
     ) -> Self:
 
         return FieldCompareRuleAbsoluteTolerance(
-            linkage=FieldPairCompareRuleLinkage(
-                instance_data['parameters']['linkage'],
-            ),
             tolerance=instance_data['parameters']['tolerance'],
             wildcard_sets=wildcard_sets,
         )
@@ -120,5 +107,4 @@ class FieldCompareRuleAbsoluteTolerance(
             'parameters': {
                 'tolerance': self._tolerance.base_value,
             },
-            'linkage': str(self.linkage),
         }

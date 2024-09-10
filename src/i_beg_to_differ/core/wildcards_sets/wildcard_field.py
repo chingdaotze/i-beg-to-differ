@@ -33,7 +33,7 @@ class WildcardField(
 
     def __str__(
         self,
-    ):
+    ) -> str:
 
         if self.wildcard_sets is not None:
             return self.wildcard_sets.replace_wildcards(
@@ -42,3 +42,13 @@ class WildcardField(
 
         else:
             return self.base_value
+
+    def __float__(
+        self,
+    ) -> float:
+
+        return float(
+            str(
+                self,
+            ),
+        )

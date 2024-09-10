@@ -5,14 +5,10 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import (
-    DataFrame,
-    Series,
-)
+from pandas import Series
 
 from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule import (
     FieldPairCompareRule,
-    FieldPairCompareRuleLinkage,
 )
 from ...wildcards_sets import WildcardSets
 from ...base import (
@@ -32,14 +28,12 @@ class FieldCompareRuleCustom(
 
     def __init__(
         self,
-        linkage: FieldPairCompareRuleLinkage,
         file_name: str,
         wildcard_sets: WildcardSets | None = None,
     ):
 
         FieldPairCompareRule.__init__(
             self=self,
-            linkage=linkage,
         )
 
         self.file_name = file_name
@@ -55,16 +49,12 @@ class FieldCompareRuleCustom(
     @log_runtime
     def compare(
         self,
-        raw_table: DataFrame,
-        transformed_table: DataFrame,
         source_field: Series,
         target_field: Series,
     ) -> Series:
         """
         Compares values between source and target fields, using strict equality.
 
-        :param raw_table: Read-only copy of the original table.
-        :param transformed_table: Read-only copy of the transformed table.
         :param source_field: Source field to compare.
         :param target_field: Target field to compare.
         :return: Series of booleans, where True indicates a match.
@@ -85,9 +75,6 @@ class FieldCompareRuleCustom(
     ) -> Self:
 
         return FieldCompareRuleCustom(
-            linkage=FieldPairCompareRuleLinkage(
-                instance_data['parameters']['linkage'],
-            ),
             file_name=instance_data['parameters']['file_name'],
             wildcard_sets=wildcard_sets,
         )
@@ -103,5 +90,4 @@ class FieldCompareRuleCustom(
             'parameters': {
                 'file_name': self.file_name,
             },
-            'linkage': str(self.linkage),
         }

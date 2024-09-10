@@ -12,6 +12,7 @@ from pandas import (
 from ..base import (
     Base,
     log_exception,
+    log_runtime,
 )
 from ..data_sources import DataSources
 from .compare_engine_field_pair import CompareEngineFieldPair
@@ -135,6 +136,7 @@ class CompareEngine(
         return self.pk_fields + self.dt_fields
 
     @log_exception
+    @log_runtime
     def init_field_transforms(
         self,
     ) -> None:
