@@ -1,6 +1,7 @@
 from typing import (
     List,
     Dict,
+    Literal,
 )
 from functools import cached_property
 
@@ -217,9 +218,17 @@ class CompareEngine(
             axis=1,
         )
 
+        dataframe.rename(
+            columns={
+                str(field_pair.source_field): field_pair.source_field_name
+                for field_pair in self.fields
+            },
+            inplace=True,
+        )
+
         if self.pk_fields:
             dataframe.set_index(
-                keys=[str(field_pair.source_field) for field_pair in self.pk_fields],
+                keys=[field_pair.source_field_name for field_pair in self.pk_fields],
                 inplace=True,
             )
 
@@ -245,13 +254,51 @@ class CompareEngine(
             axis=1,
         )
 
+        dataframe.rename(
+            columns={
+                str(field_pair.target_field): field_pair.target_field_name
+                for field_pair in self.fields
+            },
+            inplace=True,
+        )
+
         if self.pk_fields:
             dataframe.set_index(
-                keys=[str(field_pair.target_field) for field_pair in self.pk_fields],
+                keys=[field_pair.target_field_name for field_pair in self.pk_fields],
                 inplace=True,
             )
 
         return dataframe
+
+    def joint_dataframe(
+        self,
+        how: Literal["left", "right", "inner", "outer", "cross"] = 'inner',
+    ) -> DataFrame:
+        """
+        Creates a Dataframe containing both source and target data
+
+        :return: Dataframe containing both source and target data.
+        """
+
+        joint_dataframe = self.source_dataframe.join(
+            other=self.target_dataframe,
+            how=how,
+        )
+
+        order = []
+
+        for field_pair in self.dt_fields:
+            order.append(
+                field_pair.source_field_name,
+            )
+
+            order.append(
+                field_pair.target_field_name,
+            )
+
+        joint_dataframe = joint_dataframe[order]
+
+        return joint_dataframe
 
     # TODO: Implement compare methods
     @cached_property
@@ -259,8 +306,25 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
-        source = self.source_dataframe
-        target = self.target_dataframe
+        joint_dataframe = self.joint_dataframe(
+            how='inner',
+        )
+
+        results = {}
+
+        for field_pair in self.dt_fields:
+
+            results[field_pair.diff_field_name] = self.pool.apply_async(
+                func=field_pair.compare_rule.compare,
+                kwds={
+                    'source_field': joint_dataframe[field_pair.source_field_name],
+                    'target_field': joint_dataframe[field_pair.target_field_name],
+                },
+            )
+
+        results = {
+            diff_field_name: future.get() for diff_field_name, future in results.items()
+        }
 
         pass
 

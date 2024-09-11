@@ -37,8 +37,6 @@ class FieldCompareRuleEquals(
 
         return self.extension_name
 
-    @log_exception
-    @log_runtime
     def compare(
         self,
         source_field: Series,
@@ -52,9 +50,9 @@ class FieldCompareRuleEquals(
         :return: Series of booleans, where True indicates a match.
         """
 
-        # TODO: Implement compare
+        result = source_field == target_field
 
-        pass
+        return result
 
     @classmethod
     @log_exception

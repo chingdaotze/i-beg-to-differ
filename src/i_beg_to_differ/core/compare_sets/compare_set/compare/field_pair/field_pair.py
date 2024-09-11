@@ -160,17 +160,18 @@ class FieldPair(
             'source': {
                 'name': self.source_field,
             }
-            | self.source_transforms.serialize(),
+            | self.source_transforms.serialize(
+                ib2d_file=ib2d_file,
+            ),
             'target': {
                 'name': self.target_field,
             }
-            | self.target_transforms.serialize(),
-            'compare_rules': [
-                instance.serialize(
-                    ib2d_file=ib2d_file,
-                )
-                for instance in self.compare_rules
-            ],
+            | self.target_transforms.serialize(
+                ib2d_file=ib2d_file,
+            ),
+            'compare_rule': self.compare_rule.serialize(
+                ib2d_file=ib2d_file,
+            ),
         }
 
         return instance_data
