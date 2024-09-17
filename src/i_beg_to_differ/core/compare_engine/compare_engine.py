@@ -8,6 +8,7 @@ from functools import cached_property
 from pandas import (
     DataFrame,
     concat,
+    Series,
 )
 
 from ..base import (
@@ -270,7 +271,30 @@ class CompareEngine(
 
         return dataframe
 
-    def joint_dataframe(
+    def get_field_order(
+        self,
+        include_diff_fields: bool,
+    ) -> List[str]:
+
+        order = []
+
+        for field_pair in self.dt_fields:
+            order.append(
+                field_pair.source_field_name,
+            )
+
+            order.append(
+                field_pair.target_field_name,
+            )
+
+            if include_diff_fields:
+                order.append(
+                    field_pair.diff_field_name,
+                )
+
+        return order
+
+    def get_joint_dataframe(
         self,
         how: Literal["left", "right", "inner", "outer", "cross"] = 'inner',
     ) -> DataFrame:
@@ -285,28 +309,42 @@ class CompareEngine(
             how=how,
         )
 
-        order = []
-
-        for field_pair in self.dt_fields:
-            order.append(
-                field_pair.source_field_name,
+        joint_dataframe = joint_dataframe[
+            ~joint_dataframe.index.duplicated(
+                keep=False,
             )
+        ]
 
-            order.append(
-                field_pair.target_field_name,
-            )
+        order = self.get_field_order(
+            include_diff_fields=False,
+        )
 
         joint_dataframe = joint_dataframe[order]
 
         return joint_dataframe
 
-    # TODO: Implement compare methods
     @cached_property
     def values_comparison(
         self,
     ) -> DataFrame:
 
-        joint_dataframe = self.joint_dataframe(
+        def apply_mask(
+            diff_values: Series,
+        ) -> None:
+
+            diff_values.replace(
+                to_replace=True,
+                value='',
+                inplace=True,
+            )
+
+            diff_values.replace(
+                to_replace=False,
+                value='*',
+                inplace=True,
+            )
+
+        joint_dataframe = self.get_joint_dataframe(
             how='inner',
         )
 
@@ -320,13 +358,19 @@ class CompareEngine(
                     'source_field': joint_dataframe[field_pair.source_field_name],
                     'target_field': joint_dataframe[field_pair.target_field_name],
                 },
+                callback=apply_mask,
             )
 
-        results = {
-            diff_field_name: future.get() for diff_field_name, future in results.items()
-        }
+        for diff_field_name, future in results.items():
+            joint_dataframe[diff_field_name] = future.get()
 
-        pass
+        joint_dataframe = joint_dataframe[
+            self.get_field_order(
+                include_diff_fields=True,
+            )
+        ]
+
+        return joint_dataframe
 
     @cached_property
     def source_only_records(

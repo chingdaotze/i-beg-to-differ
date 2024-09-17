@@ -183,4 +183,4 @@ class DataSourcePair(
             ],
         )
 
-        values_comparison = compare_engine.values_comparison
+        return compare_engine.values_comparison
