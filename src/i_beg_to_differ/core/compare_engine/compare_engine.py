@@ -219,17 +219,22 @@ class CompareEngine(
             axis=1,
         )
 
+        columns = {
+            str(field_pair.source_field): str(field_pair)
+            for field_pair in self.pk_fields
+        } | {
+            str(field_pair.source_field): field_pair.source_field_name
+            for field_pair in self.dt_fields
+        }
+
         dataframe.rename(
-            columns={
-                str(field_pair.source_field): field_pair.source_field_name
-                for field_pair in self.fields
-            },
+            columns=columns,
             inplace=True,
         )
 
         if self.pk_fields:
             dataframe.set_index(
-                keys=[field_pair.source_field_name for field_pair in self.pk_fields],
+                keys=[str(field_pair) for field_pair in self.pk_fields],
                 inplace=True,
             )
 
@@ -255,17 +260,22 @@ class CompareEngine(
             axis=1,
         )
 
+        columns = {
+            str(field_pair.target_field): str(field_pair)
+            for field_pair in self.pk_fields
+        } | {
+            str(field_pair.target_field): field_pair.target_field_name
+            for field_pair in self.dt_fields
+        }
+
         dataframe.rename(
-            columns={
-                str(field_pair.target_field): field_pair.target_field_name
-                for field_pair in self.fields
-            },
+            columns=columns,
             inplace=True,
         )
 
         if self.pk_fields:
             dataframe.set_index(
-                keys=[field_pair.target_field_name for field_pair in self.pk_fields],
+                keys=[str(field_pair) for field_pair in self.pk_fields],
                 inplace=True,
             )
 

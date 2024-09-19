@@ -64,7 +64,6 @@ class DataSourceCsv(
         self.cache = read_csv(
             filepath_or_buffer=path,
             engine='pyarrow',
-            dtype_backend='pyarrow',
         )
 
         return self

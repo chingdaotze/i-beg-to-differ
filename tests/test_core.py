@@ -10,5 +10,6 @@ def test_core() -> None:
         compare = compare_set['Compare1']
 
         schema_comparison = compare.data_source_pair.schema_comparison
+        values_comparison = compare.values_comparison
 
         pass
