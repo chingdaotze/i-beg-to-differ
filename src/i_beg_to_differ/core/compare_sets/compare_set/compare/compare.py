@@ -10,8 +10,10 @@ from zipfile import ZipFile
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from ....compare_engine import CompareEngine
 from .data_source_pair import DataSourcePair
-from .field_pair.field_pair_primary_key import FieldPairPrimaryKey
-from .field_pair.field_pair_data import FieldPairData
+from .field_pair import (
+    FieldPairPrimaryKey,
+    FieldPairData,
+)
 from ....base import log_exception
 from ....data_sources import DataSources
 from ....wildcards_sets import WildcardSets

@@ -17,13 +17,11 @@ from ..base import (
     log_runtime,
 )
 from ..data_sources import DataSources
-from ..compare_sets.compare_set.compare.field_pair.field_pair_primary_key import (
+from ..compare_sets.compare_set.compare.field_pair import (
     FieldPairPrimaryKey,
-)
-from ..compare_sets.compare_set.compare.field_pair.field_pair_data import (
     FieldPairData,
+    FieldPair,
 )
-from ..compare_sets.compare_set.compare.field_pair import FieldPair
 
 
 class FieldPairName:

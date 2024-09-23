@@ -16,7 +16,10 @@ from .....data_sources.data_source import DataSource
 from .....utils.dataframe import dict_to_dataframe
 from .....extensions.data_sources.data_source_dataframe import DataSourceDataFrame
 from .....compare_engine import CompareEngine
-from .....compare_sets.compare_set.compare.field_pair import FieldPair
+from .....compare_sets.compare_set.compare.field_pair import (
+    FieldPairPrimaryKey,
+    FieldPairData,
+)
 
 
 class DataSourcePair(
@@ -131,6 +134,8 @@ class DataSourcePair(
 
         return types
 
+    # TODO: Provide method to automatch schemas.
+
     @cached_property
     def schema_comparison(
         self,
@@ -166,17 +171,17 @@ class DataSourcePair(
             source='source',
             target='target',
             pk_fields=[
-                FieldPair(
+                FieldPairPrimaryKey(
                     source_field='column_name',
                     target_field='column_name',
                 ),
             ],
             dt_fields=[
-                FieldPair(
+                FieldPairData(
                     source_field='native_type',
                     target_field='native_type',
                 ),
-                FieldPair(
+                FieldPairData(
                     source_field='py_type',
                     target_field='py_type',
                 ),
