@@ -52,3 +52,13 @@ class WildcardField(
                 self,
             ),
         )
+
+    def __bool__(
+        self,
+    ) -> bool:
+
+        return bool(
+            str(
+                self,
+            ),
+        )

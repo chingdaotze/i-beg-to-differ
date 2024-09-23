@@ -70,15 +70,18 @@ class IB2DFile(
 
         return f'*.ib2d file [{self.path}]'
 
-    @log_exception
-    def __del__(
+    def __enter__(
         self,
-    ) -> None:
-        """
-        Cleans up the working directory.
+    ) -> Self:
 
-        :return:
-        """
+        return self
+
+    def __exit__(
+        self,
+        exc_type,
+        exc_val,
+        exc_tb,
+    ) -> None:
 
         rmtree(
             self.working_dir_path,

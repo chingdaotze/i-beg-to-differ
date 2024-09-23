@@ -7,18 +7,15 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule import (
-    FieldPairCompareRule,
+from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
+    CompareRule,
 )
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 from ...wildcards_sets import WildcardSets
 
 
-class FieldCompareRuleEquals(
-    FieldPairCompareRule,
+class CompareRuleEquals(
+    CompareRule,
 ):
 
     extension_name = 'Equals'
@@ -27,7 +24,7 @@ class FieldCompareRuleEquals(
         self,
     ):
 
-        FieldPairCompareRule.__init__(
+        CompareRule.__init__(
             self=self,
         )
 
@@ -64,7 +61,7 @@ class FieldCompareRuleEquals(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldCompareRuleEquals()
+        return CompareRuleEquals()
 
     @log_exception
     def serialize(

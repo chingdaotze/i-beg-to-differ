@@ -17,8 +17,45 @@ from ..base import (
     log_runtime,
 )
 from ..data_sources import DataSources
-from .compare_engine_field_pair import CompareEngineFieldPair
+from ..compare_sets.compare_set.compare.field_pair.field_pair_primary_key import (
+    FieldPairPrimaryKey,
+)
+from ..compare_sets.compare_set.compare.field_pair.field_pair_data import (
+    FieldPairData,
+)
 from ..compare_sets.compare_set.compare.field_pair import FieldPair
+
+
+class FieldPairName:
+    """
+    Object that serves as a name mapping for a field pair.
+    """
+
+    source_field: str
+    """
+    Source field name.
+    """
+
+    target_field: str
+    """
+    Target field name.
+    """
+
+    def __init__(
+        self,
+        source_field: str,
+        target_field: str,
+    ):
+
+        self.source_field = source_field
+        self.target_field = target_field
+
+    @property
+    def diff_field(
+        self,
+    ) -> str:
+
+        return f'dif.({self.source_field} | {self.target_field})'
 
 
 class CompareEngine(
@@ -43,12 +80,12 @@ class CompareEngine(
     Pointer to target data source.
     """
 
-    pk_fields: List[CompareEngineFieldPair]
+    pk_fields: List[FieldPairPrimaryKey]
     """
     Primary key field pairs.
     """
 
-    dt_fields: List[CompareEngineFieldPair]
+    dt_fields: List[FieldPairData]
     """
     Data field pairs.
     """
@@ -58,72 +95,73 @@ class CompareEngine(
         data_sources: DataSources,
         source: str,
         target: str,
-        pk_fields: List[FieldPair] | None = None,
-        dt_fields: List[FieldPair] | None = None,
+        pk_fields: List[FieldPairPrimaryKey] | None = None,
+        dt_fields: List[FieldPairData] | None = None,
     ):
 
         Base.__init__(
             self=self,
         )
 
-        def field_pair_list_to_compare_engine_field_pair_list(
-            field_pairs: List[FieldPair] | None,
-            source_field_counts: Dict[str, int],
-            target_field_counts: Dict[str, int],
-        ) -> List[CompareEngineFieldPair]:
-
-            compare_engine_field_pairs = []
-
-            if field_pairs is not None:
-                for field_pair in field_pairs:
-                    source_field = str(field_pair.source_field)
-
-                    if source_field not in source_field_counts:
-                        source_field_counts[source_field] = 0
-
-                    source_field_counts[source_field] += 1
-
-                    target_field = str(field_pair.target_field)
-
-                    if target_field not in target_field_counts:
-                        target_field_counts[target_field] = 0
-
-                    target_field_counts[target_field] += 1
-
-                    compare_engine_field_pairs.append(
-                        CompareEngineFieldPair(
-                            field_pair=field_pair,
-                            source_field_index=source_field_counts[source_field],
-                            target_field_index=target_field_counts[target_field],
-                        )
-                    )
-
-            return compare_engine_field_pairs
-
         self.data_sources = data_sources
         self.source = source
         self.target = target
 
-        _source_field_counts = {}
-        _target_field_counts = {}
-
-        self.pk_fields = field_pair_list_to_compare_engine_field_pair_list(
-            field_pairs=pk_fields,
-            source_field_counts=_source_field_counts,
-            target_field_counts=_target_field_counts,
-        )
-
-        self.dt_fields = field_pair_list_to_compare_engine_field_pair_list(
-            field_pairs=dt_fields,
-            source_field_counts=_source_field_counts,
-            target_field_counts=_target_field_counts,
-        )
+        self.pk_fields = pk_fields
+        self.dt_fields = dt_fields
 
     def __str__(
         self,
     ) -> str:
 
         return f'Compare Engine: {id(self)}'
+
+    @cached_property
+    def field_pair_names(
+        self,
+    ) -> Dict[FieldPair, FieldPairName]:
+
+        source_field_counts = {}
+        target_field_counts = {}
+        field_pair_names = {}
+
+        for field_pair in self.fields:
+            # Calculate and store field counts
+            source_field = str(field_pair.source_field)
+
+            if source_field not in source_field_counts:
+                source_field_counts[source_field] = 0
+
+            source_field_count = source_field_counts[source_field]
+            source_field_count += 1
+            source_field_counts[source_field] = source_field_count
+
+            target_field = str(field_pair.target_field)
+
+            if target_field not in target_field_counts:
+                target_field_counts[target_field] = 0
+
+            target_field_count = target_field_counts[target_field]
+            target_field_count += 1
+            target_field_counts[target_field] += target_field_count
+
+            # Create and store names
+            source_field_name = field_pair.source_field_name_short
+
+            if source_field_count > 1:
+                source_field_name += f'({source_field_count})'
+
+            target_field_name = field_pair.target_field_name_short
+
+            if target_field_count > 1:
+                target_field_name += f'({target_field_count})'
+
+            field_pair_names[field_pair] = FieldPairName(
+                source_field=source_field_name,
+                target_field=target_field_name,
+            )
+
+        return field_pair_names
 
     @cached_property
     def fields(
@@ -223,7 +261,7 @@ class CompareEngine(
             str(field_pair.source_field): str(field_pair)
             for field_pair in self.pk_fields
         } | {
-            str(field_pair.source_field): field_pair.source_field_name
+            str(field_pair.source_field): self.field_pair_names[field_pair].source_field
             for field_pair in self.dt_fields
         }
 
@@ -264,7 +302,7 @@ class CompareEngine(
             str(field_pair.target_field): str(field_pair)
             for field_pair in self.pk_fields
         } | {
-            str(field_pair.target_field): field_pair.target_field_name
+            str(field_pair.target_field): self.field_pair_names[field_pair].target_field
             for field_pair in self.dt_fields
         }
 
@@ -280,29 +318,6 @@ class CompareEngine(
             )
 
         return dataframe
-
-    def get_field_order(
-        self,
-        include_diff_fields: bool,
-    ) -> List[str]:
-
-        order = []
-
-        for field_pair in self.dt_fields:
-            order.append(
-                field_pair.source_field_name,
-            )
-
-            order.append(
-                field_pair.target_field_name,
-            )
-
-            if include_diff_fields:
-                order.append(
-                    field_pair.diff_field_name,
-                )
-
-        return order
 
     def get_joint_dataframe(
         self,
@@ -325,11 +340,19 @@ class CompareEngine(
             )
         ]
 
-        order = self.get_field_order(
-            include_diff_fields=False,
-        )
+        column_order = []
 
-        joint_dataframe = joint_dataframe[order]
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            column_order.extend(
+                [
+                    field_pair_name.source_field,
+                    field_pair_name.target_field,
+                ],
+            )
+
+        joint_dataframe = joint_dataframe[column_order]
 
         return joint_dataframe
 
@@ -359,10 +382,13 @@ class CompareEngine(
         )
 
         results = {}
+        column_order = []
 
         for field_pair in self.dt_fields:
 
-            results[field_pair.diff_field_name] = self.pool.apply_async(
+            field_pair_name = self.field_pair_names[field_pair]
+
+            results[field_pair_name.diff_field] = self.pool.apply_async(
                 func=field_pair.compare_rule.compare,
                 kwds={
                     'source_field': joint_dataframe[field_pair.source_field_name],
@@ -371,14 +397,18 @@ class CompareEngine(
                 callback=apply_mask,
             )
 
+            column_order.extend(
+                [
+                    field_pair_name.source_field,
+                    field_pair_name.target_field,
+                    field_pair_name.diff_field,
+                ],
+            )
+
         for diff_field_name, future in results.items():
             joint_dataframe[diff_field_name] = future.get()
 
-        joint_dataframe = joint_dataframe[
-            self.get_field_order(
-                include_diff_fields=True,
-            )
-        ]
+        joint_dataframe = joint_dataframe[column_order]
 
         return joint_dataframe
 

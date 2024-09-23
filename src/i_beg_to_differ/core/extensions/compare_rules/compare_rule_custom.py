@@ -7,8 +7,8 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...compare_sets.compare_set.compare.field_pair.field_pair_compare_rule import (
-    FieldPairCompareRule,
+from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
+    CompareRule,
 )
 from ...wildcards_sets import WildcardSets
 from ...base import (
@@ -17,8 +17,8 @@ from ...base import (
 )
 
 
-class FieldCompareRuleCustom(
-    FieldPairCompareRule,
+class CompareRuleCustom(
+    CompareRule,
 ):
 
     file_name: str
@@ -32,7 +32,7 @@ class FieldCompareRuleCustom(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        FieldPairCompareRule.__init__(
+        CompareRule.__init__(
             self=self,
         )
 
@@ -74,7 +74,7 @@ class FieldCompareRuleCustom(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldCompareRuleCustom(
+        return CompareRuleCustom(
             file_name=instance_data['parameters']['file_name'],
             wildcard_sets=wildcard_sets,
         )

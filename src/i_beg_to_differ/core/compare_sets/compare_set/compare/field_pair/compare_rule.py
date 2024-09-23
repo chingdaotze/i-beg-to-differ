@@ -10,7 +10,7 @@ from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....extensions.data_type_extension import DataTypeExtension
 
 
-class FieldPairCompareRule(
+class CompareRule(
     IB2DFileElement,
     DataTypeExtension,
     ABC,
