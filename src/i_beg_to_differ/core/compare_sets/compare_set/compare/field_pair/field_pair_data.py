@@ -119,13 +119,13 @@ class FieldPairData(
 
         instance_data = {
             'source': {
-                'name': self.source_field,
+                'name': self.source_field.base_value,
             }
             | self.source_transforms.serialize(
                 ib2d_file=ib2d_file,
             ),
             'target': {
-                'name': self.target_field,
+                'name': self.target_field.base_value,
             }
             | self.target_transforms.serialize(
                 ib2d_file=ib2d_file,

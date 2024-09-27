@@ -21,9 +21,14 @@ class WildcardSet(
     Human-readable description of this Wildcard Set.
     """
 
-    replacement_values: Dict[str, str]
+    user_replacement_values: Dict[str, str]
     """
-    Wildcard replacement values.
+    User-defined wildcard replacement values.
+    """
+
+    system_replacement_values: Dict[str, str]
+    """
+    System-defined wildcard replacement values.
     """
 
     _MAX_REPLACEMENT_DEPTH = 1000
@@ -31,14 +36,15 @@ class WildcardSet(
     def __init__(
         self,
         description: str | None = None,
-        replacement_values: Dict[str, str] | None = None,
+        user_replacement_values: Dict[str, str] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
 
         self.description = description
-        self.replacement_values = replacement_values
+        self.user_replacement_values = user_replacement_values
+        self.system_replacement_values = {}
 
     def __str__(
         self,
@@ -61,6 +67,13 @@ class WildcardSet(
 
         else:
             return {}
+
+    @property
+    def replacement_values(
+        self,
+    ) -> Dict[str, str]:
+
+        return self.system_replacement_values | self.user_replacement_values
 
     @log_exception
     def replace_wildcards(
@@ -106,7 +119,7 @@ class WildcardSet(
 
         return WildcardSet(
             description=instance_data['description'],
-            replacement_values=instance_data['replacement_values'],
+            user_replacement_values=instance_data['replacement_values'],
         )
 
     @log_exception
@@ -117,5 +130,5 @@ class WildcardSet(
 
         return {
             'description': self.description,
-            'replacement_values': self.replacement_values,
+            'replacement_values': self.user_replacement_values,
         }

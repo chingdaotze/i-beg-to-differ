@@ -169,9 +169,9 @@ class DataSources(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        # TODO: Serialize
-
-        data = {}
-
-        for data_source in self.data_sources.values():
-            data[data_source.id]
+        return {
+            extension_id: instance.serialize(
+                ib2d_file=ib2d_file,
+            )
+            for extension_id, instance in self.data_sources.items()
+        }

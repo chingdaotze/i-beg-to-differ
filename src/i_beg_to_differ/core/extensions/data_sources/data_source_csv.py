@@ -89,17 +89,9 @@ class DataSourceCsv(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        instance_data = DataSource.serialize(
-            self=self,
-            ib2d_file=ib2d_file,
-        )
-
-        instance_data['parameters'] = {
-            'path': self.path.base_value,
-        }
-
         return {
-            'extension_id': self,
+            'extension_id': self.extension_id,
+            'description': self.description,
             'parameters': {
                 'path': self.path.base_value,
             },

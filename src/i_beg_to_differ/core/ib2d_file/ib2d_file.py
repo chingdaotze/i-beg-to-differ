@@ -168,14 +168,14 @@ class IB2DFile(
             )
 
             # Add system paths to wildcard set
-            wildcard_sets.update_global_wildcard(
+            wildcard_sets.update_system_wildcard(
                 key='ib2d_file_path',
                 value=str(
                     path.absolute(),
                 ),
             )
 
-            wildcard_sets.update_global_wildcard(
+            wildcard_sets.update_system_wildcard(
                 key='ib2d_file_dir_path',
                 value=str(
                     path.parent.absolute(),
@@ -267,7 +267,33 @@ class IB2DFile(
             zinfo_or_arcname='compare_sets.json',
             data=dumps(
                 obj=compare_set_data,
-                indent=4,
+                indent=2,
+            ),
+        )
+
+        # Serialize data sources
+        data_source_data = self.data_sources.serialize(
+            ib2d_file=ib2d_file,
+        )
+
+        ib2d_file.writestr(
+            zinfo_or_arcname='data_sources.json',
+            data=dumps(
+                obj=data_source_data,
+                indent=2,
+            ),
+        )
+
+        # Serialize wildcard sets
+        wildcard_sets_data = self.wildcard_sets.serialize(
+            ib2d_file=ib2d_file,
+        )
+
+        ib2d_file.writestr(
+            zinfo_or_arcname='wildcard_sets.json',
+            data=dumps(
+                obj=wildcard_sets_data,
+                indent=2,
             ),
         )
 
@@ -282,14 +308,14 @@ class IB2DFile(
         self.path = path
 
         # Add paths to wildcard set
-        self.wildcard_sets.update_global_wildcard(
+        self.wildcard_sets.update_system_wildcard(
             key='ib2d_file_path',
             value=str(
                 self.path.absolute(),
             ),
         )
 
-        self.wildcard_sets.update_global_wildcard(
+        self.wildcard_sets.update_system_wildcard(
             key='ib2d_file_dir_path',
             value=str(
                 self.path.parent.absolute(),

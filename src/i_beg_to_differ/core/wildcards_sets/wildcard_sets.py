@@ -98,7 +98,7 @@ class WildcardSets(
         )
 
     @log_exception
-    def update_global_wildcard(
+    def update_system_wildcard(
         self,
         key: str,
         value: str,
@@ -107,7 +107,7 @@ class WildcardSets(
         for instance in self.wildcard_sets.values():
 
             if instance.replacement_values is None:
-                instance.replacement_values = {}
+                instance.system_replacement_values = {}
 
             instance.replacement_values[key] = value
 

@@ -75,7 +75,8 @@ class DataSourceDataFrame(
     ) -> Dict:
 
         return {
-            'extension_id': self,
+            'extension_id': self.extension_id,
+            'description': self.description,
             'parameters': {
                 'data': self.data.to_dict(),
             },

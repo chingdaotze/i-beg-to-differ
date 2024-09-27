@@ -70,6 +70,6 @@ class CompareRuleEquals(
     ) -> Dict:
 
         return {
-            'extension_id': str(self),
+            'extension_id': self.extension_id,
             'parameters': None,
         }

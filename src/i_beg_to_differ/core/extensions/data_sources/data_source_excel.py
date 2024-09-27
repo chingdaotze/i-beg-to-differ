@@ -190,7 +190,8 @@ class DataSourceExcel(
     ) -> Dict:
 
         return {
-            'extension_id': self,
+            'extension_id': self.extension_id,
+            'description': self.description,
             'parameters': {
                 'path': self.path.base_value,
                 'sheet': self.sheet.base_value,

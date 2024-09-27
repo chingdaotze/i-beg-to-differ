@@ -17,11 +17,6 @@ class Extension(
     Human-readable name for this extension.
     """
 
-    extension_id: ClassVar[str]
-    """
-    Unique identifier for this extension. Set when the extension is registered.
-    """
-
     def __init__(
         self,
     ):
@@ -34,3 +29,17 @@ class Extension(
     ) -> str:
 
         return self.extension_id
+
+    @property
+    def extension_id(
+        self,
+    ) -> str:
+        """
+        Unique identifier for this extension. Set when the extension is registered.
+        """
+
+        return type(
+            self,
+        ).__module__.split(
+            '.'
+        )[-1]

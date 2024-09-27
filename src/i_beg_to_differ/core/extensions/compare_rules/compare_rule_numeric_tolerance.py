@@ -226,7 +226,7 @@ class CompareRuleNumericTolerance(
     ) -> Dict:
 
         return {
-            'extension_id': self,
+            'extension_id': self.extension_id,
             'parameters': {
                 'tolerance': self._tolerance.base_value,
                 'diff_mode': self._diff_mode.base_value,
