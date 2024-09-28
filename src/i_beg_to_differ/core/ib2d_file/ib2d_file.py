@@ -87,6 +87,23 @@ class IB2DFile(
             self.working_dir_path,
         )
 
+    @staticmethod
+    def load_zip_file(
+        path: Path,
+    ) -> ZipFile:
+
+        with open(file=path, mode='rb') as input_file:
+            ib2d_file_bytes = BytesIO(
+                initial_bytes=input_file.read(),
+            )
+
+            ib2d_file = ZipFile(
+                file=ib2d_file_bytes,
+                mode='r',
+            )
+
+        return ib2d_file
+
     @classmethod
     @contextmanager
     @log_exception
@@ -141,16 +158,9 @@ class IB2DFile(
                 )
 
             # Load *.ib2d file to memory
-            with open(file=path, mode='rb') as input_file:
-
-                ib2d_file_bytes = BytesIO(
-                    initial_bytes=input_file.read(),
-                )
-
-                ib2d_file = ZipFile(
-                    file=ib2d_file_bytes,
-                    mode='r',
-                )
+            ib2d_file = cls.load_zip_file(
+                path=path,
+            )
 
             # Create wildcard sets
             wildcard_sets_file = ib2d_file.open(
@@ -249,6 +259,10 @@ class IB2DFile(
                 path,
             )
 
+        self.log_info(
+            msg=f'Saving *.ib2d file to location: "{str(path.absolute())}" ...',
+        )
+
         # Create *.ib2d file in memory
         ib2d_file_bytes = BytesIO()
 
@@ -304,6 +318,10 @@ class IB2DFile(
             output_file.write(
                 ib2d_file_bytes.getvalue(),
             )
+
+        self.log_info(
+            msg=f'Save complete: "{str(path.absolute())}"',
+        )
 
         self.path = path
 

@@ -9,6 +9,16 @@ def test_serialize_ib2d_file(
     logger,
     tmpdir,
 ) -> None:
+    # Get benchmark hash
+    ib2d_zip_file = ib2d_file.load_zip_file(
+        path=ib2d_file.path,
+    )
+
+    benchmark_file_crc = {
+        deflated_file.filename: deflated_file.CRC
+        for deflated_file in ib2d_zip_file.filelist
+    }
+
     # Serialize
     module_name = __name__.split('.')[-1]
 
@@ -20,5 +30,14 @@ def test_serialize_ib2d_file(
         path=ib2d_save_path,
     )
 
-    # TODO: Compare
-    pass
+    # Get benchmark hash
+    ib2d_zip_file = ib2d_file.load_zip_file(
+        path=ib2d_save_path,
+    )
+
+    new_file_crc = {
+        deflated_file.filename: deflated_file.CRC
+        for deflated_file in ib2d_zip_file.filelist
+    }
+
+    assert benchmark_file_crc == new_file_crc
