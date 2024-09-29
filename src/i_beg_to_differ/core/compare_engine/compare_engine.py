@@ -277,6 +277,19 @@ class CompareEngine(
         return dataframe
 
     @cached_property
+    def source_dataframe_deduplicated(
+        self,
+    ) -> DataFrame:
+
+        deduplicated_dataframe = self.source_dataframe[
+            ~self.source_dataframe.index.duplicated(
+                keep=False,
+            )
+        ]
+
+        return deduplicated_dataframe
+
+    @cached_property
     def target_dataframe(
         self,
     ) -> DataFrame:
@@ -317,42 +330,18 @@ class CompareEngine(
 
         return dataframe
 
-    def get_joint_dataframe(
+    @cached_property
+    def target_dataframe_deduplicated(
         self,
-        how: Literal["left", "right", "inner", "outer", "cross"] = 'inner',
     ) -> DataFrame:
-        """
-        Creates a Dataframe containing both source and target data
 
-        :return: Dataframe containing both source and target data.
-        """
-
-        joint_dataframe = self.source_dataframe.join(
-            other=self.target_dataframe,
-            how=how,
-        )
-
-        joint_dataframe = joint_dataframe[
-            ~joint_dataframe.index.duplicated(
+        deduplicated_dataframe = self.target_dataframe[
+            ~self.target_dataframe.index.duplicated(
                 keep=False,
             )
         ]
 
-        column_order = []
-
-        for field_pair in self.dt_fields:
-            field_pair_name = self.field_pair_names[field_pair]
-
-            column_order.extend(
-                [
-                    field_pair_name.source_field,
-                    field_pair_name.target_field,
-                ],
-            )
-
-        joint_dataframe = joint_dataframe[column_order]
-
-        return joint_dataframe
+        return deduplicated_dataframe
 
     @cached_property
     def values_comparison(
@@ -375,8 +364,11 @@ class CompareEngine(
                 inplace=True,
             )
 
-        joint_dataframe = self.get_joint_dataframe(
+        joint_dataframe = self.source_dataframe_deduplicated.merge(
+            right=self.target_dataframe_deduplicated,
             how='inner',
+            left_index=True,
+            right_index=True,
         )
 
         results = {}
@@ -415,25 +407,59 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
-        pass
+        inner_index = self.source_dataframe_deduplicated.index.join(
+            other=self.target_dataframe_deduplicated.index,
+            how='inner',
+        )
+
+        source_only_records = self.source_dataframe_deduplicated.loc[
+            ~self.source_dataframe_deduplicated.index.isin(
+                values=inner_index.values,
+            )
+        ]
+
+        return source_only_records
 
     @cached_property
     def target_only_records(
         self,
     ) -> DataFrame:
 
-        pass
+        inner_index = self.source_dataframe_deduplicated.index.join(
+            other=self.target_dataframe_deduplicated.index,
+            how='inner',
+        )
+
+        target_only_records = self.target_dataframe_deduplicated.loc[
+            ~self.target_dataframe_deduplicated.index.isin(
+                values=inner_index.values,
+            )
+        ]
+
+        return target_only_records
 
     @cached_property
     def source_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
-        pass
+        duplicated_dataframe = self.source_dataframe[
+            self.source_dataframe.index.duplicated(
+                keep=False,
+            )
+        ]
+
+        return duplicated_dataframe
 
     @cached_property
     def target_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
 
-        pass
+        duplicated_dataframe = self.target_dataframe[
+            self.target_dataframe.index.duplicated(
+                keep=False,
+            )
+        ]
+
+        return duplicated_dataframe

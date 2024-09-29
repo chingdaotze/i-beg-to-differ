@@ -106,10 +106,7 @@ class WildcardSets(
 
         for instance in self.wildcard_sets.values():
 
-            if instance.replacement_values is None:
-                instance.system_replacement_values = {}
-
-            instance.replacement_values[key] = value
+            instance.system_replacement_values[key] = value
 
     @classmethod
     @log_exception

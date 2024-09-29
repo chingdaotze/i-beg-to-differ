@@ -12,5 +12,10 @@ def test_compare_rule_equals(
         compare = compare_set['Compare1']
 
         values_comparison = compare.values_comparison
+        source_only_records = compare.source_only_records
+        target_only_records = compare.target_only_records
+        schema_comparison = compare.data_source_pair.schema_comparison
+        source_duplicate_records = compare.source_duplicate_primary_key_records
+        target_duplicate_records = compare.target_duplicate_primary_key_records
 
         pass

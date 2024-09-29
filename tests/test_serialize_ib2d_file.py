@@ -30,7 +30,7 @@ def test_serialize_ib2d_file(
         path=ib2d_save_path,
     )
 
-    # Get benchmark hash
+    # Get new file hash
     ib2d_zip_file = ib2d_file.load_zip_file(
         path=ib2d_save_path,
     )

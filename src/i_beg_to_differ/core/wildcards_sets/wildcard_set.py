@@ -73,7 +73,11 @@ class WildcardSet(
         self,
     ) -> Dict[str, str]:
 
-        return self.system_replacement_values | self.user_replacement_values
+        if self.user_replacement_values is None:
+            return self.system_replacement_values
+
+        else:
+            return self.system_replacement_values | self.user_replacement_values
 
     @log_exception
     def replace_wildcards(
