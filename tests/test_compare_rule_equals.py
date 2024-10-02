@@ -1,10 +1,12 @@
 from .fixture_ib2d_file import ib2d_file
 from .fixture_logger import logger
+from .fixture_parquet_files import parquet_files
 
 
 def test_compare_rule_equals(
     ib2d_file,
     logger,
+    parquet_files,
 ) -> None:
     with ib2d_file:
 
