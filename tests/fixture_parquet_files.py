@@ -1,6 +1,9 @@
 from pytest import fixture
 from typing import Dict
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    read_parquet,
+)
 from pathlib import Path
 
 
@@ -16,3 +19,5 @@ def parquet_files(
     parquet_files = test_dir.glob(
         pattern='*.parquet',
     )
+
+    return {path.stem: read_parquet(path=path) for path in parquet_files}
