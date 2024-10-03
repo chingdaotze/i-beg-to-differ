@@ -126,11 +126,11 @@ class CompareRuleNumericTolerance(
         """
 
         if isinstance(self._diff_mode, WildcardField):
-            return DiffMode[
+            return DiffMode(
                 str(
                     self._diff_mode,
-                )
-            ]
+                ),
+            )
 
         else:
             return self._diff_mode
@@ -147,17 +147,15 @@ class CompareRuleNumericTolerance(
         """
 
         if isinstance(self._numeric_mode, WildcardField):
-            return NumericMode[
+            return NumericMode(
                 str(
                     self._numeric_mode,
-                )
-            ]
+                ),
+            )
 
         else:
             return self._numeric_mode
 
-    @log_exception
-    @log_runtime
     def compare(
         self,
         source_field: Series,
@@ -180,7 +178,7 @@ class CompareRuleNumericTolerance(
 
         else:
             raise NotImplementedError(
-                '',
+                f'{self.diff_mode} is not a recognized diff mode for diffing!',
             )
 
         # Numeric mode
@@ -194,7 +192,7 @@ class CompareRuleNumericTolerance(
 
         else:
             raise NotImplementedError(
-                '',
+                f'{self.numeric_mode} is not a recognized numeric mode for diffing!',
             )
 
         # Do compare

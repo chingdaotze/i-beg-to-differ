@@ -1,7 +1,6 @@
 from typing import (
     List,
     Dict,
-    Literal,
 )
 from functools import cached_property
 
