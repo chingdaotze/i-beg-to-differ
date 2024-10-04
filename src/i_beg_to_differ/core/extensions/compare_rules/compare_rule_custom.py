@@ -11,10 +11,7 @@ from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
     CompareRule,
 )
 from ...wildcards_sets import WildcardSets
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 
 
 class CompareRuleCustom(
@@ -45,8 +42,6 @@ class CompareRuleCustom(
 
         return f'{self.extension_name}: {self.file_name}'
 
-    @log_exception
-    @log_runtime
     def compare(
         self,
         source_field: Series,

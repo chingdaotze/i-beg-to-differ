@@ -13,10 +13,7 @@ from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
 )
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 
 
 class DiffMode(

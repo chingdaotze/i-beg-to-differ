@@ -5,20 +5,14 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import (
-    DataFrame,
-    Series,
-)
+from pandas import Series
 
 from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
 from ...ib2d_file.ib2d_file_working_dir import IB2DFileWorkingDir
 from ...wildcards_sets import WildcardSets
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 
 
 class FieldTransformCustom(
@@ -55,20 +49,14 @@ class FieldTransformCustom(
 
         return f'{self.extension_name}: {self.file_name}'
 
-    @log_exception
-    @log_runtime
     def transform(
         self,
-        raw_table: DataFrame,
-        transformed_table: DataFrame,
-        field: Series,
+        values: Series,
     ) -> Series:
         """
         Transforms values in a single Field.
 
-        :param raw_table: Read-only copy of the original table.
-        :param transformed_table: Read-only copy of the transformed table.
-        :param field: Values to transform.
+        :param values: Values to transform.
         :return: Transformed values.
         """
 
