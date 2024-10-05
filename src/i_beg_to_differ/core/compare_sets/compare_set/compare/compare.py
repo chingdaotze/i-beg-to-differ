@@ -6,6 +6,12 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
+from io import (
+    StringIO,
+    BytesIO,
+)
+
+from pandas import ExcelWriter
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 from ....compare_engine import CompareEngine
@@ -146,3 +152,136 @@ class Compare(
                 for instance in self.dt_fields
             ],
         }
+
+    def to_csv(
+        self,
+        dir_path: Path,
+        file_name_prefix: str | None = None,
+        file_name_suffix: str | None = None,
+    ) -> None:
+        """
+        Writes all reports as *.csv files to a specified directory.
+
+        :param dir_path: Directory to save reports.
+        :param file_name_prefix: File name prefix for *.csv files.
+        :param file_name_suffix: File name suffix for *.csv files.
+        :return:
+        """
+
+        if file_name_prefix is None:
+            file_name_prefix = ''
+
+        if file_name_suffix is None:
+            file_name_suffix = ''
+
+        self.log_info(
+            msg=f'Saving *.csv file reports to location: "{str(dir_path.absolute())}" ...',
+        )
+
+        csv_buffers = {
+            'schema_compare': StringIO(),
+            'values_compare': StringIO(),
+            'src_only': StringIO(),
+            'tgt_only': StringIO(),
+            'src_dup': StringIO(),
+            'tgt_dup': StringIO(),
+        }
+
+        self.data_source_pair.schema_comparison.to_csv(
+            path_or_buf=csv_buffers['schema_compare'],
+        )
+
+        self.values_comparison.to_csv(
+            path_or_buf=csv_buffers['values_compare'],
+        )
+
+        self.source_only_records.to_csv(
+            path_or_buf=csv_buffers['src_only'],
+        )
+
+        self.target_only_records.to_csv(
+            path_or_buf=csv_buffers['tgt_only'],
+        )
+
+        self.source_duplicate_primary_key_records.to_csv(
+            path_or_buf=csv_buffers['src_dup'],
+        )
+
+        self.source_duplicate_primary_key_records.to_csv(
+            path_or_buf=csv_buffers['tgt_dup'],
+        )
+
+        for csv_name, buffer in csv_buffers.items():
+            csv_path = dir_path / f'{file_name_prefix}{csv_name}{file_name_suffix}.csv'
+
+            with open(file=csv_path, mode='w') as csv_file:
+                csv_file.write(
+                    buffer.getvalue(),
+                )
+
+        self.log_info(
+            msg=f'Save complete: "{str(dir_path.absolute())}"',
+        )
+
+    def to_excel(
+        self,
+        path: Path,
+    ) -> None:
+        """
+        Writes all reports as sheets in a specified Excel file.
+
+        :param path: Path to the Excel file.
+        :return:
+        """
+
+        self.log_info(
+            msg=f'Saving Excel file report to location: "{str(path.absolute())}" ...',
+        )
+
+        excel_file_buffer = BytesIO()
+
+        excel_writer = ExcelWriter(
+            path=excel_file_buffer,
+            engine='openpyxl',
+        )
+
+        self.data_source_pair.schema_comparison.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='schema_compare',
+        )
+
+        self.values_comparison.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='values_compare',
+        )
+
+        self.source_only_records.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='src_only',
+        )
+
+        self.target_only_records.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='tgt_only',
+        )
+
+        self.source_duplicate_primary_key_records.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='src_dup',
+        )
+
+        self.source_duplicate_primary_key_records.to_excel(
+            excel_writer=excel_writer,
+            sheet_name='tgt_dup',
+        )
+
+        excel_writer.close()
+
+        with open(file=path, mode='wb') as excel_file:
+            excel_file.write(
+                excel_file_buffer.getvalue(),
+            )
+
+        self.log_info(
+            msg=f'Save complete: "{str(path.absolute())}"',
+        )

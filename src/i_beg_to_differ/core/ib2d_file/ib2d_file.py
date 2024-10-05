@@ -264,10 +264,10 @@ class IB2DFile(
         )
 
         # Create *.ib2d file in memory
-        ib2d_file_bytes = BytesIO()
+        ib2d_file_buffer = BytesIO()
 
         ib2d_file = ZipFile(
-            file=ib2d_file_bytes,
+            file=ib2d_file_buffer,
             mode='w',
         )
 
@@ -316,7 +316,7 @@ class IB2DFile(
         # Write *.ib2d file to disk
         with open(file=path, mode='wb') as output_file:
             output_file.write(
-                ib2d_file_bytes.getvalue(),
+                ib2d_file_buffer.getvalue(),
             )
 
         self.log_info(
