@@ -1,4 +1,5 @@
 from pytest import fixture
+from pathlib import Path
 
 from i_beg_to_differ.core import (
     IB2DFile,
@@ -8,12 +9,14 @@ from i_beg_to_differ.core import (
 
 @fixture
 def ib2d_file(
-    request,
+    artifacts_dir: Path,
+    test_name: str,
 ) -> IB2DFile:
-    test_name = request.node.name
+
+    path = artifacts_dir / f'{test_name}.ib2d'
 
     with open_ib2d_file(
-        path=f'tests/test_artifacts/{test_name}/{test_name}.ib2d',
+        path=path,
     ) as ib2d_file:
 
         yield ib2d_file

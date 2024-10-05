@@ -1,13 +1,13 @@
 from pathlib import Path
 
 from .fixture_ib2d_file import ib2d_file
-from .fixture_logger import logger
+
+from i_beg_to_differ.core import IB2DFile
 
 
 def test_serialize_ib2d_file(
-    ib2d_file,
-    logger,
-    tmpdir,
+    ib2d_file: IB2DFile,
+    tmpdir: Path,
 ) -> None:
     # Get benchmark hash
     ib2d_zip_file = ib2d_file.load_zip_file(
