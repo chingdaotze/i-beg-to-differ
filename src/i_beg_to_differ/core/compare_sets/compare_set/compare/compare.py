@@ -6,15 +6,22 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
+from functools import cached_property
 from io import (
     StringIO,
     BytesIO,
 )
 
-from pandas import ExcelWriter
+from pandas import (
+    DataFrame,
+    ExcelWriter,
+)
 
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
-from ....compare_engine import CompareEngine
+from ....compare_engine import (
+    CompareEngine,
+    AUTO_MATCH,
+)
 from .data_source_pair import DataSourcePair
 from .field_pair import (
     FieldPairPrimaryKey,
@@ -52,8 +59,8 @@ class Compare(
         self,
         data_sources: DataSources,
         data_source_pair: DataSourcePair,
-        pk_fields: List[FieldPairPrimaryKey] | None = None,
-        dt_fields: List[FieldPairData] | None = None,
+        pk_fields: List[FieldPairPrimaryKey] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldPairData] | AUTO_MATCH | None = None,
         description: str | None = None,
     ):
         IB2DFileElement.__init__(
@@ -101,25 +108,31 @@ class Compare(
             wildcard_sets=wildcard_sets,
         )
 
-        pk_fields = [
-            FieldPairPrimaryKey.deserialize(
-                instance_data=pk_field_data,
-                working_dir_path=working_dir_path,
-                ib2d_file=ib2d_file,
-                wildcard_sets=wildcard_sets,
-            )
-            for pk_field_data in instance_data['pk_fields']
-        ]
+        pk_fields = instance_data['pk_fields']
 
-        dt_fields = [
-            FieldPairData.deserialize(
-                instance_data=dt_field_data,
-                working_dir_path=working_dir_path,
-                ib2d_file=ib2d_file,
-                wildcard_sets=wildcard_sets,
-            )
-            for dt_field_data in instance_data['dt_fields']
-        ]
+        if isinstance(pk_fields, list):
+            pk_fields = [
+                FieldPairPrimaryKey.deserialize(
+                    instance_data=pk_field_data,
+                    working_dir_path=working_dir_path,
+                    ib2d_file=ib2d_file,
+                    wildcard_sets=wildcard_sets,
+                )
+                for pk_field_data in pk_fields
+            ]
+
+        dt_fields = instance_data['dt_fields']
+
+        if isinstance(dt_fields, list):
+            dt_fields = [
+                FieldPairData.deserialize(
+                    instance_data=dt_field_data,
+                    working_dir_path=working_dir_path,
+                    ib2d_file=ib2d_file,
+                    wildcard_sets=wildcard_sets,
+                )
+                for dt_field_data in instance_data['dt_fields']
+            ]
 
         return Compare(
             data_sources=data_sources,
@@ -135,23 +148,97 @@ class Compare(
         ib2d_file: ZipFile,
     ) -> Dict:
 
+        if isinstance(self._pk_fields, list):
+            pk_fields = [
+                instance.serialize(
+                    ib2d_file=ib2d_file,
+                )
+                for instance in self._pk_fields
+            ]
+
+        else:
+            pk_fields = self._pk_fields
+
+        if isinstance(self._dt_fields, list):
+            dt_fields = [
+                instance.serialize(
+                    ib2d_file=ib2d_file,
+                )
+                for instance in self._dt_fields
+            ]
+
+        else:
+            dt_fields = self._dt_fields
+
         return {
             'description': self.description,
             'source': self.source,
             'target': self.target,
-            'pk_fields': [
-                instance.serialize(
-                    ib2d_file=ib2d_file,
-                )
-                for instance in self.pk_fields
-            ],
-            'dt_fields': [
-                instance.serialize(
-                    ib2d_file=ib2d_file,
-                )
-                for instance in self.dt_fields
-            ],
+            'pk_fields': pk_fields,
+            'dt_fields': dt_fields,
         }
+
+    @cached_property
+    def all_reports(
+        self,
+    ) -> Dict[str, DataFrame]:
+
+        return {
+            'schema_compare': self.data_source_pair.schema_comparison,
+            'values_compare': self.values_comparison,
+            'mismatches': self.mismatching_records,
+            'matches': self.matching_records,
+            'src_only': self.source_only_records,
+            'tgt_only': self.target_only_records,
+            'src_dup': self.source_duplicate_primary_key_records,
+            'tgt_dup': self.target_duplicate_primary_key_records,
+        }
+
+    def to_parquet(
+        self,
+        dir_path: Path,
+        file_name_prefix: str | None = None,
+        file_name_suffix: str | None = None,
+    ) -> None:
+        """
+        Writes all reports as *.parquet files to a specified directory.
+
+        :param dir_path: Directory to save reports.
+        :param file_name_prefix: File name prefix for *.parquet files.
+        :param file_name_suffix: File name suffix for *.parquet files.
+        :return:
+        """
+
+        if file_name_prefix is None:
+            file_name_prefix = ''
+
+        if file_name_suffix is None:
+            file_name_suffix = ''
+
+        self.log_info(
+            msg=f'Saving *.parquet file reports to location: "{str(dir_path.absolute())}" ...',
+        )
+
+        buffers = {report_name: BytesIO() for report_name in self.all_reports.keys()}
+
+        for report_name, report_data in self.all_reports.items():
+            report_data.to_parquet(
+                path=buffers[report_name],
+            )
+
+        for report_name, buffer in buffers.items():
+            file_path = (
+                dir_path / f'{file_name_prefix}{report_name}{file_name_suffix}.parquet'
+            )
+
+            with open(file=file_path, mode='wb') as file:
+                file.write(
+                    buffer.getvalue(),
+                )
+
+        self.log_info(
+            msg=f'Save complete: "{str(dir_path.absolute())}"',
+        )
 
     def to_csv(
         self,
@@ -178,44 +265,20 @@ class Compare(
             msg=f'Saving *.csv file reports to location: "{str(dir_path.absolute())}" ...',
         )
 
-        csv_buffers = {
-            'schema_compare': StringIO(),
-            'values_compare': StringIO(),
-            'src_only': StringIO(),
-            'tgt_only': StringIO(),
-            'src_dup': StringIO(),
-            'tgt_dup': StringIO(),
-        }
+        buffers = {report_name: StringIO() for report_name in self.all_reports.keys()}
 
-        self.data_source_pair.schema_comparison.to_csv(
-            path_or_buf=csv_buffers['schema_compare'],
-        )
+        for report_name, report_data in self.all_reports.items():
+            report_data.to_csv(
+                path_or_buf=buffers[report_name],
+            )
 
-        self.values_comparison.to_csv(
-            path_or_buf=csv_buffers['values_compare'],
-        )
+        for report_name, buffer in buffers.items():
+            file_path = (
+                dir_path / f'{file_name_prefix}{report_name}{file_name_suffix}.csv'
+            )
 
-        self.source_only_records.to_csv(
-            path_or_buf=csv_buffers['src_only'],
-        )
-
-        self.target_only_records.to_csv(
-            path_or_buf=csv_buffers['tgt_only'],
-        )
-
-        self.source_duplicate_primary_key_records.to_csv(
-            path_or_buf=csv_buffers['src_dup'],
-        )
-
-        self.source_duplicate_primary_key_records.to_csv(
-            path_or_buf=csv_buffers['tgt_dup'],
-        )
-
-        for csv_name, buffer in csv_buffers.items():
-            csv_path = dir_path / f'{file_name_prefix}{csv_name}{file_name_suffix}.csv'
-
-            with open(file=csv_path, mode='w') as csv_file:
-                csv_file.write(
+            with open(file=file_path, mode='w', newline='') as file:
+                file.write(
                     buffer.getvalue(),
                 )
 
@@ -245,35 +308,11 @@ class Compare(
             engine='openpyxl',
         )
 
-        self.data_source_pair.schema_comparison.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='schema_compare',
-        )
-
-        self.values_comparison.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='values_compare',
-        )
-
-        self.source_only_records.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='src_only',
-        )
-
-        self.target_only_records.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='tgt_only',
-        )
-
-        self.source_duplicate_primary_key_records.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='src_dup',
-        )
-
-        self.source_duplicate_primary_key_records.to_excel(
-            excel_writer=excel_writer,
-            sheet_name='tgt_dup',
-        )
+        for report_name, report_data in self.all_reports.items():
+            report_data.to_excel(
+                excel_writer=excel_writer,
+                sheet_name=report_name,
+            )
 
         excel_writer.close()
 

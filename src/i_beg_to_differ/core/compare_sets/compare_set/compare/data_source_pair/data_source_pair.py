@@ -15,11 +15,11 @@ from .....wildcards_sets import WildcardSets
 from .....data_sources.data_source import DataSource
 from .....utils.dataframe import dict_to_dataframe
 from .....extensions.data_sources.data_source_dataframe import DataSourceDataFrame
-from .....compare_engine import CompareEngine
-from .....compare_sets.compare_set.compare.field_pair import (
-    FieldPairPrimaryKey,
-    FieldPairData,
+from .....compare_engine import (
+    CompareEngine,
+    AUTO_MATCH,
 )
+from .....compare_sets.compare_set.compare.field_pair import FieldPairPrimaryKey
 
 
 class DataSourcePair(
@@ -111,6 +111,17 @@ class DataSourcePair(
     def types_to_dataframe(
         data_source: DataSource,
     ) -> DataFrame:
+        """
+        Creates a DataFrame that contains both source and target data types.
+
+        - ``column_name``: Name of the column.
+        - ``native_type``: Data type recognized by the data source's underlying system.
+        - ``py_type``: Data type recognized by Python.
+
+        :param data_source: Data source to parse.
+        :return:
+        """
+
         native_types = dict_to_dataframe(
             data=data_source.native_types,
             index='column_name',
@@ -134,12 +145,21 @@ class DataSourcePair(
 
         return types
 
-    # TODO: Provide method to automatch schemas.
-
     @cached_property
     def schema_comparison(
         self,
     ) -> DataFrame:
+        """
+        Schema comparison between source and target data sources.
+
+        - ``src.[column_name] | tgt.[column_name]``: Name of the column.
+        - ``src.[native_type]``: Source data type recognized by the data source's underlying system.
+        - ``tgt.[native_type]``: Target data type recognized by the data source's underlying system.
+        - ``src.[py_type]``: Source data type recognized by Python.
+        - ``tgt.[py_type]``: Target data type recognized by Python.
+
+        :return:
+        """
 
         self.init_caches()
 
@@ -176,16 +196,7 @@ class DataSourcePair(
                     target_field='column_name',
                 ),
             ],
-            dt_fields=[
-                FieldPairData(
-                    source_field='native_type',
-                    target_field='native_type',
-                ),
-                FieldPairData(
-                    source_field='py_type',
-                    target_field='py_type',
-                ),
-            ],
+            dt_fields=AUTO_MATCH,
         )
 
         return compare_engine.values_comparison

@@ -1,0 +1,3 @@
+src.[pk0] | tgt.[pk0],src.[pk1] | tgt.[pk1],src.[dt1],tgt.[dt1],dif.(src.[dt1] | tgt.[dt1]),src.[dt2],tgt.[dt2],dif.(src.[dt2] | tgt.[dt2])
+027fb2a6-3699-44f5-9030-301eeb682e70,bc66fd91-a6ed-4393-abef-b55afe772ad4,4,4,,7.412738474,7.412738474,
+4c348ab9-4380-4949-80fc-557a1f9bee49,a48cfeab-b21a-4e3c-99d9-930cd9075afe,6,6,,8.182236858,8.182236858,

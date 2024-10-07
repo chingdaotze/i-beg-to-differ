@@ -1,4 +1,5 @@
 from typing import (
+    Final,
     List,
     Dict,
 )
@@ -21,6 +22,9 @@ from ..compare_sets.compare_set.compare.field_pair import (
     FieldPairData,
     FieldPair,
 )
+
+
+AUTO_MATCH: Final[str] = 'auto_match'
 
 
 class FieldPairName:
@@ -77,23 +81,16 @@ class CompareEngine(
     Pointer to target data source.
     """
 
-    pk_fields: List[FieldPairPrimaryKey]
-    """
-    Primary key field pairs.
-    """
-
-    dt_fields: List[FieldPairData]
-    """
-    Data field pairs.
-    """
+    _pk_fields: List[FieldPairPrimaryKey] | AUTO_MATCH
+    _dt_fields: List[FieldPairData] | AUTO_MATCH
 
     def __init__(
         self,
         data_sources: DataSources,
         source: str,
         target: str,
-        pk_fields: List[FieldPairPrimaryKey] | None = None,
-        dt_fields: List[FieldPairData] | None = None,
+        pk_fields: List[FieldPairPrimaryKey] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldPairData] | AUTO_MATCH | None = None,
     ):
 
         Base.__init__(
@@ -104,8 +101,17 @@ class CompareEngine(
         self.source = source
         self.target = target
 
-        self.pk_fields = pk_fields
-        self.dt_fields = dt_fields
+        if pk_fields is not None:
+            self._pk_fields = pk_fields
+
+        else:
+            self._pk_fields = []
+
+        if dt_fields is not None:
+            self._dt_fields = dt_fields
+
+        else:
+            self._dt_fields = []
 
     def __str__(
         self,
@@ -159,6 +165,106 @@ class CompareEngine(
             )
 
         return field_pair_names
+
+    def get_auto_match_fields(
+        self,
+        exclude: List[FieldPair] | None = None,
+    ) -> List[FieldPair]:
+        """
+        Get a matching list of field pairs between the source and target data sources,
+        using column names to match.
+
+        :param exclude: List of ``FieldPair``'s to exclude from the matching list.
+        :return: List of matching ``FieldPair``'s, less any ``FieldPair``'s explicitly excluded.
+        """
+
+        source_columns = [
+            columns for columns in self.data_sources[self.source].py_types.keys()
+        ]
+        target_columns = [
+            columns for columns in self.data_sources[self.target].py_types.keys()
+        ]
+
+        matching_columns = [
+            column for column in source_columns if column in target_columns
+        ]
+
+        field_pairs = [
+            FieldPair(
+                source_field=field,
+                target_field=field,
+            )
+            for field in matching_columns
+        ]
+
+        if exclude is not None:
+            field_pairs = [
+                field_pair for field_pair in field_pairs if field_pair not in exclude
+            ]
+
+        return field_pairs
+
+    @cached_property
+    def pk_fields(
+        self,
+    ) -> List[FieldPairPrimaryKey]:
+        """
+        Primary key field pairs, using these rules:
+
+        #. If primary key fields are provided, those will be used.
+        #. If primary key fields are set to ``AUTO_MATCH``, those will be matched, less any provided data fields.
+
+        :return:
+        """
+
+        if self._pk_fields == AUTO_MATCH:
+            auto_match_fields = self.get_auto_match_fields(
+                exclude=self._dt_fields,
+            )
+
+            pk_fields = [
+                FieldPairPrimaryKey(
+                    source_field=field.source_field,
+                    target_field=field.target_field,
+                )
+                for field in auto_match_fields
+            ]
+
+        else:
+            pk_fields = self._pk_fields
+
+        return pk_fields
+
+    @cached_property
+    def dt_fields(
+        self,
+    ) -> List[FieldPairData]:
+        """
+        Data field pairs, using these rules:
+
+        #. If data fields are provided, those will be used.
+        #. If data fields are set to ``AUTO_MATCH``, those will be matched, less any computed primary keys.
+
+        :return:
+        """
+
+        if self._dt_fields == AUTO_MATCH:
+            auto_match_fields = self.get_auto_match_fields(
+                exclude=self.pk_fields,
+            )
+
+            dt_fields = [
+                FieldPairData(
+                    source_field=field.source_field,
+                    target_field=field.target_field,
+                )
+                for field in auto_match_fields
+            ]
+
+        else:
+            dt_fields = self._dt_fields
+
+        return dt_fields
 
     @cached_property
     def fields(
@@ -342,26 +448,20 @@ class CompareEngine(
 
         return deduplicated_dataframe
 
+    @log_exception
+    def _validate_fields(
+        self,
+    ) -> None:
+
+        if not self.pk_fields:
+            raise ValueError(
+                'No primary keys provided or computed for comparison!',
+            )
+
     @cached_property
-    def values_comparison(
+    def values_comparison_unmasked(
         self,
     ) -> DataFrame:
-
-        def apply_mask(
-            diff_values: Series,
-        ) -> None:
-
-            diff_values.replace(
-                to_replace=True,
-                value='',
-                inplace=True,
-            )
-
-            diff_values.replace(
-                to_replace=False,
-                value='*',
-                inplace=True,
-            )
 
         joint_dataframe = self.source_dataframe_deduplicated.merge(
             right=self.target_dataframe_deduplicated,
@@ -383,7 +483,6 @@ class CompareEngine(
                     'source_field': joint_dataframe[field_pair.source_field_name],
                     'target_field': joint_dataframe[field_pair.target_field_name],
                 },
-                callback=apply_mask,
             )
 
             column_order.extend(
@@ -402,9 +501,103 @@ class CompareEngine(
         return joint_dataframe
 
     @cached_property
+    def values_comparison(
+        self,
+    ) -> DataFrame:
+
+        values_comparison = self.values_comparison_unmasked.copy(
+            deep=True,
+        )
+
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            values_comparison[field_pair_name.diff_field].replace(
+                to_replace={
+                    True: '',
+                    False: '*',
+                },
+                inplace=True,
+            )
+
+        return values_comparison
+
+    @cached_property
+    def matching_records(
+        self,
+    ) -> DataFrame:
+
+        matching_records = self.values_comparison_unmasked.copy(
+            deep=True,
+        )
+
+        keep_rows = Series(
+            data=True,
+            index=matching_records.index,
+        )
+
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            diff_values = matching_records[field_pair_name.diff_field]
+            keep_rows = keep_rows & diff_values
+
+        matching_records = matching_records[keep_rows]
+
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            matching_records[field_pair_name.diff_field].replace(
+                to_replace={
+                    True: '',
+                    False: '*',
+                },
+                inplace=True,
+            )
+
+        return matching_records
+
+    @cached_property
+    def mismatching_records(
+        self,
+    ) -> DataFrame:
+
+        mismatching_records = self.values_comparison_unmasked.copy(
+            deep=True,
+        )
+
+        keep_rows = Series(
+            data=False,
+            index=mismatching_records.index,
+        )
+
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            diff_values = mismatching_records[field_pair_name.diff_field]
+            keep_rows = keep_rows | ~diff_values
+
+        mismatching_records = mismatching_records[keep_rows]
+
+        for field_pair in self.dt_fields:
+            field_pair_name = self.field_pair_names[field_pair]
+
+            mismatching_records[field_pair_name.diff_field].replace(
+                to_replace={
+                    True: '',
+                    False: '*',
+                },
+                inplace=True,
+            )
+
+        return mismatching_records
+
+    @cached_property
     def source_only_records(
         self,
     ) -> DataFrame:
+
+        self._validate_fields()
 
         inner_index = self.source_dataframe_deduplicated.index.join(
             other=self.target_dataframe_deduplicated.index,
@@ -417,12 +610,22 @@ class CompareEngine(
             )
         ]
 
+        source_only_records.index.rename(
+            names=[
+                self.field_pair_names[field_pair].source_field
+                for field_pair in self.pk_fields
+            ],
+            inplace=True,
+        )
+
         return source_only_records
 
     @cached_property
     def target_only_records(
         self,
     ) -> DataFrame:
+
+        self._validate_fields()
 
         inner_index = self.source_dataframe_deduplicated.index.join(
             other=self.target_dataframe_deduplicated.index,
@@ -435,6 +638,14 @@ class CompareEngine(
             )
         ]
 
+        target_only_records.index.rename(
+            names=[
+                self.field_pair_names[field_pair].target_field
+                for field_pair in self.pk_fields
+            ],
+            inplace=True,
+        )
+
         return target_only_records
 
     @cached_property
@@ -442,11 +653,21 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
+        self._validate_fields()
+
         duplicated_dataframe = self.source_dataframe[
             self.source_dataframe.index.duplicated(
                 keep=False,
             )
         ]
+
+        duplicated_dataframe.index.rename(
+            names=[
+                self.field_pair_names[field_pair].source_field
+                for field_pair in self.pk_fields
+            ],
+            inplace=True,
+        )
 
         return duplicated_dataframe
 
@@ -455,10 +676,20 @@ class CompareEngine(
         self,
     ) -> DataFrame:
 
+        self._validate_fields()
+
         duplicated_dataframe = self.target_dataframe[
             self.target_dataframe.index.duplicated(
                 keep=False,
             )
         ]
+
+        duplicated_dataframe.index.rename(
+            names=[
+                self.field_pair_names[field_pair].target_field
+                for field_pair in self.pk_fields
+            ],
+            inplace=True,
+        )
 
         return duplicated_dataframe

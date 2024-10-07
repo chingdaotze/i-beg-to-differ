@@ -30,7 +30,6 @@ def test_report_csv(
         )
 
         for benchmark_file_name, benchmark_file_data in csv_benchmarks.items():
-
             assert benchmark_file_data.equals(
                 other=csv_files[benchmark_file_name],
             )

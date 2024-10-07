@@ -8,13 +8,13 @@ from .fixture_parquet_benchmarks import parquet_benchmarks
 from i_beg_to_differ.core import IB2DFile
 
 
-def test_compare_rule_numeric_tolerance(
+def test_primary_keys_empty_data_fields(
     ib2d_file: IB2DFile,
     tmp_path: Path,
     parquet_benchmarks: Dict[str, DataFrame],
 ) -> None:
-
     with ib2d_file:
+
         compare_set = ib2d_file.compare_sets['CompareSet0']
         compare = compare_set['Compare1']
 

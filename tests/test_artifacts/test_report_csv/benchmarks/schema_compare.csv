@@ -1,6 +1,6 @@
-src.[column_name] | tgt.[column_name],src.[native_type],tgt.[native_type],dif.(src.[native_type] | tgt.[native_type]),src.[py_type],tgt.[py_type],dif.(src.[py_type] | tgt.[py_type])
-pk0,str,OPENPYXL_TYPE_STRING,*,object_,object_,
-pk1,str,OPENPYXL_TYPE_STRING,*,object_,object_,
-dt0,str,OPENPYXL_TYPE_STRING,*,object_,object_,
-dt1,str,OPENPYXL_TYPE_NUMERIC,*,int64,int64,
-dt2,str,OPENPYXL_TYPE_NUMERIC,*,float64,float64,
+src.[column_name] | tgt.[column_name],src.[native_type],tgt.[native_type],dif.(src.[native_type] | tgt.[native_type]),src.[py_type],tgt.[py_type],dif.(src.[py_type] | tgt.[py_type])
+pk0,str,OPENPYXL_TYPE_STRING,*,object_,object_,
+pk1,str,OPENPYXL_TYPE_STRING,*,object_,object_,
+dt0,str,OPENPYXL_TYPE_STRING,*,object_,object_,
+dt1,str,OPENPYXL_TYPE_NUMERIC,*,int64,int64,
+dt2,str,OPENPYXL_TYPE_NUMERIC,*,float64,float64,

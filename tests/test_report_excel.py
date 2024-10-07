@@ -22,7 +22,6 @@ def test_report_excel(
         compare = compare_set['Compare1']
 
         report_path = tmp_path / 'report.xlsx'
-
         compare.to_excel(
             path=report_path,
         )
@@ -33,7 +32,6 @@ def test_report_excel(
         )
 
         for benchmark_sheet_name, benchmark_sheet_data in excel_file_benchmarks.items():
-
             assert benchmark_sheet_data.equals(
                 other=excel_file[benchmark_sheet_name],
             )
