@@ -218,8 +218,14 @@ class CompareEngine(
         """
 
         if self._pk_fields == AUTO_MATCH:
+            if self._dt_fields == AUTO_MATCH:
+                dt_fields = []
+
+            else:
+                dt_fields = self._dt_fields
+
             auto_match_fields = self.get_auto_match_fields(
-                exclude=self._dt_fields,
+                exclude=dt_fields,
             )
 
             pk_fields = [
