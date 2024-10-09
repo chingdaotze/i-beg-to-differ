@@ -295,8 +295,6 @@ class CompareEngine(
         :return:
         """
 
-        # TODO: Final data type conversion for compare rule should be performed outside the scope of this
-
         source_data_source = self.data_sources[self.source]
         target_data_source = self.data_sources[self.target]
 
@@ -484,7 +482,7 @@ class CompareEngine(
             field_pair_name = self.field_pair_names[field_pair]
 
             results[field_pair_name.diff_field] = self.pool.apply_async(
-                func=field_pair.compare_rule.compare,
+                func=field_pair.compare_rule.convert_compare,
                 kwds={
                     'source_field': joint_dataframe[field_pair.source_field_name],
                     'target_field': joint_dataframe[field_pair.target_field_name],

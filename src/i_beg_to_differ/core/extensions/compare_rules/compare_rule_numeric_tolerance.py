@@ -8,9 +8,8 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
-    CompareRule,
-)
+from ...compare_sets.compare_set.compare.field_pair.compare_rule import CompareRule
+from ...extensions.data_type_extension import DataType
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 from ...base import log_exception
@@ -39,6 +38,7 @@ class CompareRuleNumericTolerance(
     _diff_mode: WildcardField | DiffMode
 
     extension_name = 'Numeric Tolerance'
+    data_type = DataType.NUMERIC
 
     def __init__(
         self,

@@ -4,6 +4,13 @@ from typing import (
     List,
 )
 
+from pandas import (
+    Series,
+    to_numeric,
+    to_datetime,
+    to_timedelta,
+)
+
 from .extension import Extension
 
 
@@ -38,3 +45,34 @@ class DataTypeExtension(
         Extension.__init__(
             self=self,
         )
+
+    def cast_data_type(
+        self,
+        data: Series,
+    ) -> Series:
+
+        match self.data_type:
+            case DataType.ANY | DataType.STRING:
+                return data.astype(
+                    dtype=str,
+                )
+
+            case DataType.NUMERIC:
+                return to_numeric(
+                    arg=data,
+                )
+
+            case DataType.DATE_TIME:
+                return to_datetime(
+                    arg=data,
+                )
+
+            case DataType.TIME_DELTA:
+                return to_timedelta(
+                    arg=data,
+                )
+
+            case _:
+                raise NotImplementedError(
+                    f'Unhandled data type conversion: {self.data_type} !'
+                )

@@ -31,6 +31,25 @@ class CompareRule(
             self=self,
         )
 
+    def convert_compare(
+        self,
+        source_field: Series,
+        target_field: Series,
+    ) -> Series:
+
+        source_field = self.cast_data_type(
+            data=source_field,
+        )
+
+        target_field = self.cast_data_type(
+            data=target_field,
+        )
+
+        return self.compare(
+            source_field=source_field,
+            target_field=target_field,
+        )
+
     @abstractmethod
     def compare(
         self,
