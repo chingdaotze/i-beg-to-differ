@@ -43,11 +43,29 @@ class WildcardField(
         else:
             return self.base_value
 
+    def __hash__(
+        self,
+    ) -> int:
+
+        return hash(
+            self.base_value,
+        )
+
     def __float__(
         self,
     ) -> float:
 
         return float(
+            str(
+                self,
+            ),
+        )
+
+    def __int__(
+        self,
+    ) -> int:
+
+        return int(
             str(
                 self,
             ),
