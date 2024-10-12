@@ -5,7 +5,7 @@ from abc import (
     abstractmethod,
 )
 
-from ..extension import Extension
+from .extension import Extension
 
 
 class CodeEditor(
