@@ -1,7 +1,10 @@
 from enum import StrEnum
+from abc import ABC
 from typing import (
     ClassVar,
     List,
+    Callable,
+    Tuple,
 )
 
 from pandas import (
@@ -9,6 +12,13 @@ from pandas import (
     to_numeric,
     to_datetime,
     to_timedelta,
+)
+from pandas.api.types import (
+    is_string_dtype,
+    is_bool_dtype,
+    is_datetime64_any_dtype,
+    is_numeric_dtype,
+    is_datetime64_dtype,
 )
 
 from .extension import Extension
@@ -30,13 +40,25 @@ class DataType(
 
 class DataTypeExtension(
     Extension,
+    ABC,
 ):
+    """
+    Abstract class for an extension that has data type requirements.
+    """
 
     data_type: ClassVar[DataType | List[DataType]] = DataType.ANY
     """
     Determines applicable data types for this extension. Override this to hint
     data type conversion whenever this extension is used.
     """
+
+    EQUIVALENT_DTYPE_CHECKS: ClassVar[List[Callable[[Series], bool]]] = [
+        is_string_dtype,
+        is_bool_dtype,
+        is_datetime64_any_dtype,
+        is_numeric_dtype,
+        is_datetime64_dtype,
+    ]
 
     def __init__(
         self,
@@ -48,29 +70,82 @@ class DataTypeExtension(
 
     def cast_data_type(
         self,
-        data: Series,
-    ) -> Series:
+        source: Series,
+        target: Series,
+    ) -> Tuple[Series, Series]:
+        """
+        Casts source and target data to appropriate types given extension requirements.
+        Tries not to cast data unless necessary.
+
+        :param source: Source data to convert.
+        :param target: Target data to convert.
+        :return: Converted source and target data.
+        """
 
         match self.data_type:
-            case DataType.ANY | DataType.STRING:
-                return data.astype(
+            case DataType.ANY:
+                if any(
+                    [
+                        equivalence_check(source) & equivalence_check(target)
+                        for equivalence_check in self.EQUIVALENT_DTYPE_CHECKS
+                    ]
+                ):
+                    pass
+
+                else:
+                    source = source.astype(
+                        dtype=str,
+                    )
+
+                    target = target.astype(
+                        dtype=str,
+                    )
+
+                return source, target
+
+            case DataType.STRING:
+                source = source.astype(
                     dtype=str,
                 )
 
-            case DataType.NUMERIC:
-                return to_numeric(
-                    arg=data,
+                target = target.astype(
+                    dtype=str,
                 )
+
+                return source, target
+
+            case DataType.NUMERIC:
+                source = to_numeric(
+                    arg=source,
+                )
+
+                target = to_numeric(
+                    arg=target,
+                )
+
+                return source, target
 
             case DataType.DATE_TIME:
-                return to_datetime(
-                    arg=data,
+                source = to_datetime(
+                    arg=source,
                 )
 
-            case DataType.TIME_DELTA:
-                return to_timedelta(
-                    arg=data,
+                target = to_datetime(
+                    arg=target,
                 )
+
+                return source, target
+
+            case DataType.TIME_DELTA:
+                source = to_timedelta(
+                    arg=source,
+                )
+
+                target = to_timedelta(
+                    arg=target,
+                )
+
+                return source, target
 
             case _:
                 raise NotImplementedError(

@@ -36,13 +36,17 @@ class CompareRule(
         source_field: Series,
         target_field: Series,
     ) -> Series:
+        """
+        Converts data into appropriate types first, then executes the compare function.
 
-        source_field = self.cast_data_type(
-            data=source_field,
-        )
+        :param source_field:
+        :param target_field:
+        :return:
+        """
 
-        target_field = self.cast_data_type(
-            data=target_field,
+        source_field, target_field = self.cast_data_type(
+            source=source_field,
+            target=target_field,
         )
 
         return self.compare(
