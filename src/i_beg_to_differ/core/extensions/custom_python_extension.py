@@ -16,6 +16,7 @@ from importlib.util import (
     module_from_spec,
 )
 from sys import modules
+from subprocess import call
 
 from ..wildcards_sets import WildcardSets
 
@@ -164,7 +165,29 @@ class CustomPythonExtension(
         # TODO: Create a Python file with the appropriate signature
         pass
 
-    def validate_extension_func(self, extension_func: Callable) -> None:
+    def edit_python_file(
+        self,
+    ) -> None:
+        """
+        #. Opens file in default Python file editor.
+        #. Once editing is complete, validates the python file.
+
+        This call blocks until the editor process is closed.
+
+        :return:
+        """
+
+        call(
+            args=str(self.py_file_path),
+            shell=True,
+        )
+
+        self.get_extension_func()
+
+    def validate_extension_func(
+        self,
+        extension_func: Callable,
+    ) -> None:
         """
         Validates a Python file to ensure a Python function exists with an appropriate signature.
 

@@ -484,8 +484,8 @@ class CompareEngine(
             results[field_pair_name.diff_field] = self.pool.apply_async(
                 func=field_pair.compare_rule.convert_compare,
                 kwds={
-                    'source_field': joint_dataframe[field_pair.source_field_name],
-                    'target_field': joint_dataframe[field_pair.target_field_name],
+                    'source_field': joint_dataframe[field_pair_name.source_field],
+                    'target_field': joint_dataframe[field_pair_name.target_field],
                 },
             )
 

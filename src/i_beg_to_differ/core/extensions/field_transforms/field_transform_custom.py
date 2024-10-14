@@ -4,50 +4,49 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
+from copy import copy
 
 from pandas import Series
 
 from ...data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from ...ib2d_file.ib2d_file_working_dir import IB2DFileWorkingDir
+from ..custom_python_extension import CustomPythonExtension
 from ...wildcards_sets import WildcardSets
 from ...base import log_exception
 
 
 class FieldTransformCustom(
-    IB2DFileWorkingDir,
     FieldTransform,
+    CustomPythonExtension,
 ):
 
-    file_name: str
-    _wildcard_sets: WildcardSets | None
-
-    extension_name = 'Custom Python Script'
+    extension_name = 'Custom Python Transform Script'
 
     def __init__(
         self,
         working_dir_path: Path,
-        file_name: str,
+        py_file_name: str | Path | None,
         wildcard_sets: WildcardSets | None = None,
     ):
-        IB2DFileWorkingDir.__init__(
-            self=self,
-            working_dir_path=working_dir_path,
-        )
 
         FieldTransform.__init__(
             self=self,
         )
 
-        self.file_name = file_name
-        self._wildcard_sets = wildcard_sets
+        CustomPythonExtension.__init__(
+            self=self,
+            working_dir_path=working_dir_path,
+            extension_func=self.transform,
+            py_file_name=py_file_name,
+            wildcard_sets=wildcard_sets,
+        )
 
     def __str__(
         self,
     ) -> str:
 
-        return f'{self.extension_name}: {self.file_name}'
+        return f'{self.extension_name}: {self.py_file_name}'
 
     def transform(
         self,
@@ -60,9 +59,16 @@ class FieldTransformCustom(
         :return: Transformed values.
         """
 
-        # TODO: Load custom file, pass in current active wildcard set.
+        extension_func = self.get_extension_func()
 
-        pass
+        return extension_func(
+            values=values,
+            wildcards=(
+                copy(self.wildcard_sets.active_wildcard_set.replacement_values)
+                if isinstance(self.wildcard_sets, WildcardSets)
+                else {}
+            ),
+        )
 
     @classmethod
     @log_exception
@@ -74,11 +80,17 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformCustom(
+        field_transform = FieldTransformCustom(
             working_dir_path=working_dir_path,
-            file_name=instance_data["parameters"]["file_name"],
+            py_file_name=instance_data["parameters"]["py_file_name"],
             wildcard_sets=wildcard_sets,
         )
+
+        field_transform.inflate_py_file(
+            ib2d_file=ib2d_file,
+        )
+
+        return field_transform
 
     @log_exception
     def serialize(
@@ -86,9 +98,13 @@ class FieldTransformCustom(
         ib2d_file: ZipFile,
     ) -> Dict:
 
+        self.deflate_py_file(
+            ib2d_file=ib2d_file,
+        )
+
         return {
             "extension_id": self.extension_id,
             "parameters": {
-                "file_name": self.file_name,
+                "py_file_name": self.py_file_name,
             },
         }
