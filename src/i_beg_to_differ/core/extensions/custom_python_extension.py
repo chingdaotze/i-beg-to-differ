@@ -1,12 +1,21 @@
 from abc import ABC
 from pathlib import Path
-from typing import Callable
+from typing import (
+    Callable,
+    Dict,
+)
 from uuid import uuid4
 from inspect import (
     Signature,
     signature,
+    Parameter,
 )
 from zipfile import ZipFile
+from importlib.util import (
+    spec_from_file_location,
+    module_from_spec,
+)
+from sys import modules
 
 from ..wildcards_sets import WildcardSets
 
@@ -60,6 +69,11 @@ class CustomPythonExtension(
     def extension_func_name(
         self,
     ) -> str:
+        """
+        Python function name that contains main extension logic. Used to build a new Python file.
+
+        :return:
+        """
 
         return self.extension_func.__name__
 
@@ -67,57 +81,136 @@ class CustomPythonExtension(
     def extension_func_signature(
         self,
     ) -> Signature:
+        """
+        Python function signature that contains main extension logic. Used to build a new Python file.
 
-        return signature(
+        :return:
+        """
+
+        extension_func_signature = signature(
             obj=self.extension_func,
         )
+
+        parameters = {
+            parameter_name: parameter
+            for parameter_name, parameter in extension_func_signature.parameters.items()
+        }
+
+        parameters['wildcards'] = Parameter(
+            name='wildcards',
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Dict[str, str],
+        )
+
+        extension_func_signature = Signature(
+            parameters=[parameter for parameter in parameters.values()],
+            return_annotation=extension_func_signature.return_annotation,
+        )
+
+        return extension_func_signature
 
     @property
     def extension_func_docstring(
         self,
     ) -> Signature:
+        """
+        Python function docstring that contains main extension logic. Used to build a new Python file.
+
+        :return:
+        """
 
         return self.extension_func.__doc__
 
     def inflate_py_file(
         self,
+        ib2d_file: ZipFile,
     ) -> None:
+        """
+        Inflates the Python file rom an ``*.ib2d`` File to the working directory.
 
-        pass
+        :param ib2d_file:
+        :return:
+        """
+
+        self.py_file_path = self.working_dir_path / self.py_file_name
+
+        ib2d_file.extract(
+            member=self.py_file_name,
+            path=self.working_dir_path,
+        )
 
     def deflate_py_file(
         self,
         ib2d_file: ZipFile,
     ) -> None:
+        """
+        Deflates the Python file from the working directory into an ``*.ib2d`` File.
 
-        pass
+        :param ib2d_file:
+        :return:
+        """
 
-    def create_python_file_content(
-        self,
-    ) -> str:
-
-        # TODO: Create Python file content
-        pass
+        # TODO: Deflate file
 
     def create_python_file(
         self,
     ) -> Path:
+        """
+        Creates a new Python file with an appropriate Python function signature.
+
+        :return:
+        """
 
         # TODO: Create a Python file with the appropriate signature
         pass
 
-    def validate_python_file(
-        self,
-    ) -> None:
+    def validate_extension_func(self, extension_func: Callable) -> None:
+        """
+        Validates a Python file to ensure a Python function exists with an appropriate signature.
 
-        # TODO: Check if callable name and signature exists in Python File
-        pass
+        :param extension_func: Function to validate.
+        :return:
+        """
+
+        assert extension_func.__name__ == self.extension_func_name
+        assert signature(extension_func) == self.extension_func_signature
 
     def get_extension_func(
         self,
     ) -> Callable:
+        """
+        Loads and validates a Python module that contains extension logic. Reference:
+        https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
 
-        # TODO: Load the python file and set attribute
-        self.validate_python_file()
+        :return: Python function to call.
+        """
 
-        pass
+        module_name = Path(
+            self.py_file_name,
+        ).stem
+
+        spec = spec_from_file_location(
+            name=module_name,
+            location=self.py_file_path,
+        )
+
+        module = module_from_spec(
+            spec=spec,
+        )
+
+        modules[module_name] = module
+
+        spec.loader.exec_module(
+            module=module,
+        )
+
+        extension_func = getattr(
+            module,
+            self.extension_func_name,
+        )
+
+        self.validate_extension_func(
+            extension_func=extension_func,
+        )
+
+        return extension_func

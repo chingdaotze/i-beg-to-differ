@@ -91,7 +91,9 @@ class CompareRuleCustom(
             wildcard_sets=wildcard_sets,
         )
 
-        compare_rule.inflate_py_file()
+        compare_rule.inflate_py_file(
+            ib2d_file=ib2d_file,
+        )
 
         return compare_rule
 
