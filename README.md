@@ -1,2 +1,2 @@
 # i-beg-to-differ
-Comparison application, powered by Pandas.
+Tabular comparison application, powered by Pandas.
