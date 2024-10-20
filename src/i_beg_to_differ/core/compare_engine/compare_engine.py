@@ -516,12 +516,13 @@ class CompareEngine(
         for field_pair in self.dt_fields:
             field_pair_name = self.field_pair_names[field_pair]
 
-            values_comparison[field_pair_name.diff_field].replace(
+            values_comparison[field_pair_name.diff_field] = values_comparison[
+                field_pair_name.diff_field
+            ].replace(
                 to_replace={
                     True: '',
                     False: '*',
                 },
-                inplace=True,
             )
 
         return values_comparison
@@ -551,12 +552,13 @@ class CompareEngine(
         for field_pair in self.dt_fields:
             field_pair_name = self.field_pair_names[field_pair]
 
-            matching_records[field_pair_name.diff_field].replace(
+            matching_records[field_pair_name.diff_field] = matching_records[
+                field_pair_name.diff_field
+            ].replace(
                 to_replace={
                     True: '',
                     False: '*',
                 },
-                inplace=True,
             )
 
         return matching_records
@@ -586,12 +588,13 @@ class CompareEngine(
         for field_pair in self.dt_fields:
             field_pair_name = self.field_pair_names[field_pair]
 
-            mismatching_records[field_pair_name.diff_field].replace(
+            mismatching_records[field_pair_name.diff_field] = mismatching_records[
+                field_pair_name.diff_field
+            ].replace(
                 to_replace={
                     True: '',
                     False: '*',
                 },
-                inplace=True,
             )
 
         return mismatching_records

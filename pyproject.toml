@@ -49,6 +49,7 @@ dependencies = [
   "pandas>=2.2.3",
   "pyarrow>=17.0.0",
   "SQLAlchemy>=2.0.35",
+  "psutil>=6.0.0"
 ]
 
 [project.urls]
