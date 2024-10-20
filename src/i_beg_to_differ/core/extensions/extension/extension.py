@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import ClassVar
 
-from ..base import Base
+from ...base import Base
 
 
 class Extension(
@@ -28,18 +28,18 @@ class Extension(
         self,
     ) -> str:
 
-        return self.extension_id
+        return self.get_extension_id()
 
-    @property
-    def extension_id(
-        self,
+    @classmethod
+    def get_extension_id(
+        cls,
     ) -> str:
         """
-        Unique identifier for this extension. Set when the extension is registered.
+        Gets a unique identifier for this extension, based on the module name.
+
+        :return:
         """
 
-        return type(
-            self,
-        ).__module__.split(
-            '.'
-        )[-1]
+        # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
+
+        return cls.__module__.split('.')[-1]

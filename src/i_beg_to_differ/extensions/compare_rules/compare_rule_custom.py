@@ -8,20 +8,20 @@ from copy import copy
 
 from pandas import Series
 
-from ...data_sources.data_source.field.field_transforms.field_transform import (
-    FieldTransform,
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
+    CompareRule,
 )
-from ..custom_python_extension import CustomPythonExtension
-from ...wildcards_sets import WildcardSets
-from ...base import log_exception
+from i_beg_to_differ.core.extensions.extension import CustomPythonExtension
+from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
-class FieldTransformCustom(
-    FieldTransform,
+class CompareRuleCustom(
+    CompareRule,
     CustomPythonExtension,
 ):
 
-    extension_name = 'Custom Python Transform Script'
+    extension_name = 'Custom Python Compare Script'
 
     def __init__(
         self,
@@ -30,14 +30,14 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        FieldTransform.__init__(
+        CompareRule.__init__(
             self=self,
         )
 
         CustomPythonExtension.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_func=self.transform,
+            extension_func=self.compare,
             py_file_name=py_file_name,
             wildcard_sets=wildcard_sets,
         )
@@ -48,21 +48,26 @@ class FieldTransformCustom(
 
         return f'{self.extension_name}: {self.py_file_name}'
 
-    def transform(
+    def compare(
         self,
-        values: Series,
+        source_field: Series,
+        target_field: Series,
     ) -> Series:
         """
-        Transforms values in a single Field.
+        Compares values between source and target fields, using custom Python code.
+        The return value should be a Series of booleans, where True indicates a match
+        and False indicates a mismatch.
 
-        :param values: Values to transform.
-        :return: Transformed values.
+        :param source_field: Source field to compare.
+        :param target_field: Target field to compare.
+        :return: Series of booleans, where True indicates a match.
         """
 
         extension_func = self.get_extension_func()
 
         return extension_func(
-            values=values,
+            source_field=source_field,
+            target_field=target_field,
             wildcards=(
                 copy(self.wildcard_sets.active_wildcard_set.replacement_values)
                 if isinstance(self.wildcard_sets, WildcardSets)
@@ -80,17 +85,17 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        field_transform = FieldTransformCustom(
+        compare_rule = CompareRuleCustom(
             working_dir_path=working_dir_path,
-            py_file_name=instance_data["parameters"]["py_file_name"],
+            py_file_name=instance_data['parameters']['py_file_name'],
             wildcard_sets=wildcard_sets,
         )
 
-        field_transform.inflate_py_file(
+        compare_rule.inflate_py_file(
             ib2d_file=ib2d_file,
         )
 
-        return field_transform
+        return compare_rule
 
     @log_exception
     def serialize(
@@ -103,8 +108,8 @@ class FieldTransformCustom(
         )
 
         return {
-            "extension_id": self.extension_id,
-            "parameters": {
-                "py_file_name": self.py_file_name,
+            'extension_id': self.get_extension_id(),
+            'parameters': {
+                'py_file_name': self.py_file_name,
             },
         }

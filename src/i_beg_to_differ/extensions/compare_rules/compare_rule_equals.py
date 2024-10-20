@@ -7,11 +7,11 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
     CompareRule,
 )
-from ...base import log_exception
-from ...wildcards_sets import WildcardSets
+from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
 class CompareRuleEquals(
@@ -70,6 +70,6 @@ class CompareRuleEquals(
     ) -> Dict:
 
         return {
-            'extension_id': self.extension_id,
+            'extension_id': self.get_extension_id(),
             'parameters': None,
         }

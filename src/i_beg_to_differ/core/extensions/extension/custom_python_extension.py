@@ -18,7 +18,7 @@ from importlib.util import (
 from sys import modules
 from subprocess import call
 
-from ..wildcards_sets import WildcardSets
+from ...wildcards_sets import WildcardSets
 
 
 class CustomPythonExtension(

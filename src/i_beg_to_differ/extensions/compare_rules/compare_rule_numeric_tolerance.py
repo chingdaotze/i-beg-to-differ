@@ -8,11 +8,13 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...compare_sets.compare_set.compare.field_pair.compare_rule import CompareRule
-from ...extensions.data_type_extension import DataType
-from ...wildcards_sets.wildcard_field import WildcardField
-from ...wildcards_sets import WildcardSets
-from ...base import log_exception
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
+    CompareRule,
+)
+from i_beg_to_differ.core.extensions.extension import DataType
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.base import log_exception
 
 
 class DiffMode(
@@ -221,7 +223,7 @@ class CompareRuleNumericTolerance(
     ) -> Dict:
 
         return {
-            'extension_id': self.extension_id,
+            'extension_id': self.get_extension_id(),
             'parameters': {
                 'tolerance': self._tolerance.base_value,
                 'diff_mode': self._diff_mode.base_value,

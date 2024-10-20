@@ -11,12 +11,9 @@ from .field_pair import FieldPair
 from .....base import log_exception
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .compare_rule import CompareRule
-from .....extensions.compare_rules.compare_rule_equals import (
-    CompareRuleEquals,
-)
 from .....wildcards_sets import WildcardSets
-from .....extensions.compare_rules import CompareRuleExtensions
 from .....wildcards_sets.wildcard_field import WildcardField
+from .....extensions.compare_rules import CompareRuleExtensions
 
 
 class FieldPairData(
@@ -59,7 +56,7 @@ class FieldPairData(
         )
 
         if compare_rule is None:
-            self.compare_rule = CompareRuleEquals()
+            self.compare_rule = self._compare_rule_extensions['compare_rule_equals']()
 
         else:
             self.compare_rule = compare_rule

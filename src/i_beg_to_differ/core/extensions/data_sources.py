@@ -1,5 +1,6 @@
-from ...data_sources.data_source import DataSource
-from .. import Extensions
+from ..data_sources.data_source import DataSource
+from . import Extensions
+from i_beg_to_differ.extensions import data_sources
 
 
 class DataSourceExtensions[DataSource](
@@ -14,6 +15,5 @@ class DataSourceExtensions[DataSource](
     ):
         Extensions.__init__(
             self=self,
-            path=__path__,
-            name=__name__,
+            namespace_package=data_sources,
         )

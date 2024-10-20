@@ -1,7 +1,8 @@
-from ...compare_sets.compare_set.compare.field_pair.compare_rule import (
+from ..compare_sets.compare_set.compare.field_pair.compare_rule import (
     CompareRule,
 )
-from .. import Extensions
+from . import Extensions
+from i_beg_to_differ.extensions import compare_rules
 
 
 class CompareRuleExtensions[CompareRule](
@@ -16,6 +17,5 @@ class CompareRuleExtensions[CompareRule](
     ):
         Extensions.__init__(
             self=self,
-            path=__path__,
-            name=__name__,
+            namespace_package=compare_rules,
         )

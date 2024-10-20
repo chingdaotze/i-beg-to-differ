@@ -18,10 +18,10 @@ from openpyxl.cell.cell import (
     TYPE_FORMULA_CACHE_STRING,
 )
 
-from ...data_sources.data_source import DataSource
-from ...base import log_exception
-from ...wildcards_sets.wildcard_field import WildcardField
-from ...wildcards_sets import WildcardSets
+from i_beg_to_differ.core.data_sources.data_source import DataSource
+from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
 OPENPYXL_TYPES = {
@@ -190,7 +190,7 @@ class DataSourceExcel(
     ) -> Dict:
 
         return {
-            'extension_id': self.extension_id,
+            'extension_id': self.get_extension_id(),
             'description': self.description,
             'parameters': {
                 'path': self.path.base_value,

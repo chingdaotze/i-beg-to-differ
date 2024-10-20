@@ -3,6 +3,7 @@ from typing import (
     Dict,
     Type,
 )
+from types import ModuleType
 from pkgutil import iter_modules
 from importlib import import_module
 from inspect import (
@@ -10,25 +11,31 @@ from inspect import (
     isclass,
 )
 
+from ..base import Base
 from .extension import Extension
 
 
 class Extensions[T](
+    Base,
     ABC,
 ):
 
-    _collection: Dict[str, Type[Extension]]
+    _collection: Dict[str, Type[T]]
 
     def __init__(
         self,
-        path: str,
-        name: str,
+        namespace_package: ModuleType,
     ):
+
+        Base.__init__(
+            self=self,
+        )
+
         self._collection = {}
 
         for module in iter_modules(
-            path=path,
-            prefix=f'{name}.',
+            path=namespace_package.__path__,
+            prefix=namespace_package.__name__ + '.',
         ):
             extension_module = import_module(
                 name=module.name,
@@ -46,14 +53,25 @@ class Extensions[T](
                     and member.__module__ == extension_module.__name__
                 ):
                     self.register(
-                        extension_type=member, extension_id=module.name.split('.')[-1]
+                        extension_type=member,
                     )
+
+                    self.log_info(
+                        msg=f'Registered extension: {member.get_extension_id()}',
+                    )
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.__module__
 
     def register(
         self,
         extension_type: Type[Extension],
-        extension_id: str,
     ) -> None:
+
+        extension_id = extension_type.get_extension_id()
 
         if extension_id in self._collection:
             raise KeyError(
@@ -61,7 +79,6 @@ class Extensions[T](
             )
 
         else:
-            extension_type.extension_id = extension_id
             self._collection[extension_id] = extension_type
 
     def __getitem__(

@@ -14,7 +14,9 @@ from .....base import log_exception
 from .....wildcards_sets import WildcardSets
 from .....data_sources.data_source import DataSource
 from .....utils.dataframe import dict_to_dataframe
-from .....extensions.data_sources.data_source_dataframe import DataSourceDataFrame
+from i_beg_to_differ.extensions.data_sources.data_source_dataframe import (
+    DataSourceDataFrame,
+)
 from .....compare_engine import (
     CompareEngine,
     AUTO_MATCH,

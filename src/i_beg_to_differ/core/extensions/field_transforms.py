@@ -1,7 +1,8 @@
-from ...data_sources.data_source.field.field_transforms.field_transform import (
+from ..data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from .. import Extensions
+from . import Extensions
+from i_beg_to_differ.extensions import field_transforms
 
 
 class FieldTransformExtensions[FieldTransform](
@@ -14,8 +15,8 @@ class FieldTransformExtensions[FieldTransform](
     def __init__(
         self,
     ):
+
         Extensions.__init__(
             self=self,
-            path=__path__,
-            name=__name__,
+            namespace_package=field_transforms,
         )

@@ -16,7 +16,7 @@ authors = [
   {name = "Michael Ching", email = "chingdaotze@yahoo.com"}
 ]
 description = "Tabular comparison application, powered by Pandas."
-readme = {file = "README.md"}
+readme = "README.md"
 requires-python = ">=3.12"
 license = {file = "LICENSE"}
 keywords = [
@@ -43,7 +43,12 @@ classifiers = [
 ]
 dynamic = [
   "version",
-  "dependencies"
+]
+dependencies = [
+  "openpyxl>=3.1.5",
+  "pandas>=2.2.3",
+  "pyarrow>=17.0.0",
+  "SQLAlchemy>=2.0.35",
 ]
 
 [project.urls]
@@ -53,13 +58,4 @@ Repository = "https://github.com/chingdaotze/i-beg-to-differ.git"
 Issues = "https://github.com/chingdaotze/i-beg-to-differ/issues"
 Changelog = "https://github.com/chingdaotze/i-beg-to-differ/blob/main/CHANGELOG.md"
 
-[project.scripts]
-i-beg-to-differ-cli = "i-beg-to-differ:main"
-
-[project.gui-scripts]
-i-beg-to-differ-gui = "i-beg-to-differ:main_gui"
-
 [tool.setuptools_scm]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}

@@ -7,17 +7,18 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from ...data_sources.data_source.field.field_transforms.field_transform import (
+from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from ...wildcards_sets import WildcardSets
-from ...base import log_exception
+from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
-class FieldTransformReplaceNullWithEmptyString(
+
+class FieldTransformToUpperCase(
     FieldTransform,
 ):
 
-    extension_name = 'Replace Null with Empty String'
+    extension_name = "Convert to Upper Case"
 
     def __init__(
         self,
@@ -58,7 +59,7 @@ class FieldTransformReplaceNullWithEmptyString(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformReplaceNullWithEmptyString()
+        return FieldTransformToUpperCase()
 
     @log_exception
     def serialize(
@@ -67,6 +68,6 @@ class FieldTransformReplaceNullWithEmptyString(
     ) -> Dict:
 
         return {
-            "extension_id": self.extension_id,
+            "extension_id": self.get_extension_id(),
             "parameters": None,
         }
