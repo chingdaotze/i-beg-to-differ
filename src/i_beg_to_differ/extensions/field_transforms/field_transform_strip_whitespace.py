@@ -10,15 +10,17 @@ from pandas import Series
 from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from i_beg_to_differ.core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.extensions.extension import DataType
 from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
-class FieldTransformReplaceNullWithEmptyString(
+class FieldTransformStripWhitespace(
     FieldTransform,
 ):
 
-    extension_name = 'Replace Null with Empty String'
+    extension_name = "Convert to Upper Case"
+    data_type = DataType.STRING
 
     def __init__(
         self,
@@ -39,15 +41,15 @@ class FieldTransformReplaceNullWithEmptyString(
         values: Series,
     ) -> Series:
         """
-        Transforms values in a single Field.
+        Removes leading and trailing whitespace.
 
         :param values: Values to transform.
         :return: Transformed values.
         """
 
-        # TODO: Implement transform.
+        values = values.str.strip()
 
-        pass
+        return values
 
     @classmethod
     @log_exception
@@ -59,7 +61,7 @@ class FieldTransformReplaceNullWithEmptyString(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformReplaceNullWithEmptyString()
+        return FieldTransformStripWhitespace()
 
     @log_exception
     def serialize(

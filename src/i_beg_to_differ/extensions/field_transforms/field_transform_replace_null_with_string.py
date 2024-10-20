@@ -10,22 +10,35 @@ from pandas import Series
 from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from i_beg_to_differ.core.base import log_exception
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.base import log_exception
 
 
-class FieldTransformReplaceNullWithZero(
+class FieldTransformReplaceNullWithString(
     FieldTransform,
 ):
 
-    extension_name = "Replace Null with Zero"
+    replacement_value: WildcardField
+    """
+    Replacement value for null value.
+    """
+
+    extension_name = 'Replace Null with String'
 
     def __init__(
         self,
+        replacement_value: str = '',
+        wildcard_sets: WildcardSets | None = None,
     ):
 
         FieldTransform.__init__(
             self=self,
+        )
+
+        self.replacement_value = WildcardField(
+            base_value=replacement_value,
+            wildcard_sets=wildcard_sets,
         )
 
     def __str__(
@@ -45,9 +58,13 @@ class FieldTransformReplaceNullWithZero(
         :return: Transformed values.
         """
 
-        # TODO: Implement transform.
+        values = values.fillna(
+            value=str(
+                self.replacement_value,
+            ),
+        )
 
-        pass
+        return values
 
     @classmethod
     @log_exception
@@ -59,7 +76,10 @@ class FieldTransformReplaceNullWithZero(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        return FieldTransformReplaceNullWithZero()
+        return FieldTransformReplaceNullWithString(
+            replacement_value=instance_data['parameters']['replacement_value'],
+            wildcard_sets=wildcard_sets,
+        )
 
     @log_exception
     def serialize(
@@ -68,6 +88,8 @@ class FieldTransformReplaceNullWithZero(
     ) -> Dict:
 
         return {
-            "extension_id": self.get_extension_id(),
-            "parameters": None,
+            'extension_id': self.get_extension_id(),
+            'parameters': {
+                'replacement_value': self.replacement_value.base_value,
+            },
         }

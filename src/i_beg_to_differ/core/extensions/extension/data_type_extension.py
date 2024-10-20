@@ -70,6 +70,57 @@ class DataTypeExtension(
 
     def cast_data_type(
         self,
+        values: Series,
+    ) -> Series:
+        """
+        Casts data to appropriate type given extension requirements.
+        Tries not to cast data unless necessary.
+
+        :param values: Values to convert.
+        :return: Converted values.
+        """
+
+        match self.data_type:
+            case DataType.ANY:
+                pass
+
+                return values
+
+            case DataType.STRING:
+                values = values.astype(
+                    dtype=str,
+                )
+
+                return values
+
+            case DataType.NUMERIC:
+                values = to_numeric(
+                    arg=values,
+                )
+
+                return values
+
+            case DataType.DATE_TIME:
+                values = to_datetime(
+                    arg=values,
+                )
+
+                return values
+
+            case DataType.TIME_DELTA:
+                values = to_timedelta(
+                    arg=values,
+                )
+
+                return values
+
+            case _:
+                raise NotImplementedError(
+                    f'Unhandled data type conversion: {self.data_type} !'
+                )
+
+    def cast_source_target_data_type(
+        self,
         source: Series,
         target: Series,
     ) -> Tuple[Series, Series]:

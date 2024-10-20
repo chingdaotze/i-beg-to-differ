@@ -26,6 +26,25 @@ class FieldTransform(
             self=self,
         )
 
+    def convert_transform(
+        self,
+        values: Series,
+    ) -> Series:
+        """
+        Converts data into appropriate types first, then executes the transform function.
+
+        :param values: Values to transform.
+        :return: Transformed values.
+        """
+
+        values = self.cast_data_type(
+            values=values,
+        )
+
+        return self.transform(
+            values=values,
+        )
+
     @abstractmethod
     def transform(
         self,

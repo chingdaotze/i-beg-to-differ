@@ -39,12 +39,12 @@ class CompareRule(
         """
         Converts data into appropriate types first, then executes the compare function.
 
-        :param source_field:
-        :param target_field:
-        :return:
+        :param source_field: Source field to compare.
+        :param target_field: Target field to compare.
+        :return: Series of booleans, where True indicates a match.
         """
 
-        source_field, target_field = self.cast_data_type(
+        source_field, target_field = self.cast_source_target_data_type(
             source=source_field,
             target=target_field,
         )

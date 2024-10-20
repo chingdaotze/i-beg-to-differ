@@ -7,6 +7,7 @@ from typing import (
 from zipfile import ZipFile
 
 from pandas import Series
+from unicodedata import numeric
 
 from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
     CompareRule,
@@ -56,7 +57,7 @@ class CompareRuleNumericTolerance(
 
         if isinstance(tolerance, str):
             self._tolerance = WildcardField(
-                base_value=str(tolerance),
+                base_value=tolerance,
                 wildcard_sets=wildcard_sets,
             )
 
@@ -222,11 +223,29 @@ class CompareRuleNumericTolerance(
         ib2d_file: ZipFile,
     ) -> Dict:
 
+        if isinstance(self._tolerance, WildcardField):
+            tolerance = self._tolerance.base_value
+
+        else:
+            tolerance = self._tolerance
+
+        if isinstance(self._diff_mode, WildcardField):
+            diff_mode = self._diff_mode.base_value
+
+        else:
+            diff_mode = self._diff_mode
+
+        if isinstance(self._numeric_mode, WildcardField):
+            numeric_mode = self._numeric_mode.base_value
+
+        else:
+            numeric_mode = self._numeric_mode
+
         return {
             'extension_id': self.get_extension_id(),
             'parameters': {
-                'tolerance': self._tolerance.base_value,
-                'diff_mode': self._diff_mode.base_value,
-                'numeric_mode': self._numeric_mode.base_value,
+                'tolerance': tolerance,
+                'diff_mode': diff_mode,
+                'numeric_mode': numeric_mode,
             },
         }

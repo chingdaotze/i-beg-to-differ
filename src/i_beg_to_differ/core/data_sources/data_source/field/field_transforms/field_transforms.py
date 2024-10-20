@@ -87,7 +87,7 @@ class FieldTransforms(
 
     def __iter__(
         self,
-    ) -> Iterator:
+    ) -> Iterator[FieldTransform]:
 
         return iter(
             self.transforms,
@@ -177,7 +177,7 @@ class FieldTransforms(
 
         for transform in self:
 
-            values = transform.transform(
+            values = transform.convert_transform(
                 values=values,
             )
 
