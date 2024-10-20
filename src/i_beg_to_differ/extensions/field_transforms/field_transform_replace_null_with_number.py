@@ -33,13 +33,13 @@ class FieldTransformReplaceNullWithNumber(
         )
 
         if isinstance(replacement_value, str):
-            self._tolerance = WildcardField(
+            self._replacement_value = WildcardField(
                 base_value=replacement_value,
                 wildcard_sets=wildcard_sets,
             )
 
         else:
-            self._tolerance = replacement_value
+            self._replacement_value = replacement_value
 
     def __str__(
         self,
