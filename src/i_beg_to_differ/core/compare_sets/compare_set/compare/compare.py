@@ -196,7 +196,7 @@ class Compare(
 
     def to_parquet(
         self,
-        dir_path: Path,
+        dir_path: Path | str,
         file_name_prefix: str | None = None,
         file_name_suffix: str | None = None,
     ) -> None:
@@ -208,6 +208,11 @@ class Compare(
         :param file_name_suffix: File name suffix for *.parquet files.
         :return:
         """
+
+        if isinstance(dir_path, str):
+            dir_path = Path(
+                dir_path,
+            )
 
         if file_name_prefix is None:
             file_name_prefix = ''
@@ -242,7 +247,7 @@ class Compare(
 
     def to_csv(
         self,
-        dir_path: Path,
+        dir_path: Path | str,
         file_name_prefix: str | None = None,
         file_name_suffix: str | None = None,
     ) -> None:
@@ -254,6 +259,11 @@ class Compare(
         :param file_name_suffix: File name suffix for *.csv files.
         :return:
         """
+
+        if isinstance(dir_path, str):
+            dir_path = Path(
+                dir_path,
+            )
 
         if file_name_prefix is None:
             file_name_prefix = ''
@@ -288,7 +298,7 @@ class Compare(
 
     def to_excel(
         self,
-        path: Path,
+        path: Path | str,
     ) -> None:
         """
         Writes all reports as sheets in a specified Excel file.
@@ -296,6 +306,11 @@ class Compare(
         :param path: Path to the Excel file.
         :return:
         """
+
+        if isinstance(path, str):
+            path = Path(
+                path,
+            )
 
         self.log_info(
             msg=f'Saving Excel file report to location: "{str(path.absolute())}" ...',
