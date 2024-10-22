@@ -43,3 +43,5 @@ class Extension(
         # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
 
         return cls.__module__.split('.')[-1]
+
+    # TODO: Figure out how to auto-generate Extension UI elements

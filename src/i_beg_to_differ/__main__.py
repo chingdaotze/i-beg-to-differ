@@ -8,11 +8,13 @@ from typer import (
     Argument,
     Option,
 )
+from PySide6.QtWidgets import QApplication
 
 from i_beg_to_differ.core import (
     open_ib2d_file,
     setup_logger,
 )
+from i_beg_to_differ.ui import MainWindow
 
 
 typer_app = Typer()
@@ -111,7 +113,12 @@ def gui(
     ] = None,
 ) -> None:
 
-    print('Hello world!')
+    qt_app = QApplication()
+
+    main_window = MainWindow()
+    main_window.show()
+
+    qt_app.exec()
 
 
 if __name__ == '__main__':
