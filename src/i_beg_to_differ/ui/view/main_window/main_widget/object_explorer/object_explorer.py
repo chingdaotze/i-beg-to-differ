@@ -19,9 +19,7 @@ class ObjectExplorer(
             parent=parent,
         )
 
-        self.model = Model(
-            parent=self,
-        )
+        self.model = Model()
 
         self.setModel(
             self.model,

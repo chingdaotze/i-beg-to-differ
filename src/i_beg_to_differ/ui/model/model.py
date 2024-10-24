@@ -1,7 +1,11 @@
+from pathlib import Path
+from typing import Self
+
 from PySide6.QtGui import QStandardItemModel
 
 from ...core.ib2d_file import IB2DFile
 from ...core import open_ib2d_file
+from .wildcard_sets import ModelWildcardSets
 
 
 class Model(
@@ -12,29 +16,41 @@ class Model(
 
     def __init__(
         self,
-        parent,
         ib2d_file: IB2DFile | None = None,
     ):
 
         QStandardItemModel.__init__(
             self,
-            parent=parent,
         )
 
         self.setHorizontalHeaderLabels(
             [
-                '',
                 'Object Name',
                 'Object Type',
+                'Modified',
             ]
         )
 
-        # TODO: If ib2d_file is None, create an empty one
+        if ib2d_file is None:
+            ib2d_file = IB2DFile()
 
         self.ib2d_file = ib2d_file
 
-    def load(
-        self,
-    ) -> None:
+        self.appendRow(
+            ModelWildcardSets(
+                wildcard_sets=self.ib2d_file.wildcard_sets,
+            )
+        )
 
-        self.ib2d_file = open_ib2d_file()
+        pass
+
+    @classmethod
+    def load(
+        cls,
+        path: Path,
+    ) -> Self:
+
+        with open_ib2d_file(path=path) as ib2d_file:
+            return Model(
+                ib2d_file=ib2d_file,
+            )

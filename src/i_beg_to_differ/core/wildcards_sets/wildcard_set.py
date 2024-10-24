@@ -43,7 +43,12 @@ class WildcardSet(
         )
 
         self.description = description
+
+        if user_replacement_values is None:
+            user_replacement_values = {}
+
         self.user_replacement_values = user_replacement_values
+
         self.system_replacement_values = {}
 
     def __str__(
@@ -60,24 +65,14 @@ class WildcardSet(
         self,
     ) -> Dict[str, str]:
 
-        if self.replacement_values is not None:
-            return {
-                f'${{{key}}}': value for key, value in self.replacement_values.items()
-            }
-
-        else:
-            return {}
+        return {f'${{{key}}}': value for key, value in self.replacement_values.items()}
 
     @property
     def replacement_values(
         self,
     ) -> Dict[str, str]:
 
-        if self.user_replacement_values is None:
-            return self.system_replacement_values
-
-        else:
-            return self.system_replacement_values | self.user_replacement_values
+        return self.system_replacement_values | self.user_replacement_values
 
     @log_exception
     def replace_wildcards(

@@ -19,7 +19,7 @@ class CompareSets(
     Compare set object. Contains a collection of compares.
     """
 
-    compare_sets: Dict[str, CompareSet] | None
+    compare_sets: Dict[str, CompareSet]
     _DEFAULT_COMPARE_SET = 'Default'
 
     def __init__(
@@ -30,21 +30,16 @@ class CompareSets(
             self=self,
         )
 
+        if compare_sets is None:
+            compare_sets = {}
+
         self.compare_sets = compare_sets
 
     def __str__(
         self,
     ) -> str:
 
-        if isinstance(self.compare_sets, dict):
-            return str(
-                [compare_set_name for compare_set_name in self.compare_sets.keys()],
-            )
-
-        else:
-            return str(
-                self.compare_sets,
-            )
+        return 'Compare Sets'
 
     @log_exception
     def __setitem__(
@@ -52,13 +47,6 @@ class CompareSets(
         key: str,
         value: CompareSet,
     ) -> None:
-        if self.compare_sets is None:
-            self.compare_sets = {}
-
-        if not isinstance(self.compare_sets, dict):
-            raise TypeError(
-                'CompareSets collection is not a dictionary!',
-            )
 
         self.compare_sets[key] = value
 
@@ -67,16 +55,6 @@ class CompareSets(
         self,
         item: str,
     ) -> CompareSet:
-
-        if self.compare_sets is None:
-            raise ValueError(
-                'CompareSets object is empty!',
-            )
-
-        if not isinstance(self.compare_sets, dict):
-            raise TypeError(
-                'CompareSets collection is not a dictionary!',
-            )
 
         return self.compare_sets[item]
 

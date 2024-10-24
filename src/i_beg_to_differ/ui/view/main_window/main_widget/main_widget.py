@@ -38,27 +38,3 @@ class MainWidget(
                 600,
             ],
         )
-
-        """
-        layout = QHBoxLayout(
-            self,
-        )
-
-        layout.addWidget(
-            ObjectExplorer(
-                parent=self,
-            ),
-            stretch=1,
-        )
-
-        layout.addWidget(
-            ObjectViewer(
-                parent=self,
-            ),
-            stretch=3,
-        )
-
-        self.setLayout(
-            layout,
-        )
-        """

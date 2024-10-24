@@ -18,7 +18,7 @@ class WildcardSets(
     """
 
     wildcard_sets: Dict[str, WildcardSet]
-    _active_wildcard_set: WildcardSet
+    _active_wildcard_set: WildcardSet | None
     _DEFAULT_WILDCARD_SET = 'Default'
 
     def __init__(
@@ -30,26 +30,26 @@ class WildcardSets(
         )
 
         if wildcard_sets is None:
-            self.wildcard_sets = {}
+            self.wildcard_sets = {
+                self._DEFAULT_WILDCARD_SET: WildcardSet(
+                    description='Default system-provided Wildcard Set.'
+                )
+            }
 
         else:
             self.wildcard_sets = wildcard_sets
-            self.active_wildcard_set = self._DEFAULT_WILDCARD_SET
 
-    @log_exception
-    def __str__(
-        self,
-    ):
-
-        if isinstance(self.wildcard_sets, dict):
-            return str(
-                [compare_set_name for compare_set_name in self.wildcard_sets.keys()]
-            )
+        if self.wildcard_sets:
+            self.active_wildcard_set = next(iter(self.wildcard_sets))
 
         else:
-            return str(
-                self.wildcard_sets,
-            )
+            self.active_wildcard_set = None
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return 'Wildcard Sets'
 
     @property
     def active_wildcard_set(
@@ -65,7 +65,10 @@ class WildcardSets(
 
     @active_wildcard_set.setter
     @log_exception
-    def active_wildcard_set(self, name: str) -> None:
+    def active_wildcard_set(
+        self,
+        name: str | None,
+    ) -> None:
         """
         Sets the current active wildcard set, using the wildcard set's name.
 
@@ -73,13 +76,19 @@ class WildcardSets(
         :return:
         """
 
-        if name in self.wildcard_sets:
-            self._active_wildcard_set = self.wildcard_sets[name]
+        if name is not None:
+
+            if name in self.wildcard_sets:
+                self._active_wildcard_set = self.wildcard_sets[name]
+
+            else:
+                raise KeyError(
+                    f'Wildcard set: "{name}" not found!',
+                )
 
         else:
-            raise KeyError(
-                f'Wildcard set: "{name}" not found!',
-            )
+
+            self._active_wildcard_set = None
 
     @log_exception
     def replace_wildcards(
@@ -93,9 +102,15 @@ class WildcardSets(
         :return: String with wildcard replacement.
         """
 
-        return self.active_wildcard_set.replace_wildcards(
-            string=string,
-        )
+        if isinstance(self.active_wildcard_set, WildcardSet):
+
+            return self.active_wildcard_set.replace_wildcards(
+                string=string,
+            )
+
+        else:
+
+            return string
 
     @log_exception
     def update_system_wildcard(

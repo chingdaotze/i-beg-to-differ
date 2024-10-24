@@ -37,7 +37,7 @@ class DataSources(
 
     def __init__(
         self,
-        data_sources: Dict[str, DataSource],
+        data_sources: Dict[str, DataSource] | None = None,
     ):
 
         IB2DFileElement.__init__(
@@ -45,6 +45,9 @@ class DataSources(
         )
 
         self.data_sources = self.manager.dict()
+
+        if data_sources is None:
+            data_sources = {}
 
         for key, data_source in data_sources.items():
             self.data_sources[key] = data_source

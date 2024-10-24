@@ -11,15 +11,17 @@ from contextlib import contextmanager
 from uuid import uuid4
 from typing import Self
 
-from .ib2d_file_working_dir import IB2DFileWorkingDir
-from ..base import log_exception
+from ..base import (
+    Base,
+    log_exception,
+)
 from ..wildcards_sets import WildcardSets
 from ..compare_sets import CompareSets
 from ..data_sources import DataSources
 
 
 class IB2DFile(
-    IB2DFileWorkingDir,
+    Base,
 ):
     """
     ``*.ib2d`` file object.
@@ -40,6 +42,11 @@ class IB2DFile(
     Data sources object.
     """
 
+    working_dir_path: Path
+    """
+    Working directory path.
+    """
+
     path: Path | None
     """
     Path to the ``*.ib2d`` file.
@@ -47,21 +54,62 @@ class IB2DFile(
 
     def __init__(
         self,
-        working_dir_path: Path,
-        wildcard_sets: WildcardSets,
-        compare_sets: CompareSets,
-        data_sources: DataSources,
+        working_dir_path: str | Path | None = None,
+        wildcard_sets: WildcardSets | None = None,
+        compare_sets: CompareSets | None = None,
+        data_sources: DataSources | None = None,
         path: Path | None = None,
     ):
 
-        IB2DFileWorkingDir.__init__(
+        Base.__init__(
             self=self,
-            working_dir_path=working_dir_path,
         )
 
+        # Working directory
+        if working_dir_path is None:
+            working_dir_path = getenv(
+                key='TEMP',
+            )
+
+            if working_dir_path is None:
+                raise KeyError(
+                    'Unable to create default working directory: working_dir_path not specified '
+                    'and could not locate "TEMP" environment variable.'
+                )
+
+            working_dir_path = Path(
+                working_dir_path,
+            )
+
+            working_dir_path /= f'ib2d_{uuid4()!s}'
+
+            working_dir_path.mkdir()
+
+        elif isinstance(working_dir_path, str):
+            working_dir_path = Path(
+                working_dir_path,
+            )
+
+        self.working_dir_path = working_dir_path
+
+        # Wildcard sets
+        if wildcard_sets is None:
+            wildcard_sets = WildcardSets()
+
         self.wildcard_sets = wildcard_sets
+
+        # Compare sets
+        if compare_sets is None:
+            compare_sets = CompareSets()
+
         self.compare_sets = compare_sets
+
+        # Data sources
+        if data_sources is None:
+            data_sources = DataSources()
+
         self.data_sources = data_sources
+
         self.path = path
 
     def __str__(
@@ -130,31 +178,6 @@ class IB2DFile(
             if not path.exists():
                 raise FileNotFoundError(
                     f'Unable to locate *.ib2d file: "{path!s}"!',
-                )
-
-            # Get working directory
-            if working_dir_path is None:
-                working_dir_path = getenv(
-                    key='TEMP',
-                )
-
-                if working_dir_path is None:
-                    raise KeyError(
-                        'Unable to create default working directory: working_dir_path not specified '
-                        'and could not locate "TEMP" environment variable.'
-                    )
-
-                working_dir_path = Path(
-                    working_dir_path,
-                )
-
-                working_dir_path /= f'ib2d_{uuid4()!s}'
-
-                working_dir_path.mkdir()
-
-            else:
-                working_dir_path = Path(
-                    working_dir_path,
                 )
 
             # Load *.ib2d file to memory
