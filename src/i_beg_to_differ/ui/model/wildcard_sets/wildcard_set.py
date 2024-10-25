@@ -6,23 +6,14 @@ class ModelWildcardSet(
     ModelBase,
 ):
 
-    _object_name: str
-
     def __init__(
         self,
         object_name: str,
         wildcard_set: WildcardSet,
     ):
-        self._object_name = object_name
 
         ModelBase.__init__(
             self=self,
             current_state=wildcard_set,
+            object_name=object_name,
         )
-
-    @property
-    def object_name(
-        self,
-    ) -> str:
-
-        return self._object_name

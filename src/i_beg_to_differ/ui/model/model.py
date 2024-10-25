@@ -5,6 +5,8 @@ from PySide6.QtGui import QStandardItemModel
 
 from ...core.ib2d_file import IB2DFile
 from ...core import open_ib2d_file
+from .compare_sets import ModelCompareSets
+from .data_sources import ModelDataSources
 from .wildcard_sets import ModelWildcardSets
 
 
@@ -37,12 +39,22 @@ class Model(
         self.ib2d_file = ib2d_file
 
         self.appendRow(
+            ModelCompareSets(
+                compare_sets=self.ib2d_file.compare_sets,
+            )
+        )
+
+        self.appendRow(
+            ModelDataSources(
+                data_sources=self.ib2d_file.data_sources,
+            )
+        )
+
+        self.appendRow(
             ModelWildcardSets(
                 wildcard_sets=self.ib2d_file.wildcard_sets,
             )
         )
-
-        pass
 
     @classmethod
     def load(
