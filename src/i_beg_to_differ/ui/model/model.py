@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Self
 
 from PySide6.QtGui import QStandardItemModel
+from numpy.f2py.auxfuncs import isintent_aux
 
 from ...core.ib2d_file import IB2DFile
 from ...core import open_ib2d_file
@@ -59,8 +60,13 @@ class Model(
     @classmethod
     def load(
         cls,
-        path: Path,
+        path: Path | str,
     ) -> Self:
+
+        if isinstance(path, str):
+            path = Path(
+                path,
+            )
 
         with open_ib2d_file(path=path) as ib2d_file:
             return Model(

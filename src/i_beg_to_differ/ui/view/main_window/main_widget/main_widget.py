@@ -9,6 +9,9 @@ class MainWidget(
     QSplitter,
 ):
 
+    object_explorer: ObjectExplorer
+    object_viewer: ObjectViewer
+
     def __init__(
         self,
         parent,
@@ -20,16 +23,20 @@ class MainWidget(
             parent=parent,
         )
 
-        self.addWidget(
-            ObjectExplorer(
-                parent=self,
-            ),
+        self.object_explorer = ObjectExplorer(
+            parent=self,
+        )
+
+        self.object_viewer = ObjectViewer(
+            parent=self,
         )
 
         self.addWidget(
-            ObjectViewer(
-                parent=self,
-            ),
+            self.object_explorer,
+        )
+
+        self.addWidget(
+            self.object_viewer,
         )
 
         self.setSizes(

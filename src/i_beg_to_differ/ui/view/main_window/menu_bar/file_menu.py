@@ -1,14 +1,26 @@
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import (
+    QMenu,
+    QFileDialog,
+)
 from PySide6.QtGui import QKeySequence
+
+from ..main_widget.object_explorer import ObjectExplorer
+from ..main_widget.object_viewer import ObjectViewer
+from ....model import Model
 
 
 class FileMenu(
     QMenu,
 ):
 
+    object_explorer: ObjectExplorer
+    object_viewer: ObjectViewer
+
     def __init__(
         self,
         parent,
+        object_explorer: ObjectExplorer,
+        object_viewer: ObjectViewer,
     ):
 
         QMenu.__init__(
@@ -16,6 +28,9 @@ class FileMenu(
             title='&File',
             parent=parent,
         )
+
+        self.object_explorer = object_explorer
+        self.object_viewer = object_viewer
 
         self.addAction(
             'New',
@@ -25,6 +40,7 @@ class FileMenu(
         self.addAction(
             'Open',
             QKeySequence.StandardKey.Open,
+            self.open,
         )
 
         self.addSeparator()
@@ -45,3 +61,22 @@ class FileMenu(
             'Quit',
             QKeySequence.StandardKey.Quit,
         )
+
+    def open(
+        self,
+    ) -> None:
+
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            caption='Open *.ib2d File',
+            filter='ib2d Files (*.ib2d)',
+        )
+
+        if path:
+            model = Model.load(
+                path=path,
+            )
+
+            self.object_explorer.setModel(
+                model,
+            )

@@ -39,9 +39,15 @@ class MainWindow(
         )
 
         # Bars
+        main_widget = MainWidget(
+            parent=self,
+        )
+
         self.setMenuBar(
             MenuBar(
                 parent=self,
+                object_explorer=main_widget.object_explorer,
+                object_viewer=main_widget.object_viewer,
             )
         )
 
@@ -53,7 +59,5 @@ class MainWindow(
 
         # Widgets
         self.setCentralWidget(
-            MainWidget(
-                parent=self,
-            ),
+            main_widget,
         )
