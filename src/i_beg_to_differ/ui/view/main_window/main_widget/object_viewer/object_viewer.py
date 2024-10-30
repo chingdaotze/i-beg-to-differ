@@ -18,3 +18,16 @@ class ObjectViewer(
         self.setTabsClosable(
             True,
         )
+
+        self.tabCloseRequested.connect(
+            self.close_tab,
+        )
+
+    def close_tab(
+        self,
+        index,
+    ) -> None:
+
+        self.removeTab(
+            index,
+        )

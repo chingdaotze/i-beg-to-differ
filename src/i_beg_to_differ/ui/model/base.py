@@ -127,9 +127,7 @@ class ModelBase(
         self,
     ) -> QWidget | None:
 
-        # TODO: Scan object for InputFields. If object does not have any, return None. Else, construct form.
-        widget = QWidget()
-        layout = QVBoxLayout()
+        layouts = []
 
         for _, member in getmembers(object=self.current_state):
             object_viewer_layout = get_object_viewer_layout(
@@ -137,21 +135,34 @@ class ModelBase(
             )
 
             if object_viewer_layout is not None:
-                widget = QWidget()
-
-                widget.setLayout(
+                layouts.append(
                     object_viewer_layout,
                 )
 
-                layout.addWidget(
+        # Assemble layouts
+        if layouts:
+            object_viewer_widget = QWidget()
+            object_viewer_layout = QVBoxLayout()
+
+            for layout in layouts:
+                widget = QWidget()
+
+                widget.setLayout(
+                    layout,
+                )
+
+                object_viewer_layout.addWidget(
                     widget,
                 )
 
-        widget.setLayout(
-            layout,
-        )
+            object_viewer_widget.setLayout(
+                object_viewer_layout,
+            )
 
-        return widget
+            return object_viewer_widget
+
+        else:
+            return None
 
     def save(
         self,
