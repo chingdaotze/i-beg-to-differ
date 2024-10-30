@@ -23,12 +23,13 @@ class MainWidget(
             parent=parent,
         )
 
-        self.object_explorer = ObjectExplorer(
+        self.object_viewer = ObjectViewer(
             parent=self,
         )
 
-        self.object_viewer = ObjectViewer(
+        self.object_explorer = ObjectExplorer(
             parent=self,
+            object_viewer=self.object_viewer,
         )
 
         self.addWidget(

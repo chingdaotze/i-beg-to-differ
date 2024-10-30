@@ -3,7 +3,6 @@ from typing import (
     Dict,
     Type,
 )
-from types import ModuleType
 from pkgutil import iter_modules
 from importlib import import_module
 from inspect import (
@@ -24,7 +23,7 @@ class Extensions[T](
 
     def __init__(
         self,
-        namespace_package: ModuleType,
+        namespace_package: Type[T],
     ):
 
         Base.__init__(

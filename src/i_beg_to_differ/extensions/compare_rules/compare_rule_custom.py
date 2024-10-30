@@ -46,6 +46,8 @@ class CompareRuleCustom(
         self,
     ) -> str:
 
+        # TODO: Add file hash in addition to file name.
+
         return f'{self.extension_name}: {self.py_file_name}'
 
     def compare(

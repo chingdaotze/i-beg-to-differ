@@ -14,3 +14,7 @@ class ObjectViewer(
             self,
             parent=parent,
         )
+
+        self.setTabsClosable(
+            True,
+        )

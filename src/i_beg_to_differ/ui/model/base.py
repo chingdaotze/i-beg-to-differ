@@ -1,10 +1,18 @@
 from __future__ import annotations
 from copy import deepcopy
 from functools import cached_property
+from inspect import getmembers
 
 from PySide6.QtGui import QStandardItem
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+)
 
 from ...core.base import Base
+from ..view.main_window.main_widget.object_viewer.input_fields import (
+    get_object_viewer_layout,
+)
 
 
 class ModelBase(
@@ -113,6 +121,37 @@ class ModelBase(
             return str(
                 self.current_state,
             )
+
+    @property
+    def object_viewer_widget(
+        self,
+    ) -> QWidget | None:
+
+        # TODO: Scan object for InputFields. If object does not have any, return None. Else, construct form.
+        widget = QWidget()
+        layout = QVBoxLayout()
+
+        for _, member in getmembers(object=self.current_state):
+            object_viewer_layout = get_object_viewer_layout(
+                member=member,
+            )
+
+            if object_viewer_layout is not None:
+                widget = QWidget()
+
+                widget.setLayout(
+                    object_viewer_layout,
+                )
+
+                layout.addWidget(
+                    widget,
+                )
+
+        widget.setLayout(
+            layout,
+        )
+
+        return widget
 
     def save(
         self,
