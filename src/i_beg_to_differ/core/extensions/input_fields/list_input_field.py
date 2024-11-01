@@ -1,30 +1,28 @@
 from typing import List
 
-from .input_field import InputField
-from ...wildcards_sets.wildcard_field import WildcardField
+from .wildcard_input_field import WildcardInputField
 from ...wildcards_sets import WildcardSets
 
 
-class PathInputField(
-    InputField,
+class ListInputField(
+    WildcardInputField,
 ):
 
-    label: str
-    value: WildcardField
     options: List[str]
 
     def __init__(
         self,
         label: str,
         options: List[str],
-        value: str | None = None,
+        base_value: str,
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        self.label = label
-        self.options = options
-
-        self.value = WildcardField(
-            base_value=value,
+        WildcardInputField.__init__(
+            self=self,
+            label=label,
+            base_value=base_value,
             wildcard_sets=wildcard_sets,
         )
+
+        self.options = options

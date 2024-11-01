@@ -19,6 +19,10 @@ from openpyxl.cell.cell import (
 )
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
+from i_beg_to_differ.core.extensions.input_fields import (
+    PathInputField,
+    WildcardInputField,
+)
 from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
@@ -46,12 +50,12 @@ class DataSourceExcel(
     Excel file data source.
     """
 
-    path: WildcardField
+    path: PathInputField
     """
     Path to the ``*.xlsx`` file.
     """
 
-    sheet: WildcardField
+    sheet: WildcardInputField
     """
     Name of the worksheet within the ``*.xlsx`` file.
     """
@@ -76,12 +80,14 @@ class DataSourceExcel(
             description=description,
         )
 
-        self.path = WildcardField(
-            base_value=path,
+        self.path = PathInputField(
+            label='*.xlsx File Path: ',
+            path=path,
             wildcard_sets=wildcard_sets,
         )
 
-        self.sheet = WildcardField(
+        self.sheet = WildcardInputField(
+            label='Sheet Name: ',
             base_value=sheet,
             wildcard_sets=wildcard_sets,
         )
@@ -191,7 +197,7 @@ class DataSourceExcel(
 
         return {
             'extension_id': self.get_extension_id(),
-            'description': self.description,
+            'description': self.description.value,
             'parameters': {
                 'path': self.path.base_value,
                 'sheet': self.sheet.base_value,

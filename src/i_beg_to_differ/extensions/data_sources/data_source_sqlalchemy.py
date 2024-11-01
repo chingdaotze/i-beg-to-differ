@@ -15,8 +15,11 @@ from sqlalchemy.util import EMPTY_DICT
 from pandas import read_sql
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
+from i_beg_to_differ.core.extensions.input_fields import (
+    WildcardInputField,
+    DictInputField,
+)
 from i_beg_to_differ.core.base import log_exception
-from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -27,16 +30,15 @@ class DataSourceSqlAlchemy(
     SQLAlchemy file Data Source.
     """
 
-    _drivername: WildcardField
-    _table_name: WildcardField
-    _username: WildcardField | None
-    _password: WildcardField | None
-    _host: WildcardField | None
-    _port: WildcardField | None
-    _database: WildcardField | None
-    _query: Dict[WildcardField, WildcardField] | None
+    _drivername: WildcardInputField
+    _table_name: WildcardInputField
+    _username: WildcardInputField
+    _password: WildcardInputField
+    _host: WildcardInputField
+    _port: WildcardInputField
+    _database: WildcardInputField
+    _query: DictInputField
 
-    _native_types: Dict[str, str]
     extension_name = 'SQLAlchemy Connection'
 
     def __init__(
@@ -58,77 +60,71 @@ class DataSourceSqlAlchemy(
             description=description,
         )
 
-        self._drivername = WildcardField(
+        self._drivername = WildcardInputField(
+            label='Driver Name: ',
             base_value=drivername,
             wildcard_sets=wildcard_sets,
         )
 
-        self._table_name = WildcardField(
+        self._table_name = WildcardInputField(
+            label='Table Name: ',
             base_value=table_name,
             wildcard_sets=wildcard_sets,
         )
 
-        if isinstance(username, str):
-            self._username = WildcardField(
-                base_value=username,
-                wildcard_sets=wildcard_sets,
-            )
+        if not isinstance(username, str):
+            username = ''
 
-        else:
-            self._username = username
+        self._username = WildcardInputField(
+            label='Username: ',
+            base_value=username,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(password, str):
-            self._password = WildcardField(
-                base_value=password,
-                wildcard_sets=wildcard_sets,
-            )
+        if not isinstance(password, str):
+            password = ''
 
-        else:
-            self._password = password
+        self._password = WildcardInputField(
+            label='Password: ',
+            base_value=password,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(host, str):
-            self._host = WildcardField(
-                base_value=host,
-                wildcard_sets=wildcard_sets,
-            )
+        if not isinstance(host, str):
+            host = ''
 
-        else:
-            self._host = host
+        self._host = WildcardInputField(
+            label='Host: ',
+            base_value=host,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(port, str):
-            self._port = WildcardField(
-                base_value=port,
-                wildcard_sets=wildcard_sets,
-            )
+        if not isinstance(port, str):
+            port = ''
 
-        else:
-            self._port = port
+        self._port = WildcardInputField(
+            label='Port: ',
+            base_value=port,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(database, str):
-            self._database = WildcardField(
-                base_value=database,
-                wildcard_sets=wildcard_sets,
-            )
+        if not isinstance(database, str):
+            database = ''
 
-        else:
-            self._database = database
+        self._database = WildcardInputField(
+            label='Database: ',
+            base_value=database,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(query, dict):
-            self._query = {
-                WildcardField(
-                    base_value=key,
-                    wildcard_sets=wildcard_sets,
-                ): WildcardField(
-                    base_value=value,
-                    wildcard_sets=wildcard_sets,
-                )
-                for key, value in query.items()
-            }
+        if not isinstance(query, dict):
+            query = {}
 
-        else:
-            self._query = query
-
-        self._native_types = {}
+        self._query = DictInputField(
+            label='Query: ',
+            values=query,
+            wildcard_sets=wildcard_sets,
+        )
 
     def __str__(
         self,
@@ -171,13 +167,14 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._username, WildcardField):
-            return str(
-                self._username,
-            )
+        username = str(
+            self._username,
+        )
 
-        else:
-            return self._username
+        if not username:
+            username = None
+
+        return username
 
     @property
     def password(
@@ -188,13 +185,12 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._password, WildcardField):
-            return str(
-                self._password,
-            )
+        password = str(self._password)
 
-        else:
-            return self._password
+        if not password:
+            password = None
+
+        return password
 
     @property
     def host(
@@ -205,13 +201,12 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._host, WildcardField):
-            return str(
-                self._host,
-            )
+        host = str(self._host)
 
-        else:
-            return self._host
+        if not host:
+            host = None
+
+        return host
 
     @property
     def port(
@@ -222,13 +217,19 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._port, WildcardField):
-            return int(
-                self._port,
+        port = str(
+            self._port,
+        )
+
+        if port:
+            port = int(
+                port,
             )
 
         else:
-            return self._port
+            port = None
+
+        return port
 
     @property
     def database(
@@ -239,13 +240,14 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._database, WildcardField):
-            return str(
-                self._database,
-            )
+        database = str(
+            self._database,
+        )
 
-        else:
-            return self._database
+        if not database:
+            database = None
+
+        return database
 
     @property
     def query(
@@ -256,14 +258,11 @@ class DataSourceSqlAlchemy(
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
         """
 
-        if isinstance(self._query, dict):
-            return {str(key): str(value) for key, value in self._query.items()}
-
-        elif self._query is None:
-            return EMPTY_DICT
+        if self._query:
+            return {str(key): str(value) for key, value in self._query.values.items()}
 
         else:
-            return self._query
+            return EMPTY_DICT
 
     @property
     def base_url(
@@ -274,41 +273,16 @@ class DataSourceSqlAlchemy(
         """
 
         return URL.create(
-            drivername=(
-                self._drivername.base_value
-                if isinstance(self._drivername, WildcardField)
-                else self._drivername
-            ),
-            username=(
-                self._username.base_value
-                if isinstance(self._username, WildcardField)
-                else self._username
-            ),
-            password=(
-                self._password.base_value
-                if isinstance(self._password, WildcardField)
-                else self._password
-            ),
-            host=(
-                self._host.base_value
-                if isinstance(self._host, WildcardField)
-                else self._host
-            ),
-            port=(
-                self._port.base_value
-                if isinstance(self._port, WildcardField)
-                else self._port
-            ),
-            database=(
-                self._database.base_value
-                if isinstance(self._database, WildcardField)
-                else self._database
-            ),
-            query=(
-                {key.base_value: value.base_value for key, value in self._query.items()}
-                if isinstance(self._query, dict)
-                else self._query
-            ),
+            drivername=self._drivername.base_value,
+            username=self._username.base_value,
+            password=self._password.base_value,
+            host=self._host.base_value,
+            port=self.port,
+            database=self._database.base_value,
+            query={
+                key.base_value: value.base_value
+                for key, value in self._query.values.items()
+            },
         )
 
     @property
@@ -341,14 +315,11 @@ class DataSourceSqlAlchemy(
             url=self.url,
         )
 
-        # https://docs.sqlalchemy.org/en/20/core/reflection.html
         table = Table(
             self.table_name,
             MetaData(),
             autoload_with=engine,
         )
-
-        self._native_types = {column.name: str(column.type) for column in table.columns}
 
         sql = str(table.select())
 
@@ -390,15 +361,18 @@ class DataSourceSqlAlchemy(
 
         return {
             'extension_id': self.get_extension_id(),
-            'description': self.description,
+            'description': self.description.value,
             'parameters': {
-                'drivername': self._drivername,
-                'table_name': self._table_name,
-                'username': self._username,
-                'password': self._password,
-                'host': self._host,
-                'database': self._database,
-                'query': self._query,
+                'drivername': self._drivername.base_value,
+                'table_name': self._table_name.base_value,
+                'username': self._username.base_value,
+                'password': self._password.base_value,
+                'host': self._host.base_value,
+                'database': self._database.base_value,
+                'query': {
+                    key.base_value: value.base_value
+                    for key, value in self._query.values.items()
+                },
             },
         }
 
@@ -407,4 +381,15 @@ class DataSourceSqlAlchemy(
         self,
     ) -> Dict[str, str]:
 
-        return self._native_types
+        engine = create_engine(
+            url=self.url,
+        )
+
+        # https://docs.sqlalchemy.org/en/20/core/reflection.html
+        table = Table(
+            self.table_name,
+            MetaData(),
+            autoload_with=engine,
+        )
+
+        return {column.name: str(column.type) for column in table.columns}

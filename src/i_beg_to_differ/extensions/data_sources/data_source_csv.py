@@ -8,8 +8,8 @@ from zipfile import ZipFile
 from pandas import read_csv
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
+from i_beg_to_differ.core.extensions.input_fields import PathInputField
 from i_beg_to_differ.core.base import log_exception
-from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -20,7 +20,7 @@ class DataSourceCsv(
     *.csv file Data Source.
     """
 
-    path: WildcardField
+    path: PathInputField
     """
     Path to the ``*.csv`` file.
     """
@@ -39,8 +39,9 @@ class DataSourceCsv(
             description=description,
         )
 
-        self.path = WildcardField(
-            base_value=path,
+        self.path = PathInputField(
+            label='*.csv File Path: ',
+            path=path,
             wildcard_sets=wildcard_sets,
         )
 
@@ -91,7 +92,7 @@ class DataSourceCsv(
 
         return {
             'extension_id': self.get_extension_id(),
-            'description': self.description,
+            'description': self.description.value,
             'parameters': {
                 'path': self.path.base_value,
             },

@@ -1,25 +1,21 @@
-from .input_field import InputField
-from ...wildcards_sets.wildcard_field import WildcardField
+from .wildcard_input_field import WildcardInputField
 from ...wildcards_sets import WildcardSets
 
 
 class PathInputField(
-    InputField,
+    WildcardInputField,
 ):
-
-    label: str
-    path: WildcardField
 
     def __init__(
         self,
         label: str,
-        path: str | None = None,
+        path: str,
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        self.label = label
-
-        self.path = WildcardField(
+        WildcardInputField.__init__(
+            self=self,
+            label=label,
             base_value=path,
             wildcard_sets=wildcard_sets,
         )

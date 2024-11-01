@@ -7,13 +7,15 @@ from typing import (
 from zipfile import ZipFile
 
 from pandas import Series
-from unicodedata import numeric
 
 from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
     CompareRule,
 )
+from i_beg_to_differ.core.extensions.input_fields import (
+    WildcardInputField,
+    ListInputField,
+)
 from i_beg_to_differ.core.extensions.extension import DataType
-from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from i_beg_to_differ.core.base import log_exception
 
@@ -36,9 +38,9 @@ class CompareRuleNumericTolerance(
     CompareRule,
 ):
 
-    _tolerance: WildcardField | float
-    _numeric_mode: WildcardField | NumericMode
-    _diff_mode: WildcardField | DiffMode
+    _tolerance: WildcardInputField
+    _numeric_mode: ListInputField
+    _diff_mode: ListInputField
 
     extension_name = 'Numeric Tolerance'
     data_type = DataType.NUMERIC
@@ -55,32 +57,25 @@ class CompareRuleNumericTolerance(
             self=self,
         )
 
-        if isinstance(tolerance, str):
-            self._tolerance = WildcardField(
-                base_value=tolerance,
-                wildcard_sets=wildcard_sets,
-            )
+        self._tolerance = WildcardInputField(
+            label='Tolerance: ',
+            base_value=str(tolerance),
+            wildcard_sets=wildcard_sets,
+        )
 
-        else:
-            self._tolerance = tolerance
+        self._diff_mode = ListInputField(
+            label='Difference Mode: ',
+            options=list(DiffMode),
+            base_value=diff_mode,
+            wildcard_sets=wildcard_sets,
+        )
 
-        if isinstance(diff_mode, str):
-            self._diff_mode = WildcardField(
-                base_value=diff_mode,
-                wildcard_sets=wildcard_sets,
-            )
-
-        else:
-            self._diff_mode = diff_mode
-
-        if isinstance(numeric_mode, str):
-            self._numeric_mode = WildcardField(
-                base_value=numeric_mode,
-                wildcard_sets=wildcard_sets,
-            )
-
-        else:
-            self._numeric_mode = numeric_mode
+        self._numeric_mode = ListInputField(
+            label='Numeric Mode: ',
+            options=list(NumericMode),
+            base_value=numeric_mode,
+            wildcard_sets=wildcard_sets,
+        )
 
     def __str__(
         self,
@@ -104,15 +99,9 @@ class CompareRuleNumericTolerance(
         :return: Absolute tolerance.
         """
 
-        if isinstance(self._tolerance, WildcardField):
-            return float(
-                str(
-                    self._tolerance,
-                )
-            )
-
-        else:
-            return self._tolerance
+        return float(
+            self._tolerance,
+        )
 
     @property
     @log_exception
@@ -125,15 +114,11 @@ class CompareRuleNumericTolerance(
         :return: Difference mode.
         """
 
-        if isinstance(self._diff_mode, WildcardField):
-            return DiffMode(
-                str(
-                    self._diff_mode,
-                ),
-            )
-
-        else:
-            return self._diff_mode
+        return DiffMode(
+            str(
+                self._diff_mode,
+            ),
+        )
 
     @property
     @log_exception
@@ -146,15 +131,11 @@ class CompareRuleNumericTolerance(
         :return: Numeric mode.
         """
 
-        if isinstance(self._numeric_mode, WildcardField):
-            return NumericMode(
-                str(
-                    self._numeric_mode,
-                ),
-            )
-
-        else:
-            return self._numeric_mode
+        return NumericMode(
+            str(
+                self._numeric_mode,
+            ),
+        )
 
     def compare(
         self,
@@ -223,29 +204,11 @@ class CompareRuleNumericTolerance(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        if isinstance(self._tolerance, WildcardField):
-            tolerance = self._tolerance.base_value
-
-        else:
-            tolerance = self._tolerance
-
-        if isinstance(self._diff_mode, WildcardField):
-            diff_mode = self._diff_mode.base_value
-
-        else:
-            diff_mode = self._diff_mode
-
-        if isinstance(self._numeric_mode, WildcardField):
-            numeric_mode = self._numeric_mode.base_value
-
-        else:
-            numeric_mode = self._numeric_mode
-
         return {
             'extension_id': self.get_extension_id(),
             'parameters': {
-                'tolerance': tolerance,
-                'diff_mode': diff_mode,
-                'numeric_mode': numeric_mode,
+                'tolerance': self._tolerance.base_value,
+                'diff_mode': self._diff_mode.base_value,
+                'numeric_mode': self._numeric_mode.base_value,
             },
         }

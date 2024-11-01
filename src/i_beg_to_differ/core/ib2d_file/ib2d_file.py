@@ -65,32 +65,9 @@ class IB2DFile(
             self=self,
         )
 
-        # Working directory
-        if working_dir_path is None:
-            working_dir_path = getenv(
-                key='TEMP',
-            )
-
-            if working_dir_path is None:
-                raise KeyError(
-                    'Unable to create default working directory: working_dir_path not specified '
-                    'and could not locate "TEMP" environment variable.'
-                )
-
-            working_dir_path = Path(
-                working_dir_path,
-            )
-
-            working_dir_path /= f'ib2d_{uuid4()!s}'
-
-            working_dir_path.mkdir()
-
-        elif isinstance(working_dir_path, str):
-            working_dir_path = Path(
-                working_dir_path,
-            )
-
-        self.working_dir_path = working_dir_path
+        self.working_dir_path = self.get_working_dir_path(
+            working_dir_path=working_dir_path,
+        )
 
         # Wildcard sets
         if wildcard_sets is None:
@@ -136,6 +113,36 @@ class IB2DFile(
         )
 
     @staticmethod
+    def get_working_dir_path(
+        working_dir_path: str | Path | None = None,
+    ) -> Path:
+        if working_dir_path is None:
+            working_dir_path = getenv(
+                key='TEMP',
+            )
+
+            if working_dir_path is None:
+                raise KeyError(
+                    'Unable to create default working directory: working_dir_path not specified '
+                    'and could not locate "TEMP" environment variable.'
+                )
+
+            working_dir_path = Path(
+                working_dir_path,
+            )
+
+            working_dir_path /= f'ib2d_{uuid4()!s}'
+
+            working_dir_path.mkdir()
+
+        elif isinstance(working_dir_path, str):
+            working_dir_path = Path(
+                working_dir_path,
+            )
+
+        return working_dir_path
+
+    @staticmethod
     def load_zip_file(
         path: Path,
     ) -> ZipFile:
@@ -179,6 +186,10 @@ class IB2DFile(
                 raise FileNotFoundError(
                     f'Unable to locate *.ib2d file: "{path!s}"!',
                 )
+
+            working_dir_path = IB2DFile.get_working_dir_path(
+                working_dir_path=working_dir_path,
+            )
 
             # Load *.ib2d file to memory
             ib2d_file = cls.load_zip_file(
