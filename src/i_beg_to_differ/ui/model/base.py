@@ -3,7 +3,10 @@ from copy import deepcopy
 from functools import cached_property
 from inspect import getmembers
 
-from PySide6.QtGui import QStandardItem
+from PySide6.QtGui import (
+    QStandardItem,
+    Qt,
+)
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -126,6 +129,12 @@ class ModelBase(
     def object_viewer_widget(
         self,
     ) -> QWidget | None:
+        """
+        Override this method to provide a custom widget. By default, parses the object for items to
+        add to the widget.
+
+        :return:
+        """
 
         layouts = []
 
@@ -154,6 +163,10 @@ class ModelBase(
                 object_viewer_layout.addWidget(
                     widget,
                 )
+
+            object_viewer_layout.setAlignment(
+                Qt.AlignmentFlag.AlignTop,
+            )
 
             object_viewer_widget.setLayout(
                 object_viewer_layout,
