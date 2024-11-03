@@ -35,6 +35,14 @@ class WildcardListInputFieldGroupBox(
             self.completer,
         )
 
+        self.combo_box.setEditable(
+            True,
+        )
+
+        self.combo_box.setInsertPolicy(
+            QComboBox.InsertPolicy.NoInsert,
+        )
+
         self.combo_box.setCurrentText(
             self.input_field.base_value,
         )

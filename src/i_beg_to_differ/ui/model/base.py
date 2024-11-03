@@ -8,8 +8,9 @@ from PySide6.QtGui import (
     Qt,
 )
 from PySide6.QtWidgets import (
-    QWidget,
+    QScrollArea,
     QVBoxLayout,
+    QWidget,
 )
 
 from ...core.base import Base
@@ -128,7 +129,7 @@ class ModelBase(
     @property
     def object_viewer_widget(
         self,
-    ) -> QWidget | None:
+    ) -> QScrollArea | None:
         """
         Override this method to provide a custom widget. By default, parses the object for items to
         add to the widget.
@@ -166,7 +167,17 @@ class ModelBase(
                 object_viewer_layout,
             )
 
-            return object_viewer_widget
+            object_viewer_scroll_area = QScrollArea()
+
+            object_viewer_scroll_area.setWidget(
+                object_viewer_widget,
+            )
+
+            object_viewer_scroll_area.setWidgetResizable(
+                True,
+            )
+
+            return object_viewer_scroll_area
 
         else:
             return None
