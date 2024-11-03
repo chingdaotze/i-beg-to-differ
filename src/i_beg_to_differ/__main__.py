@@ -116,6 +116,12 @@ def gui(
     qt_app = QApplication()
 
     main_window = MainWindow()
+
+    if ib2d_file_path:
+        main_window.menu_bar.file_menu.open(
+            path=ib2d_file_path,
+        )
+
     main_window.show()
 
     qt_app.exec()

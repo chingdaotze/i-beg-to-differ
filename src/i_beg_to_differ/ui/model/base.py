@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
 )
 
 from ...core.base import Base
-from ..view.main_window.main_widget.object_viewer.input_fields import (
-    get_object_viewer_layout,
+from ..view.main_window.main_widget.object_viewer.input_field_group_boxes import (
+    get_input_field_group_box,
 )
 
 
@@ -136,32 +136,26 @@ class ModelBase(
         :return:
         """
 
-        layouts = []
+        group_boxes = []
 
         for _, member in getmembers(object=self.current_state):
-            object_viewer_layout = get_object_viewer_layout(
+            group_box = get_input_field_group_box(
                 member=member,
             )
 
-            if object_viewer_layout is not None:
-                layouts.append(
-                    object_viewer_layout,
+            if group_box is not None:
+                group_boxes.append(
+                    group_box,
                 )
 
-        # Assemble layouts
-        if layouts:
+        # Assemble layout
+        if group_boxes:
             object_viewer_widget = QWidget()
             object_viewer_layout = QVBoxLayout()
 
-            for layout in layouts:
-                widget = QWidget()
-
-                widget.setLayout(
-                    layout,
-                )
-
+            for group_box in group_boxes:
                 object_viewer_layout.addWidget(
-                    widget,
+                    group_box,
                 )
 
             object_viewer_layout.setAlignment(

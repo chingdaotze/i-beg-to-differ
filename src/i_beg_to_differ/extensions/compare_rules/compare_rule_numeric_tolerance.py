@@ -13,7 +13,7 @@ from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_ru
 )
 from i_beg_to_differ.core.extensions.input_fields import (
     WildcardInputField,
-    ListInputField,
+    WildcardListInputField,
 )
 from i_beg_to_differ.core.extensions.extension import DataType
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
@@ -39,8 +39,8 @@ class CompareRuleNumericTolerance(
 ):
 
     _tolerance: WildcardInputField
-    _numeric_mode: ListInputField
-    _diff_mode: ListInputField
+    _numeric_mode: WildcardListInputField
+    _diff_mode: WildcardListInputField
 
     extension_name = 'Numeric Tolerance'
     data_type = DataType.NUMERIC
@@ -58,22 +58,22 @@ class CompareRuleNumericTolerance(
         )
 
         self._tolerance = WildcardInputField(
-            label='Tolerance: ',
             base_value=str(tolerance),
+            title='Tolerance',
             wildcard_sets=wildcard_sets,
         )
 
-        self._diff_mode = ListInputField(
-            label='Difference Mode: ',
+        self._diff_mode = WildcardListInputField(
             options=list(DiffMode),
             base_value=diff_mode,
+            title='Difference Mode: ',
             wildcard_sets=wildcard_sets,
         )
 
-        self._numeric_mode = ListInputField(
-            label='Numeric Mode: ',
+        self._numeric_mode = WildcardListInputField(
             options=list(NumericMode),
             base_value=numeric_mode,
+            title='Numeric Mode: ',
             wildcard_sets=wildcard_sets,
         )
 

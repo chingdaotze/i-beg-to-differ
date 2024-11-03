@@ -17,7 +17,7 @@ from pandas import read_sql
 from i_beg_to_differ.core.data_sources.data_source import DataSource
 from i_beg_to_differ.core.extensions.input_fields import (
     WildcardInputField,
-    DictInputField,
+    WildcardDictInputField,
 )
 from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
@@ -37,7 +37,7 @@ class DataSourceSqlAlchemy(
     _host: WildcardInputField
     _port: WildcardInputField
     _database: WildcardInputField
-    _query: DictInputField
+    _query: WildcardDictInputField
 
     extension_name = 'SQLAlchemy Connection'
 
@@ -61,14 +61,14 @@ class DataSourceSqlAlchemy(
         )
 
         self._drivername = WildcardInputField(
-            label='Driver Name: ',
             base_value=drivername,
+            title='Driver Name',
             wildcard_sets=wildcard_sets,
         )
 
         self._table_name = WildcardInputField(
-            label='Table Name: ',
             base_value=table_name,
+            title='Table Name',
             wildcard_sets=wildcard_sets,
         )
 
@@ -76,8 +76,8 @@ class DataSourceSqlAlchemy(
             username = ''
 
         self._username = WildcardInputField(
-            label='Username: ',
             base_value=username,
+            title='Username',
             wildcard_sets=wildcard_sets,
         )
 
@@ -85,8 +85,8 @@ class DataSourceSqlAlchemy(
             password = ''
 
         self._password = WildcardInputField(
-            label='Password: ',
             base_value=password,
+            title='Password',
             wildcard_sets=wildcard_sets,
         )
 
@@ -94,8 +94,8 @@ class DataSourceSqlAlchemy(
             host = ''
 
         self._host = WildcardInputField(
-            label='Host: ',
             base_value=host,
+            title='Host',
             wildcard_sets=wildcard_sets,
         )
 
@@ -103,8 +103,8 @@ class DataSourceSqlAlchemy(
             port = ''
 
         self._port = WildcardInputField(
-            label='Port: ',
             base_value=port,
+            title='Port',
             wildcard_sets=wildcard_sets,
         )
 
@@ -112,17 +112,17 @@ class DataSourceSqlAlchemy(
             database = ''
 
         self._database = WildcardInputField(
-            label='Database: ',
             base_value=database,
+            title='Database',
             wildcard_sets=wildcard_sets,
         )
 
         if not isinstance(query, dict):
             query = {}
 
-        self._query = DictInputField(
-            label='Query: ',
+        self._query = WildcardDictInputField(
             values=query,
+            title='Query',
             wildcard_sets=wildcard_sets,
         )
 

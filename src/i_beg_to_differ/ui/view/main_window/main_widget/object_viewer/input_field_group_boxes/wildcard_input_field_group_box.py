@@ -1,14 +1,14 @@
 from PySide6.QtWidgets import (
-    QFormLayout,
     QLineEdit,
     QLabel,
 )
 
+from .input_field_group_box import InputFieldGroupBox
 from .......core.extensions.input_fields import WildcardInputField
 
 
-class ObjectViewerWildcardInputField(
-    QFormLayout,
+class WildcardInputFieldGroupBox(
+    InputFieldGroupBox,
 ):
 
     input_field: WildcardInputField
@@ -20,8 +20,9 @@ class ObjectViewerWildcardInputField(
         input_field: WildcardInputField,
     ):
 
-        QFormLayout.__init__(
-            self,
+        InputFieldGroupBox.__init__(
+            self=self,
+            input_field=input_field,
         )
 
         self.input_field = input_field
@@ -36,6 +37,15 @@ class ObjectViewerWildcardInputField(
             str(self.input_field),
         )
 
+        font = self.preview.font()
+        font.setItalic(
+            True,
+        )
+
+        self.preview.setFont(
+            font,
+        )
+
         self.line_edit.editingFinished.connect(
             self.editing_finished,
         )
@@ -44,14 +54,16 @@ class ObjectViewerWildcardInputField(
             self.text_changed,
         )
 
-        self.addRow(
-            self.input_field.label,
+        self.layout.addWidget(
             self.line_edit,
+            0,
+            0,
         )
 
-        self.addRow(
-            'Preview: ',
+        self.layout.addWidget(
             self.preview,
+            1,
+            0,
         )
 
     def editing_finished(

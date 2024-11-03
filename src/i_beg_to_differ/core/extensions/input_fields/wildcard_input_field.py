@@ -8,19 +8,20 @@ class WildcardInputField(
     WildcardField,
 ):
 
-    label: str
-
     def __init__(
         self,
-        label: str,
         base_value: str,
+        title: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
+
+        InputField.__init__(
+            self=self,
+            title=title,
+        )
 
         WildcardField.__init__(
             self=self,
             base_value=base_value,
             wildcard_sets=wildcard_sets,
         )
-
-        self.label = label

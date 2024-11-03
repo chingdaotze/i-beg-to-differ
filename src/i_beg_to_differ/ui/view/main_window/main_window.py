@@ -17,6 +17,10 @@ class MainWindow(
         600,
     )
 
+    main_widget: MainWidget
+    menu_bar: MenuBar
+    status_bar: StatusBar
+
     def __init__(
         self,
     ):
@@ -39,25 +43,29 @@ class MainWindow(
         )
 
         # Bars
-        main_widget = MainWidget(
+        self.main_widget = MainWidget(
             parent=self,
         )
 
+        self.menu_bar = MenuBar(
+            parent=self,
+            object_explorer=self.main_widget.object_explorer,
+            object_viewer=self.main_widget.object_viewer,
+        )
+
         self.setMenuBar(
-            MenuBar(
-                parent=self,
-                object_explorer=main_widget.object_explorer,
-                object_viewer=main_widget.object_viewer,
-            )
+            self.menu_bar,
+        )
+
+        self.status_bar = StatusBar(
+            parent=self,
         )
 
         self.setStatusBar(
-            StatusBar(
-                parent=self,
-            )
+            self.status_bar,
         )
 
         # Widgets
         self.setCentralWidget(
-            main_widget,
+            self.main_widget,
         )

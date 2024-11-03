@@ -20,7 +20,7 @@ from openpyxl.cell.cell import (
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
 from i_beg_to_differ.core.extensions.input_fields import (
-    PathInputField,
+    WildcardPathInputField,
     WildcardInputField,
 )
 from i_beg_to_differ.core.base import log_exception
@@ -50,7 +50,7 @@ class DataSourceExcel(
     Excel file data source.
     """
 
-    path: PathInputField
+    path: WildcardPathInputField
     """
     Path to the ``*.xlsx`` file.
     """
@@ -80,15 +80,17 @@ class DataSourceExcel(
             description=description,
         )
 
-        self.path = PathInputField(
-            label='*.xlsx File Path: ',
+        self.path = WildcardPathInputField(
             path=path,
+            title='File Path',
+            file_dialog_caption='Open *.xlsx File',
+            file_dialog_filter='Office Open XML Workbook (*.xlsx)',
             wildcard_sets=wildcard_sets,
         )
 
         self.sheet = WildcardInputField(
-            label='Sheet Name: ',
             base_value=sheet,
+            title='Sheet Name',
             wildcard_sets=wildcard_sets,
         )
 

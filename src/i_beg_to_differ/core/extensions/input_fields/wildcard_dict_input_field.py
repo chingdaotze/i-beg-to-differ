@@ -5,21 +5,23 @@ from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
 
-class DictInputField(
+class WildcardDictInputField(
     InputField,
 ):
 
-    label: str
     values: Dict[WildcardField, WildcardField]
 
     def __init__(
         self,
-        label: str,
+        title: str | None = None,
         values: Dict[str, str] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        self.label = label
+        InputField.__init__(
+            self=self,
+            title=title,
+        )
 
         if isinstance(values, dict):
             self.values = {

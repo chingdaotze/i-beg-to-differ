@@ -4,7 +4,7 @@ from .wildcard_input_field import WildcardInputField
 from ...wildcards_sets import WildcardSets
 
 
-class ListInputField(
+class WildcardListInputField(
     WildcardInputField,
 ):
 
@@ -12,15 +12,15 @@ class ListInputField(
 
     def __init__(
         self,
-        label: str,
         options: List[str],
         base_value: str,
+        title: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
         WildcardInputField.__init__(
             self=self,
-            label=label,
+            title=title,
             base_value=base_value,
             wildcard_sets=wildcard_sets,
         )

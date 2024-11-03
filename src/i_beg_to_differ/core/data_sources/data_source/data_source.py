@@ -60,8 +60,8 @@ class DataSource(
         )
 
         self.description = StringInputField(
-            label='Description',
             value=description,
+            title='Description',
         )
         self.fields = self.manager.dict()
         self._wildcard_sets = wildcard_sets

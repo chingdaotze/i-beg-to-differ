@@ -14,6 +14,10 @@ class MenuBar(
     object_explorer: ObjectExplorer
     object_viewer: ObjectViewer
 
+    file_menu: FileMenu
+    edit_menu: EditMenu
+    help_menu: HelpMenu
+
     def __init__(
         self,
         parent,
@@ -29,22 +33,28 @@ class MenuBar(
         self.object_explorer = object_explorer
         self.object_viewer = object_viewer
 
-        self.addMenu(
-            FileMenu(
-                parent=self,
-                object_explorer=object_explorer,
-                object_viewer=object_viewer,
-            ),
+        self.file_menu = FileMenu(
+            parent=self,
+            object_explorer=object_explorer,
+            object_viewer=object_viewer,
         )
 
         self.addMenu(
-            EditMenu(
-                parent=self,
-            ),
+            self.file_menu,
+        )
+
+        self.edit_menu = EditMenu(
+            parent=self,
         )
 
         self.addMenu(
-            HelpMenu(
-                parent=self,
-            ),
+            self.edit_menu,
+        )
+
+        self.help_menu = HelpMenu(
+            parent=self,
+        )
+
+        self.addMenu(
+            self.help_menu,
         )

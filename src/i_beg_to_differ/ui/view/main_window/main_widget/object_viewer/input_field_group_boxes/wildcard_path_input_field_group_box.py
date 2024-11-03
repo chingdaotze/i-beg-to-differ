@@ -1,5 +1,5 @@
-from .wildcard_input_field import ObjectViewerWildcardInputField
-from .......core.extensions.input_fields import PathInputField
+from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
+from .......core.extensions.input_fields import WildcardPathInputField
 
 from PySide6.QtWidgets import (
     QFileDialog,
@@ -7,18 +7,19 @@ from PySide6.QtWidgets import (
 )
 
 
-class ObjectViewerPathInputField(
-    ObjectViewerWildcardInputField,
+class WildcardPathInputGroupBox(
+    WildcardInputFieldGroupBox,
 ):
 
+    input_field: WildcardPathInputField
     browse_button: QPushButton
 
     def __init__(
         self,
-        input_field: PathInputField,
+        input_field: WildcardPathInputField,
     ) -> None:
 
-        ObjectViewerWildcardInputField.__init__(
+        WildcardInputFieldGroupBox.__init__(
             self=self,
             input_field=input_field,
         )
@@ -31,10 +32,10 @@ class ObjectViewerPathInputField(
             self.browse,
         )
 
-        self.insertRow(
-            1,
-            '',
+        self.layout.addWidget(
             self.browse_button,
+            0,
+            1,
         )
 
     def browse(
@@ -42,8 +43,8 @@ class ObjectViewerPathInputField(
     ) -> None:
 
         path, _ = QFileDialog.getOpenFileName(
-            caption='Open *.ib2d File',
-            filter='ib2d Files (*.ib2d)',
+            caption=self.input_field.file_dialog_caption,
+            filter=self.input_field.file_dialog_filter,
         )
 
         if path:

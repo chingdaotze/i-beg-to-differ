@@ -41,7 +41,7 @@ class ObjectExplorer(
             item: ModelBase
             object_viewer_widget = item.object_viewer_widget
 
-            if issubclass(type(object_viewer_widget), QWidget):
+            if isinstance(object_viewer_widget, QWidget):
                 self.object_viewer.addTab(
                     object_viewer_widget,
                     item.object_name,

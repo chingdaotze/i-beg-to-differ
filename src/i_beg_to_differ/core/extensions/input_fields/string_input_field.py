@@ -5,16 +5,18 @@ class StringInputField(
     InputField,
 ):
 
-    label: str
     value: str
 
     def __init__(
         self,
-        label: str,
+        title: str | None = None,
         value: str | None = None,
     ):
 
-        self.label = label
+        InputField.__init__(
+            self=self,
+            title=title,
+        )
 
         if value is None:
             value = ''

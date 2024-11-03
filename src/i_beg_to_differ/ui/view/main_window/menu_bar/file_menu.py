@@ -64,13 +64,15 @@ class FileMenu(
 
     def open(
         self,
+        path: str | None = None,
     ) -> None:
 
-        path, _ = QFileDialog.getOpenFileName(
-            self,
-            caption='Open *.ib2d File',
-            filter='ib2d Files (*.ib2d)',
-        )
+        if path is None:
+            path, _ = QFileDialog.getOpenFileName(
+                self,
+                caption='Open *.ib2d File',
+                filter='ib2d Files (*.ib2d)',
+            )
 
         if path:
             model = Model.load(
