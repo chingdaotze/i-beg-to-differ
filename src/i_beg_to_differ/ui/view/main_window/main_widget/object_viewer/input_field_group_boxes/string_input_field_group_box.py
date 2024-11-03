@@ -35,7 +35,10 @@ class StringInputFieldGroupBox(
             self.text_edit,
         )
 
-        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        self.setSizePolicy(
+            QSizePolicy.Policy.Minimum,
+            QSizePolicy.Policy.Maximum,
+        )
 
     def text_changed(
         self,

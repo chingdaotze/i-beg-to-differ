@@ -12,7 +12,7 @@ from .......core.extensions.input_fields import (
 )
 from .string_input_field_group_box import StringInputFieldGroupBox
 from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
-from .wildcard_path_input_field_group_box import WildcardPathInputGroupBox
+from .wildcard_path_input_field_group_box import WildcardPathInputFieldGroupBox
 
 
 def get_input_field_group_box(
@@ -40,7 +40,7 @@ def get_input_field_group_box(
             pass
 
         elif member_type == WildcardPathInputField:
-            return WildcardPathInputGroupBox(
+            return WildcardPathInputFieldGroupBox(
                 input_field=member,
             )
 

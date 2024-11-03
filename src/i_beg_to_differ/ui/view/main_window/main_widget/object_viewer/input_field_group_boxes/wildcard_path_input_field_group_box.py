@@ -1,13 +1,13 @@
-from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
-from .......core.extensions.input_fields import WildcardPathInputField
-
 from PySide6.QtWidgets import (
     QFileDialog,
     QPushButton,
 )
 
+from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
+from .......core.extensions.input_fields import WildcardPathInputField
 
-class WildcardPathInputGroupBox(
+
+class WildcardPathInputFieldGroupBox(
     WildcardInputFieldGroupBox,
 ):
 
