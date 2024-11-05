@@ -10,11 +10,15 @@ class WildcardDictInputField(
 ):
 
     values: Dict[WildcardField, WildcardField]
+    key_column: str
+    value_column: str
 
     def __init__(
         self,
         title: str | None = None,
         values: Dict[str, str] | None = None,
+        key_column: str = 'Parameter',
+        value_column: str = 'Value',
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -22,6 +26,9 @@ class WildcardDictInputField(
             self=self,
             title=title,
         )
+
+        self.key_column = key_column
+        self.value_column = value_column
 
         if isinstance(values, dict):
             self.values = {

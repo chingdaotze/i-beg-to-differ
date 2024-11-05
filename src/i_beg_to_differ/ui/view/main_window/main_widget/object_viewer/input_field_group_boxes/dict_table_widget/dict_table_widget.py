@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
 )
 
+# FIXME: This class still isn't behaving right
+
 
 class DictTableWidget(
     QTableWidget,
@@ -32,6 +34,15 @@ class DictTableWidget(
         )
 
         self.values = values
+
+        self.setColumnCount(
+            2,
+        )
+
+        self.setRowCount(
+            len(self.values) + 1,
+        )
+
         self.key_column = key_column
         self.value_column = value_column
 
@@ -42,11 +53,19 @@ class DictTableWidget(
             ]
         )
 
+        self.verticalHeader().setVisible(
+            False,
+        )
+
         for key, value in self.values.items():
             self.append_row(
                 key=key,
                 value=value,
             )
+
+        self.cellChanged.connect(
+            self.cell_changed,
+        )
 
     def append_row(
         self,
@@ -54,4 +73,46 @@ class DictTableWidget(
         value: Any,
     ) -> None:
         # Calculate new row
-        new_row_index = self.rowCount() + 1
+        row = self.rowCount() + 1
+
+        key_widget = QTableWidgetItem(
+            key,
+        )
+
+        value_widget = QTableWidgetItem(
+            value,
+        )
+
+        self.setItem(
+            row,
+            0,
+            key_widget,
+        )
+
+        self.setItem(
+            row,
+            1,
+            value_widget,
+        )
+
+    def cell_changed(
+        self,
+        row: int,
+        column: int,
+    ) -> None:
+
+        self.values.clear()
+
+        for row in range(self.rowCount()):
+
+            key = self.itemAt(
+                row,
+                0,
+            ).text()
+
+            value = self.itemAt(
+                row,
+                1,
+            ).text()
+
+            self.values[key] = value

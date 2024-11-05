@@ -11,7 +11,9 @@ from .......core.extensions.input_fields import (
     WildcardPathInputField,
 )
 from .string_input_field_group_box import StringInputFieldGroupBox
+from .wildcard_dict_input_field_group_box import WildcardDictInputFieldGroupBox
 from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
+from .wildcard_list_input_field_group_box import WildcardListInputFieldGroupBox
 from .wildcard_path_input_field_group_box import WildcardPathInputFieldGroupBox
 
 
@@ -28,8 +30,10 @@ def get_input_field_group_box(
                 input_field=member,
             )
 
-        if member_type == WildcardDictInputField:
-            pass
+        elif member_type == WildcardDictInputField:
+            return WildcardDictInputFieldGroupBox(
+                input_field=member,
+            )
 
         elif member_type == WildcardInputField:
             return WildcardInputFieldGroupBox(
@@ -37,7 +41,9 @@ def get_input_field_group_box(
             )
 
         elif member_type == WildcardListInputField:
-            pass
+            return WildcardListInputFieldGroupBox(
+                input_field=member,
+            )
 
         elif member_type == WildcardPathInputField:
             return WildcardPathInputFieldGroupBox(
