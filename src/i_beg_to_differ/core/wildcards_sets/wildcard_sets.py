@@ -29,15 +29,16 @@ class WildcardSets(
             self=self,
         )
 
+        self.wildcard_sets = self.manager.dict()
+
         if wildcard_sets is None:
-            self.wildcard_sets = {
-                self._DEFAULT_WILDCARD_SET: WildcardSet(
-                    description='Default system-provided Wildcard Set.'
-                )
-            }
+            self.wildcard_sets[self._DEFAULT_WILDCARD_SET] = WildcardSet(
+                description='Default system-provided Wildcard Set.'
+            )
 
         else:
-            self.wildcard_sets = wildcard_sets
+            for key, value in wildcard_sets.items():
+                self.wildcard_sets[key] = value
 
         if self.wildcard_sets:
             self.active_wildcard_set = next(iter(self.wildcard_sets))

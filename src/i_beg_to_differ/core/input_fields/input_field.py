@@ -1,9 +1,11 @@
 from abc import (
     ABC,
 )
+from ..base import Base
 
 
 class InputField(
+    Base,
     ABC,
 ):
     """
@@ -16,5 +18,9 @@ class InputField(
         self,
         title: str | None = None,
     ):
+
+        Base.__init__(
+            self=self,
+        )
 
         self.title = title

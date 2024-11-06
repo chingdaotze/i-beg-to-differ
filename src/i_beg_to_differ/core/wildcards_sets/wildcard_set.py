@@ -51,17 +51,20 @@ class WildcardSet(
             value=description,
         )
 
-        if user_replacement_values is None:
-            user_replacement_values = {}
+        user_replacement_values_ = self.manager.dict()
+
+        if user_replacement_values is not None:
+            for key, value in user_replacement_values.items():
+                user_replacement_values_[key] = value
 
         self.user_replacement_values = DictInputField(
             title='Wildcards',
-            values=user_replacement_values,
+            values=user_replacement_values_,
             key_column='Wildcard Name',
             value_column='Wildcard Value',
         )
 
-        self.system_replacement_values = {}
+        self.system_replacement_values = self.manager.dict()
 
     def __str__(
         self,
@@ -84,7 +87,10 @@ class WildcardSet(
         self,
     ) -> Dict[str, str]:
 
-        return self.system_replacement_values | self.user_replacement_values.values
+        system_replacement_values = dict(self.system_replacement_values)
+        user_replacement_values = dict(self.user_replacement_values.values)
+
+        return system_replacement_values | user_replacement_values
 
     @log_exception
     def replace_wildcards(
