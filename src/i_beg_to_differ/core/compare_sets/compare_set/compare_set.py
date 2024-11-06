@@ -10,6 +10,7 @@ from ...base import (
     log_exception,
     log_runtime,
 )
+from ...input_fields import StringInputField
 from .compare import Compare
 from ...wildcards_sets import WildcardSets
 from ...data_sources import DataSources
@@ -22,7 +23,7 @@ class CompareSet(
     Compare set object. Contains a collection of compares.
     """
 
-    description: str | None
+    description: StringInputField
     """
     Human-readable description of this Compare Set.
     """
@@ -41,7 +42,10 @@ class CompareSet(
             self=self,
         )
 
-        self.description = description
+        self.description = StringInputField(
+            title='Description',
+            value=description,
+        )
         self.compares = compares
 
     def __str__(
