@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QTableWidget,
     QPushButton,
+    QVBoxLayout,
     QTableWidgetItem,
 )
 from PySide6.QtGui import Qt
@@ -87,7 +88,7 @@ class DictTableWidget(
         )
 
         # Construct buttons
-        button_layout = QGridLayout()
+        button_layout = QVBoxLayout()
 
         self.add_button = QPushButton(
             'Add',
@@ -109,19 +110,13 @@ class DictTableWidget(
 
         button_layout.addWidget(
             self.add_button,
-            0,
-            0,
         )
 
         button_layout.addWidget(
             self.delete_button,
-            1,
-            0,
         )
 
-        button_layout.setAlignment(
-            Qt.AlignmentFlag.AlignTop,
-        )
+        button_layout.addStretch()
 
         self.layout.addLayout(
             button_layout,

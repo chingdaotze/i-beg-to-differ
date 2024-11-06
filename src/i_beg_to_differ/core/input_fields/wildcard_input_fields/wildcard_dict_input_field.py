@@ -1,17 +1,15 @@
 from typing import Dict
 
-from ..input_field import InputField
+from ..dict_input_field import DictInputField
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 
 
 class WildcardDictInputField(
-    InputField,
+    DictInputField,
 ):
 
     values: Dict[WildcardField, WildcardField]
-    key_column: str
-    value_column: str
 
     def __init__(
         self,
@@ -22,25 +20,21 @@ class WildcardDictInputField(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        InputField.__init__(
+        DictInputField.__init__(
             self=self,
             title=title,
+            values=values,
+            key_column=key_column,
+            value_column=value_column,
         )
 
-        self.key_column = key_column
-        self.value_column = value_column
-
-        if isinstance(values, dict):
-            self.values = {
-                WildcardField(
-                    base_value=key,
-                    wildcard_sets=wildcard_sets,
-                ): WildcardField(
-                    base_value=value,
-                    wildcard_sets=wildcard_sets,
-                )
-                for key, value in values.items()
-            }
-
-        else:
-            self.values = {}
+        self.values = {
+            WildcardField(
+                base_value=str(key),
+                wildcard_sets=wildcard_sets,
+            ): WildcardField(
+                base_value=str(value),
+                wildcard_sets=wildcard_sets,
+            )
+            for key, value in self.values.items()
+        }

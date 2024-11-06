@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QGroupBox
 
 from .......core.input_fields import (
     InputField,
+    DictInputField,
     StringInputField,
 )
 from .......core.input_fields.wildcard_input_fields import (
@@ -12,6 +13,7 @@ from .......core.input_fields.wildcard_input_fields import (
     WildcardListInputField,
     WildcardPathInputField,
 )
+from .dict_input_field_group_box import DictInputFieldGroupBox
 from .string_input_field_group_box import StringInputFieldGroupBox
 from .wildcard_dict_input_field_group_box import WildcardDictInputFieldGroupBox
 from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
@@ -27,7 +29,12 @@ def get_input_field_group_box(
     )
 
     if issubclass(member_type, InputField):
-        if member_type == StringInputField:
+        if member_type == DictInputField:
+            return DictInputFieldGroupBox(
+                input_field=member,
+            )
+
+        elif member_type == StringInputField:
             return StringInputFieldGroupBox(
                 input_field=member,
             )

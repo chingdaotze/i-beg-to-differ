@@ -6,7 +6,10 @@ from typing import (
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..input_fields import StringInputField
+from ..input_fields import (
+    StringInputField,
+    DictInputField,
+)
 from ..base import log_exception
 
 
@@ -22,7 +25,7 @@ class WildcardSet(
     Human-readable description of this Wildcard Set.
     """
 
-    user_replacement_values: Dict[str, str]
+    user_replacement_values: DictInputField
     """
     User-defined wildcard replacement values.
     """
@@ -51,7 +54,12 @@ class WildcardSet(
         if user_replacement_values is None:
             user_replacement_values = {}
 
-        self.user_replacement_values = user_replacement_values
+        self.user_replacement_values = DictInputField(
+            title='Wildcards',
+            values=user_replacement_values,
+            key_column='Wildcard Name',
+            value_column='Wildcard Value',
+        )
 
         self.system_replacement_values = {}
 
@@ -76,7 +84,7 @@ class WildcardSet(
         self,
     ) -> Dict[str, str]:
 
-        return self.system_replacement_values | self.user_replacement_values
+        return self.system_replacement_values | self.user_replacement_values.values
 
     @log_exception
     def replace_wildcards(
