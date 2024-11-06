@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
 )
 
 from .wildcard_input_field_group_box import WildcardInputFieldGroupBox
-from .......core.extensions.input_fields import WildcardPathInputField
+from .......core.input_fields.wildcard_input_fields import WildcardPathInputField
 
 
 class WildcardPathInputFieldGroupBox(

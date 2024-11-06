@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QGridLayout,
 )
 
-from .......core.extensions.input_fields import InputField
+from .......core.input_fields import InputField
 
 
 class InputFieldGroupBox(

@@ -129,6 +129,34 @@ class DictTableWidget(
             1,
         )
 
+    @staticmethod
+    def key_to_str(
+        key: Any,
+    ) -> str:
+
+        return key
+
+    @staticmethod
+    def str_to_key(
+        key: str,
+    ) -> Any:
+
+        return key
+
+    @staticmethod
+    def value_to_str(
+        value: Any,
+    ) -> str:
+
+        return value
+
+    @staticmethod
+    def str_to_value(
+        value: str,
+    ) -> Any:
+
+        return value
+
     def append_row(
         self,
         key: Any,
@@ -139,8 +167,16 @@ class DictTableWidget(
 
         row = self.table.rowCount()
 
+        key = self.key_to_str(
+            key=key,
+        )
+
         key_widget = QTableWidgetItem(
             key,
+        )
+
+        value = self.value_to_str(
+            value=value,
         )
 
         value_widget = QTableWidgetItem(
@@ -171,7 +207,9 @@ class DictTableWidget(
         )
 
         if isinstance(key, QTableWidgetItem):
-            key = key.text()
+            key = self.str_to_key(
+                key=key.text(),
+            )
 
         value = self.table.item(
             row,
@@ -179,7 +217,9 @@ class DictTableWidget(
         )
 
         if isinstance(value, QTableWidgetItem):
-            value = value.text()
+            value = self.str_to_value(
+                value=value.text(),
+            )
 
         self.values[key] = value
 
@@ -203,7 +243,10 @@ class DictTableWidget(
         )
 
         if isinstance(key, QTableWidgetItem):
-            key = key.text()
+            key = self.str_to_key(
+                key=key.text(),
+            )
+
             del self.values[key]
 
         self.table.removeRow(

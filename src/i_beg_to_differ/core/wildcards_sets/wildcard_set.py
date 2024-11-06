@@ -6,6 +6,7 @@ from typing import (
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
+from ..input_fields import StringInputField
 from ..base import log_exception
 
 
@@ -16,7 +17,7 @@ class WildcardSet(
     Collection of wildcards, used to replace values.
     """
 
-    description: str
+    description: StringInputField
     """
     Human-readable description of this Wildcard Set.
     """
@@ -42,7 +43,10 @@ class WildcardSet(
             self=self,
         )
 
-        self.description = description
+        self.description = StringInputField(
+            title='Description',
+            value=description,
+        )
 
         if user_replacement_values is None:
             user_replacement_values = {}

@@ -19,7 +19,7 @@ from openpyxl.cell.cell import (
 )
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
-from i_beg_to_differ.core.extensions.input_fields import (
+from i_beg_to_differ.core.input_fields.wildcard_input_fields import (
     WildcardPathInputField,
     WildcardInputField,
 )

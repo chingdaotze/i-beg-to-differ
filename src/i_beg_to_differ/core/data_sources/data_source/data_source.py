@@ -12,7 +12,7 @@ from pandas import DataFrame
 from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
-from ...extensions.input_fields import StringInputField
+from ...input_fields import StringInputField
 from ...wildcards_sets import WildcardSets
 
 

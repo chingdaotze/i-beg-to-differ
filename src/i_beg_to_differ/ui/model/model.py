@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Self
 
 from PySide6.QtGui import QStandardItemModel
-from numpy.f2py.auxfuncs import isintent_aux
 
 from ...core.ib2d_file import IB2DFile
 from ...core import open_ib2d_file

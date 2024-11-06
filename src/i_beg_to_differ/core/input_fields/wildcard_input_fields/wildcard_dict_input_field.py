@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .input_field import InputField
+from ..input_field import InputField
 from ...wildcards_sets.wildcard_field import WildcardField
 from ...wildcards_sets import WildcardSets
 

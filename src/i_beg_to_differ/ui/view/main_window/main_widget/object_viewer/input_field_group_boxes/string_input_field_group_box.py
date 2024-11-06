@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QPlainTextEdit, QSizePolicy
 
 from .input_field_group_box import InputFieldGroupBox
-from .......core.extensions.input_fields import StringInputField
+from .......core.input_fields import StringInputField
 
 
 class StringInputFieldGroupBox(

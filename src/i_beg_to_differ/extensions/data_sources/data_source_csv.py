@@ -8,7 +8,9 @@ from zipfile import ZipFile
 from pandas import read_csv
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
-from i_beg_to_differ.core.extensions.input_fields import WildcardPathInputField
+from i_beg_to_differ.core.input_fields.wildcard_input_fields import (
+    WildcardPathInputField,
+)
 from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 

@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QLabel
 
 from .input_field_group_box import InputFieldGroupBox
-from .......core.extensions.input_fields import InputField
+from .......core.input_fields import InputField
 
 
 class WildcardInputFieldGroupBoxBase(

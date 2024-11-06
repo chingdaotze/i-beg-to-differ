@@ -1,6 +1,6 @@
 from .input_field_group_box import InputFieldGroupBox
-from .......core.extensions.input_fields import WildcardDictInputField
-from .dict_table_widget import DictTableWidget
+from .......core.input_fields.wildcard_input_fields import WildcardDictInputField
+from .dict_table_widget import WildcardDictTableWidget
 
 
 class WildcardDictInputFieldGroupBox(
@@ -8,7 +8,7 @@ class WildcardDictInputFieldGroupBox(
 ):
 
     input_field: WildcardDictInputField
-    dict_table: DictTableWidget
+    dict_table: WildcardDictTableWidget
 
     def __init__(
         self,
@@ -20,7 +20,7 @@ class WildcardDictInputFieldGroupBox(
             input_field=input_field,
         )
 
-        self.dict_table = DictTableWidget(
+        self.dict_table = WildcardDictTableWidget(
             values=input_field.values,
             key_column=input_field.key_column,
             value_column=input_field.value_column,

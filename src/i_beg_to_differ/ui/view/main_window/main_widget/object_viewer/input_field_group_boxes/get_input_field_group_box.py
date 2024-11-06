@@ -2,9 +2,11 @@ from typing import Any
 
 from PySide6.QtWidgets import QGroupBox
 
-from .......core.extensions.input_fields import (
+from .......core.input_fields import (
     InputField,
     StringInputField,
+)
+from .......core.input_fields.wildcard_input_fields import (
     WildcardDictInputField,
     WildcardInputField,
     WildcardListInputField,

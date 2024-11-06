@@ -1,10 +1,7 @@
-from PySide6.QtWidgets import (
-    QLineEdit,
-    QLabel,
-)
+from PySide6.QtWidgets import QLineEdit
 
 from .wildcard_input_field_group_box_base import WildcardInputFieldGroupBoxBase
-from .......core.extensions.input_fields import WildcardInputField
+from .......core.input_fields.wildcard_input_fields import WildcardInputField
 
 
 class WildcardInputFieldGroupBox(
