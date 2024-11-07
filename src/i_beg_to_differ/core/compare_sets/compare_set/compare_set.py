@@ -137,7 +137,7 @@ class CompareSet(
     ) -> Dict:
 
         return {
-            'description': self.description,
+            'description': self.description.value,
             'compares': {
                 name: instance.serialize(
                     ib2d_file=ib2d_file,

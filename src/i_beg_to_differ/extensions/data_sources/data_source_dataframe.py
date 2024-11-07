@@ -76,7 +76,7 @@ class DataSourceDataFrame(
 
         return {
             'extension_id': self.get_extension_id(),
-            'description': self.description,
+            'description': self.description.value,
             'parameters': {
                 'data': self.data.to_dict(),
             },

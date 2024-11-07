@@ -87,8 +87,13 @@ class WildcardSet(
         self,
     ) -> Dict[str, str]:
 
-        system_replacement_values = dict(self.system_replacement_values)
-        user_replacement_values = dict(self.user_replacement_values.values)
+        system_replacement_values = dict(
+            self.system_replacement_values,
+        )
+
+        user_replacement_values = dict(
+            self.user_replacement_values.values,
+        )
 
         return system_replacement_values | user_replacement_values
 
@@ -145,7 +150,11 @@ class WildcardSet(
         ib2d_file: ZipFile,
     ) -> Dict:
 
+        replacement_values = dict(
+            self.user_replacement_values.values,
+        )
+
         return {
-            'description': self.description,
-            'replacement_values': self.user_replacement_values,
+            'description': self.description.value,
+            'replacement_values': replacement_values,
         }
