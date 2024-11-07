@@ -44,7 +44,11 @@ class ObjectExplorer(
             if isinstance(object_viewer_widget, QWidget):
                 self.object_viewer.addTab(
                     object_viewer_widget,
-                    item.object_name,
+                    f'{item.object_type}: {item.object_name}',
+                )
+
+                self.object_viewer.setCurrentWidget(
+                    object_viewer_widget,
                 )
 
     def double_click(

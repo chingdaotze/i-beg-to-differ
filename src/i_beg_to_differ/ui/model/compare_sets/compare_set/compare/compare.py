@@ -1,11 +1,16 @@
+from PySide6.QtWidgets import QScrollArea, QWidget
+
 from ....base import ModelBase
 from ......core.compare_sets.compare_set.compare import Compare
+from .compare_widget import CompareWidget
 from .field_pair import ModelFieldPair
 
 
 class ModelCompare(
     ModelBase,
 ):
+
+    current_state: Compare
 
     def __init__(
         self,
@@ -19,10 +24,11 @@ class ModelCompare(
             object_name=object_name,
         )
 
-        for field_pair in compare.fields:
+    @property
+    def object_viewer_widget(
+        self,
+    ) -> QWidget | None:
 
-            self.appendRow(
-                ModelFieldPair(
-                    field_pair=field_pair,
-                )
-            )
+        return CompareWidget(
+            compare=self.current_state,
+        )

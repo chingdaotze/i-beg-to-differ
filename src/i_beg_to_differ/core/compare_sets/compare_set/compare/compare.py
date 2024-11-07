@@ -22,6 +22,7 @@ from ....compare_engine import (
     CompareEngine,
     AUTO_MATCH,
 )
+from ....input_fields import StringInputField
 from .data_source_pair import DataSourcePair
 from .field_pair import (
     FieldPairPrimaryKey,
@@ -40,7 +41,7 @@ class Compare(
     Compare object.
     """
 
-    description: str | None
+    description: StringInputField
     """
     Human-readable description.
     """
@@ -76,7 +77,11 @@ class Compare(
             dt_fields=dt_fields,
         )
 
-        self.description = description
+        self.description = StringInputField(
+            title='Description',
+            value=description,
+        )
+
         self.data_source_pair = data_source_pair
         self.init_caches = self.data_source_pair.init_caches
 
@@ -171,7 +176,7 @@ class Compare(
             dt_fields = self._dt_fields
 
         return {
-            'description': self.description,
+            'description': self.description.value,
             'source': self.source,
             'target': self.target,
             'pk_fields': pk_fields,

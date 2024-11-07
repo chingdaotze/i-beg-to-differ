@@ -89,11 +89,9 @@ class ModelBase(
         self,
     ) -> str:
 
-        return str(
-            type(
-                self.current_state,
-            ),
-        )
+        return type(
+            self.current_state,
+        ).__name__
 
     @property
     def is_modified(
@@ -129,7 +127,7 @@ class ModelBase(
     @property
     def object_viewer_widget(
         self,
-    ) -> QScrollArea | None:
+    ) -> QWidget | None:
         """
         Override this method to provide a custom widget. By default, parses the object for items to
         add to the widget.
