@@ -1,7 +1,7 @@
 from .input_field import InputField
 
 
-class StringInputField(
+class TextBoxInputField(
     InputField,
 ):
 

@@ -22,7 +22,7 @@ from ....compare_engine import (
     CompareEngine,
     AUTO_MATCH,
 )
-from ....input_fields import StringInputField
+from ....input_fields import TextBoxInputField
 from .data_source_pair import DataSourcePair
 from .field_pair import (
     FieldPairPrimaryKey,
@@ -41,7 +41,7 @@ class Compare(
     Compare object.
     """
 
-    description: StringInputField
+    description: TextBoxInputField
     """
     Human-readable description.
     """
@@ -77,7 +77,7 @@ class Compare(
             dt_fields=dt_fields,
         )
 
-        self.description = StringInputField(
+        self.description = TextBoxInputField(
             title='Description',
             value=description,
         )

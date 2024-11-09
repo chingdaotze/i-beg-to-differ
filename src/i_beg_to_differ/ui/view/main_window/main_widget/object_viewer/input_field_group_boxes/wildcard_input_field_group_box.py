@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QLineEdit
 
+from .dynamic_combo_box import DynamicComboBox
 from .wildcard_input_field_group_box_base import WildcardInputFieldGroupBoxBase
 from .......core.input_fields.wildcard_input_fields import WildcardInputField
+from .......core.input_fields.input_field_options import InputFieldOptions
 
 
 class WildcardInputFieldGroupBox(
@@ -9,7 +11,7 @@ class WildcardInputFieldGroupBox(
 ):
 
     input_field: WildcardInputField
-    line_edit: QLineEdit
+    input_widget: QLineEdit | DynamicComboBox
 
     def __init__(
         self,
@@ -21,18 +23,32 @@ class WildcardInputFieldGroupBox(
             input_field=input_field,
         )
 
-        self.line_edit = QLineEdit()
+        if isinstance(self.input_field.options, InputFieldOptions):
+            self.input_widget = DynamicComboBox(
+                input_field=self.input_field.options,
+            )
 
-        self.line_edit.setText(
-            self.input_field.base_value,
-        )
+            self.input_widget.setCurrentText(
+                self.input_field.base_value,
+            )
 
-        self.line_edit.textChanged.connect(
-            self.text_changed,
-        )
+            self.input_widget.currentTextChanged.connect(
+                self.text_changed_dynamic_combo_box,
+            )
+
+        else:
+            self.input_widget = QLineEdit()
+
+            self.input_widget.setText(
+                self.input_field.base_value,
+            )
+
+            self.input_widget.textChanged.connect(
+                self.text_changed_line_edit,
+            )
 
         self.layout.addWidget(
-            self.line_edit,
+            self.input_widget,
             0,
             0,
         )
@@ -43,9 +59,16 @@ class WildcardInputFieldGroupBox(
             0,
         )
 
-    def text_changed(
+    def text_changed_dynamic_combo_box(
         self,
     ) -> None:
 
-        self.input_field.base_value = self.line_edit.text()
+        self.input_field.base_value = self.input_widget.currentText()
+        self.update_preview()
+
+    def text_changed_line_edit(
+        self,
+    ) -> None:
+
+        self.input_field.base_value = self.input_widget.text()
         self.update_preview()

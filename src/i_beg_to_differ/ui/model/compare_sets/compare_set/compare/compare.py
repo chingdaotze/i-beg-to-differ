@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QScrollArea, QWidget
+from PySide6.QtWidgets import QWidget
 
 from ....base import ModelBase
 from ......core.compare_sets.compare_set.compare import Compare

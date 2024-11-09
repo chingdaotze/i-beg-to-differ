@@ -2,6 +2,7 @@ from typing import (
     Dict,
     Any,
 )
+from multiprocessing.managers import DictProxy
 
 from PySide6.QtWidgets import (
     QWidget,
@@ -11,14 +12,13 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QTableWidgetItem,
 )
-from PySide6.QtGui import Qt
 
 
 class DictTableWidget(
     QWidget,
 ):
 
-    values: Dict[Any, Any]
+    values: Dict[Any, Any] | DictProxy
     key_column: str
     value_column: str
 
@@ -29,7 +29,7 @@ class DictTableWidget(
 
     def __init__(
         self,
-        values: Dict[Any, Any],
+        values: Dict[Any, Any] | DictProxy,
         key_column: str = 'Parameter',
         value_column: str = 'Value',
         parent: QWidget | None = None,

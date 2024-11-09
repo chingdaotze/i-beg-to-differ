@@ -10,6 +10,8 @@ from pandas import DataFrame
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....data_sources import DataSources
+from .....input_fields.wildcard_input_fields import WildcardInputField
+from .data_source_options import DataSourceOptions
 from .....base import log_exception
 from .....wildcards_sets import WildcardSets
 from .....data_sources.data_source import DataSource
@@ -33,36 +35,69 @@ class DataSourcePair(
     """
 
     data_sources: DataSources
-
-    source: str
-    """
-    Pointer to source data source.
-    """
-
-    target: str
-    """
-    Pointer to target data source.
-    """
+    _source: WildcardInputField
+    _target: WildcardInputField
 
     def __init__(
         self,
         data_sources: DataSources,
         source: str,
         target: str,
+        wildcard_sets: WildcardSets | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
 
         self.data_sources = data_sources
-        self.source = source
-        self.target = target
+
+        options = DataSourceOptions(
+            data_sources=self.data_sources,
+        )
+
+        self._source = WildcardInputField(
+            base_value=source,
+            title='Source',
+            wildcard_sets=wildcard_sets,
+            options=options,
+        )
+
+        self._target = WildcardInputField(
+            base_value=target,
+            title='Target',
+            wildcard_sets=wildcard_sets,
+            options=options,
+        )
 
     def __str__(
         self,
     ) -> str:
 
         return f'{self.source} | {self.target}'
+
+    @property
+    def source(
+        self,
+    ) -> str:
+        """
+        Pointer to source data source.
+        """
+
+        return str(
+            self._source,
+        )
+
+    @property
+    def target(
+        self,
+    ) -> str:
+        """
+        Pointer to target data source.
+        """
+
+        return str(
+            self._target,
+        )
 
     @classmethod
     @log_exception
@@ -88,8 +123,8 @@ class DataSourcePair(
     ) -> Dict:
 
         return {
-            'source': self.source,
-            'target': self.target,
+            'source': self._source.base_value,
+            'target': self._target.base_value,
         }
 
     def init_caches(

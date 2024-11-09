@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
 
 from .......core.compare_sets.compare_set.compare import Compare
 from .description_widget import DescriptionWidget
+from .data_sources_widget import DataSourcesWidget
 
 
 class CompareWidget(
@@ -12,6 +13,7 @@ class CompareWidget(
 ):
 
     description_widget: DescriptionWidget
+    data_sources_widget: DataSourcesWidget
 
     def __init__(
         self,
@@ -31,4 +33,13 @@ class CompareWidget(
         self.addTab(
             self.description_widget,
             'Description',
+        )
+
+        self.data_sources_widget = DataSourcesWidget(
+            data_source_pair=compare.data_source_pair,
+        )
+
+        self.addTab(
+            self.data_sources_widget,
+            'Data Sources',
         )

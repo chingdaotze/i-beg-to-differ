@@ -7,7 +7,7 @@ from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
 from ..input_fields import (
-    StringInputField,
+    TextBoxInputField,
     DictInputField,
 )
 from ..base import log_exception
@@ -20,7 +20,7 @@ class WildcardSet(
     Collection of wildcards, used to replace values.
     """
 
-    description: StringInputField
+    description: TextBoxInputField
     """
     Human-readable description of this Wildcard Set.
     """
@@ -46,7 +46,7 @@ class WildcardSet(
             self=self,
         )
 
-        self.description = StringInputField(
+        self.description = TextBoxInputField(
             title='Description',
             value=description,
         )

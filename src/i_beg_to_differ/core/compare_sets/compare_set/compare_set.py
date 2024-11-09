@@ -10,7 +10,7 @@ from ...base import (
     log_exception,
     log_runtime,
 )
-from ...input_fields import StringInputField
+from ...input_fields import TextBoxInputField
 from .compare import Compare
 from ...wildcards_sets import WildcardSets
 from ...data_sources import DataSources
@@ -23,7 +23,7 @@ class CompareSet(
     Compare set object. Contains a collection of compares.
     """
 
-    description: StringInputField
+    description: TextBoxInputField
     """
     Human-readable description of this Compare Set.
     """
@@ -42,7 +42,7 @@ class CompareSet(
             self=self,
         )
 
-        self.description = StringInputField(
+        self.description = TextBoxInputField(
             title='Description',
             value=description,
         )

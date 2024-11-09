@@ -1,19 +1,19 @@
 from PySide6.QtWidgets import QPlainTextEdit, QSizePolicy
 
 from .input_field_group_box import InputFieldGroupBox
-from .......core.input_fields import StringInputField
+from .......core.input_fields import TextBoxInputField
 
 
-class StringInputFieldGroupBox(
+class TextBoxInputFieldGroupBox(
     InputFieldGroupBox,
 ):
 
-    input_field: StringInputField
+    input_field: TextBoxInputField
     text_edit: QPlainTextEdit
 
     def __init__(
         self,
-        input_field: StringInputField,
+        input_field: TextBoxInputField,
     ):
 
         InputFieldGroupBox.__init__(

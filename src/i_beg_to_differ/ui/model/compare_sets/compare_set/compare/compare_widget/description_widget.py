@@ -1,9 +1,12 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+)
 
 from ......view.main_window.main_widget.object_viewer.input_field_group_boxes import (
-    StringInputFieldGroupBox,
+    TextBoxInputFieldGroupBox,
 )
-from .......core.input_fields.string_input_field import StringInputField
+from .......core.input_fields.text_box_input_field import TextBoxInputField
 
 
 class DescriptionWidget(
@@ -11,11 +14,11 @@ class DescriptionWidget(
 ):
 
     layout: QVBoxLayout
-    group_box: StringInputFieldGroupBox
+    group_box: TextBoxInputFieldGroupBox
 
     def __init__(
         self,
-        description_field: StringInputField,
+        description_field: TextBoxInputField,
         parent: QWidget | None = None,
     ):
 
@@ -30,7 +33,7 @@ class DescriptionWidget(
             self.layout,
         )
 
-        self.group_box = StringInputFieldGroupBox(
+        self.group_box = TextBoxInputFieldGroupBox(
             input_field=description_field,
         )
 

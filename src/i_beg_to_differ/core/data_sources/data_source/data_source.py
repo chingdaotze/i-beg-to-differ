@@ -12,7 +12,7 @@ from pandas import DataFrame
 from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
-from ...input_fields import StringInputField
+from ...input_fields import TextBoxInputField
 from ...wildcards_sets import WildcardSets
 
 
@@ -34,7 +34,7 @@ class DataSource(
     Collection of Fields, specific to this data source.
     """
 
-    description: StringInputField
+    description: TextBoxInputField
     """
     Human-readable description of this data source.
     """
@@ -59,7 +59,7 @@ class DataSource(
             self=self,
         )
 
-        self.description = StringInputField(
+        self.description = TextBoxInputField(
             value=description,
             title='Description',
         )
