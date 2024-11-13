@@ -35,8 +35,8 @@ class DataSourcePair(
     """
 
     data_sources: DataSources
-    _source: WildcardInputField
-    _target: WildcardInputField
+    source_input_field: WildcardInputField
+    target_input_field: WildcardInputField
 
     def __init__(
         self,
@@ -55,14 +55,14 @@ class DataSourcePair(
             data_sources=self.data_sources,
         )
 
-        self._source = WildcardInputField(
+        self.source_input_field = WildcardInputField(
             base_value=source,
             title='Source',
             wildcard_sets=wildcard_sets,
             options=options,
         )
 
-        self._target = WildcardInputField(
+        self.target_input_field = WildcardInputField(
             base_value=target,
             title='Target',
             wildcard_sets=wildcard_sets,
@@ -84,7 +84,7 @@ class DataSourcePair(
         """
 
         return str(
-            self._source,
+            self.source_input_field,
         )
 
     @property
@@ -96,7 +96,7 @@ class DataSourcePair(
         """
 
         return str(
-            self._target,
+            self.target_input_field,
         )
 
     @classmethod
@@ -123,8 +123,8 @@ class DataSourcePair(
     ) -> Dict:
 
         return {
-            'source': self._source.base_value,
-            'target': self._target.base_value,
+            'source': self.source_input_field.base_value,
+            'target': self.target_input_field.base_value,
         }
 
     def init_caches(

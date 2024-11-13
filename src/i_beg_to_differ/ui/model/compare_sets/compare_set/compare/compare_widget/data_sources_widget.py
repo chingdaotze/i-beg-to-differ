@@ -37,7 +37,7 @@ class DataSourcesWidget(
         )
 
         self.source_field_group_box = WildcardInputFieldGroupBox(
-            input_field=data_source_pair._source,
+            input_field=data_source_pair.source_input_field,
         )
 
         self.layout.addWidget(
@@ -45,7 +45,7 @@ class DataSourcesWidget(
         )
 
         self.target_field_group_box = WildcardInputFieldGroupBox(
-            input_field=data_source_pair._target,
+            input_field=data_source_pair.target_input_field,
         )
 
         self.layout.addWidget(
