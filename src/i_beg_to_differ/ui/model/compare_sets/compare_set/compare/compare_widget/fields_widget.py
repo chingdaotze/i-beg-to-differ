@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget,
     QGridLayout,
-    QGroupBox,
     QTableWidget,
     QVBoxLayout,
     QPushButton,
@@ -23,7 +22,6 @@ class FieldsWidget(
 
     compare: Compare
     layout: QGridLayout
-    group_box: QGroupBox
     table: QTableWidget
 
     def __init__(
@@ -40,10 +38,6 @@ class FieldsWidget(
         self.compare = compare
 
         self.layout = QGridLayout(
-            self,
-        )
-
-        self.group_box = QGroupBox(
             self,
         )
 

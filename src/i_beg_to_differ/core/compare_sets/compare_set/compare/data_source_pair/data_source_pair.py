@@ -114,6 +114,7 @@ class DataSourcePair(
             data_sources=data_sources,
             source=instance_data['source'],
             target=instance_data['target'],
+            wildcard_sets=wildcard_sets,
         )
 
     @log_exception
