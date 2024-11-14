@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="da92c5e6-815f-4e36-8b34-f66e98e5cc73" name="Changes" comment="Added PyCharm configuration folder." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;chingdaotze&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/chingdaotze/i-beg-to-differ.git&quot;,
+    &quot;accountId&quot;: &quot;9bcb9101-9406-4e40-9fd2-7a03ce3da608&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2fjgER4lCASNEYuRRFYFxKIqlRj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.pytest for test_core.test_core.executor": "Debug",
+    "Python tests.pytest for test_numeric_tolerance.test_numeric_tolerance.executor": "Debug",
+    "Python tests.pytest for tests.test_automatch_primary_keys_automatch_data_fields.test_automatch_primary_keys_automatch_data_fields.executor": "Run",
+    "Python tests.pytest for tests.test_automatch_primary_keys_empty_data_fields.test_automatch_primary_keys_empty_data_fields.executor": "Run",
+    "Python tests.pytest for tests.test_compare_rule_custom_python.test_compare_rule_custom_python.executor": "Run",
+    "Python tests.pytest for tests.test_compare_rule_equals.executor": "Debug",
+    "Python tests.pytest for tests.test_compare_rule_equals.test_compare_rule_equals.executor": "Run",
+    "Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_compare_rule_numeric_tolerance.executor": "Debug",
+    "Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_numeric_tolerance.executor": "Debug",
+    "Python tests.pytest for tests.test_data_source_sqlite.test_data_source_sqlite.executor": "Run",
+    "Python tests.pytest for tests.test_data_type_conversion.test_data_type_conversion.executor": "Run",
+    "Python tests.pytest for tests.test_data_type_promotion.test_data_type_promotion.executor": "Run",
+    "Python tests.pytest for tests.test_duplicate_primary_keys.test_duplicate_primary_keys.executor": "Run",
+    "Python tests.pytest for tests.test_field_transform_convert_string_lowercase.test_field_transform_convert_string_lowercase.executor": "Debug",
+    "Python tests.pytest for tests.test_field_transform_convert_string_uppercase.test_field_transform_convert_string_uppercase.executor": "Run",
+    "Python tests.pytest for tests.test_field_transform_custom_python.test_field_transform_custom_python.executor": "Debug",
+    "Python tests.pytest for tests.test_field_transform_replace_null_with_numeric.test_field_transform_replace_null_with_numeric.executor": "Run",
+    "Python tests.pytest for tests.test_field_transform_replace_null_with_string.test_field_transform_replace_null_with_string.executor": "Run",
+    "Python tests.pytest for tests.test_field_transform_strip_whitespace.test_field_transform_strip_whitespace.executor": "Run",
+    "Python tests.pytest for tests.test_no_data_fields.test_no_data_fields.executor": "Run",
+    "Python tests.pytest for tests.test_primary_keys_automatch_data_fields.test_primary_keys_automatch_data_fields.executor": "Run",
+    "Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_no_data_fields.executor": "Debug",
+    "Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_primary_keys_empty_data_fields.executor": "Run",
+    "Python tests.pytest for tests.test_python_edit.test_python_edit.executor": "Run",
+    "Python tests.pytest for tests.test_report_csv.test_report_csv.executor": "Run",
+    "Python tests.pytest for tests.test_report_excel.test_report_excel.executor": "Run",
+    "Python tests.pytest for tests.test_serialize_ib2d_file.test_serialize_ib2d_file.executor": "Run",
+    "Python tests.pytest in test_compare_rule_custom_python.py.executor": "Run",
+    "Python tests.pytest in tests.executor": "Run",
+    "Python.__main__.executor": "Debug",
+    "Python.check_files_utf8.executor": "Debug",
+    "Python.i-beg-to-differ-cli.executor": "Debug",
+    "Python.i-beg-to-differ-gui (test).executor": "Run",
+    "Python.i-beg-to-differ-gui (test_compare_rule_equals).executor": "Run",
+    "Python.i-beg-to-differ-gui (test_data_source_sqlite).executor": "Run",
+    "Python.i-beg-to-differ-gui.executor": "Run",
+    "Python.test_nested_setter.executor": "Debug",
+    "Python.test_zip_io.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Repos/i-beg-to-differ/src/i_beg_to_differ/ui/view/main_window/main_widget/object_viewer/input_field_group_boxes",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
+    ]
+  }
+}]]></component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="i-beg-to-differ" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="i-beg-to-differ" />
+      </console-settings>
+    </option>
+    <option name="myIpythonEnabled" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\ui\view\main_window\main_widget\object_viewer\input_field_group_boxes" />
+      <recent name="C:\Repos\i-beg-to-differ\tests" />
+      <recent name="C:\Repos\i-beg-to-differ\tests\test_artifacts" />
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\extensions\field_transforms" />
+      <recent name="C:\Repos\i-beg-to-differ\tests\test_artifacts\test_namespace_package" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\core\input_fields\input_field_options" />
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\core\input_fields" />
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\core\input_fields\list_input_field" />
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\ui\model\compare_sets\compare_set\compare" />
+      <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\ui\model\compare_sets\compare_set\compare\compare" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.i-beg-to-differ-gui (test_data_source_sqlite)">
+    <configuration name="i-beg-to-differ-cli" type="PythonConfigurationType" factoryName="Python">
+      <module name="i-beg-to-differ" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
+      <option name="PARAMETERS" value="cli" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="true" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="i-beg-to-differ-gui (test_compare_rule_equals)" type="PythonConfigurationType" factoryName="Python">
+      <module name="i-beg-to-differ" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
+      <option name="PARAMETERS" value="gui --ib2d-file-path &quot;$ProjectFileDir$\tests\test_artifacts\test_compare_rule_equals\test_compare_rule_equals.ib2d&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="true" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="i-beg-to-differ-gui (test_data_source_sqlite)" type="PythonConfigurationType" factoryName="Python">
+      <module name="i-beg-to-differ" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
+      <option name="PARAMETERS" value="gui --ib2d-file-path &quot;$ProjectFileDir$\tests\test_artifacts\test_data_source_sqlite\test_data_source_sqlite.ib2d&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="true" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="i-beg-to-differ-gui" type="PythonConfigurationType" factoryName="Python">
+      <module name="i-beg-to-differ" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
+      <option name="PARAMETERS" value="gui" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="true" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest in tests" type="tests" factoryName="py.test" nameIsGenerated="true">
+      <module name="i-beg-to-differ" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.i-beg-to-differ-cli" />
+      <item itemvalue="Python.i-beg-to-differ-gui" />
+      <item itemvalue="Python.i-beg-to-differ-gui (test_compare_rule_equals)" />
+      <item itemvalue="Python.i-beg-to-differ-gui (test_data_source_sqlite)" />
+      <item itemvalue="Python tests.pytest in tests" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da92c5e6-815f-4e36-8b34-f66e98e5cc73" name="Changes" comment="" />
+      <created>1714319789429</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1714319789429</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Bugfixes to numeric tolerance test.">
+      <option name="closed" value="true" />
+      <created>1727944044863</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1727944044863</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Implemented numeric tolerance test.">
+      <option name="closed" value="true" />
+      <created>1728022901485</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1728022901485</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Implemented reports.">
+      <option name="closed" value="true" />
+      <created>1728117085265</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1728117085265</updated>
+    </task>
+    <task id="LOCAL-00045" summary="* Implemented CSV report test.&#10;* Refactored tests.">
+      <option name="closed" value="true" />
+      <created>1728165247316</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1728165247316</updated>
+    </task>
+    <task id="LOCAL-00046" summary="* Refactored tests.&#10;* Implemented automatch.">
+      <option name="closed" value="true" />
+      <created>1728289581140</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1728289581140</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Implemented test_primary_keys_empty_data_fields test.">
+      <option name="closed" value="true" />
+      <created>1728365213800</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1728365213800</updated>
+    </task>
+    <task id="LOCAL-00048" summary="* Implemented test_primary_keys_automatch_data_fields test.&#10;* Implemented test_automatch_primary_keys_empty_data_fields test.&#10;* Implemented test_automatch_primary_keys_automatch_data_fields test.">
+      <option name="closed" value="true" />
+      <created>1728371655706</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1728371655706</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Implemented test_duplicate_primary_keys test.">
+      <option name="closed" value="true" />
+      <created>1728375648632</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1728375648632</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Implemented test_data_type_conversion test.">
+      <option name="closed" value="true" />
+      <created>1728462410268</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1728462410268</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Implemented SQLAlchemy data source.">
+      <option name="closed" value="true" />
+      <created>1728546007007</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1728546007007</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Implemented test_data_type_promotion test.">
+      <option name="closed" value="true" />
+      <created>1728575461974</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1728575461974</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Intermediate commit. Partial implementation of custom Python extension.">
+      <option name="closed" value="true" />
+      <created>1728712649873</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1728712649873</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Implemented test_compare_rule_custom_python test.">
+      <option name="closed" value="true" />
+      <created>1728864446935</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1728864446935</updated>
+    </task>
+    <task id="LOCAL-00055" summary="* Implemented test_field_transform_custom_python test.&#10;* Implemented test_python_edit test.">
+      <option name="closed" value="true" />
+      <created>1728886454357</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1728886454357</updated>
+    </task>
+    <task id="LOCAL-00056" summary="* Removed Code Editor extensions.&#10;* Bugfixes to failing tests.">
+      <option name="closed" value="true" />
+      <created>1728890230193</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1728890230193</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Added setup configuration.">
+      <option name="closed" value="true" />
+      <created>1729152014049</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1729152014049</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Refactored extensions into namespace packages.">
+      <option name="closed" value="true" />
+      <created>1729394483755</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1729394483756</updated>
+    </task>
+    <task id="LOCAL-00059" summary="* Fix pandas 3.0 future warning.&#10;* Fix to package requirements.">
+      <option name="closed" value="true" />
+      <created>1729409032813</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1729409032813</updated>
+    </task>
+    <task id="LOCAL-00060" summary="* Implemented additional field transforms.&#10;* Implemented test_field_transform_replace_null_with_string_value test.">
+      <option name="closed" value="true" />
+      <created>1729454165051</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1729454165051</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Implemented test_field_transform_replace_null_with_numeric test.">
+      <option name="closed" value="true" />
+      <created>1729460436027</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1729460436027</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Implemented test_field_transform_convert_string_uppercase test.">
+      <option name="closed" value="true" />
+      <created>1729460912193</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1729460912193</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Implemented test_field_transform_convert_string_lowercase test.">
+      <option name="closed" value="true" />
+      <created>1729461262301</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1729461262301</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Implemented test_field_transform_strip_whitespace test.">
+      <option name="closed" value="true" />
+      <created>1729461780593</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1729461780593</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Implemented CLI.">
+      <option name="closed" value="true" />
+      <created>1729473370308</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1729473370309</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Intermediate commit. GUI implementation.">
+      <option name="closed" value="true" />
+      <created>1729583382246</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1729583382246</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Implemented object model skeleton.">
+      <option name="closed" value="true" />
+      <created>1729697257956</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1729697257956</updated>
+    </task>
+    <task id="LOCAL-00068" summary="* Tweaks to core object collections.&#10;* Additional TreeView build out.">
+      <option name="closed" value="true" />
+      <created>1729757694245</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1729757694245</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Implemented tree model.">
+      <option name="closed" value="true" />
+      <created>1729838752393</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1729838752394</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Implemented *.ib2d file open.">
+      <option name="closed" value="true" />
+      <created>1729844531542</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1729844531542</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Implemented opening objects in Object Viewer.">
+      <option name="closed" value="true" />
+      <created>1730263161676</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1730263161676</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Bugfixes to Object Viewer.">
+      <option name="closed" value="true" />
+      <created>1730267411249</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1730267411249</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Implemented additional Input Fields.">
+      <option name="closed" value="true" />
+      <created>1730274497710</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1730274497710</updated>
+    </task>
+    <task id="LOCAL-00074" summary="* Implemented additional Input Fields.&#10;* Patched unit tests.">
+      <option name="closed" value="true" />
+      <created>1730449484793</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1730449484793</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Added additional input layouts.">
+      <option name="closed" value="true" />
+      <created>1730567687389</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1730567687390</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Refactored input fields to use QGroupBox.">
+      <option name="closed" value="true" />
+      <created>1730612007590</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1730612007590</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Implemented Wildcard List Input Field.">
+      <option name="closed" value="true" />
+      <created>1730614813051</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1730614813051</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Added scrolling to Object Viewer.">
+      <option name="closed" value="true" />
+      <created>1730616621641</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1730616621641</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Partial implementation of DictTableWidget.">
+      <option name="closed" value="true" />
+      <created>1730657692674</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1730657692674</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Implemented DictTableWidget.">
+      <option name="closed" value="true" />
+      <created>1730783315126</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1730783315126</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Fixes to DictTableWidget.">
+      <option name="closed" value="true" />
+      <created>1730790317375</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1730790317375</updated>
+    </task>
+    <task id="LOCAL-00082" summary="* Fixed circular import.&#10;* Partial implementation of WildcardSet Object Viewer.">
+      <option name="closed" value="true" />
+      <created>1730870123337</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1730870123337</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Implemented WildcardSet ObjectViewer.">
+      <option name="closed" value="true" />
+      <created>1730874201999</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1730874201999</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Implemented CompareSet ObjectViewer.">
+      <option name="closed" value="true" />
+      <created>1730874455752</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1730874455753</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Bugfix for wildcard multiprocessing.">
+      <option name="closed" value="true" />
+      <created>1730883263736</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1730883263736</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Bugfix for InputField serialization.">
+      <option name="closed" value="true" />
+      <created>1730948178203</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1730948178203</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Implemented Description tab for Compare ObjectViewer.">
+      <option name="closed" value="true" />
+      <created>1730967544139</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1730967544139</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Implemented Data Sources tab for Compare ObjectViewer.">
+      <option name="closed" value="true" />
+      <created>1731185596955</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1731185596955</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Partial implementation of Field Pairs tab for Compare ObjectViewer.">
+      <option name="closed" value="true" />
+      <created>1731516142206</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1731516142206</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Added PyCharm configuration folder.">
+      <option name="closed" value="true" />
+      <created>1731546848989</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1731546848989</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Intermediate commit. GUI implementation." />
+    <MESSAGE value="Implemented object model skeleton." />
+    <MESSAGE value="* Tweaks to core object collections.&#10;* Additional TreeView build out." />
+    <MESSAGE value="Implemented tree model." />
+    <MESSAGE value="Implemented *.ib2d file open." />
+    <MESSAGE value="Implemented opening objects in Object Viewer." />
+    <MESSAGE value="Bugfixes to Object Viewer." />
+    <MESSAGE value="Implemented additional Input Fields." />
+    <MESSAGE value="* Implemented additional Input Fields.&#10;* Patched unit tests." />
+    <MESSAGE value="Added additional input layouts." />
+    <MESSAGE value="Refactored input fields to use QGroupBox." />
+    <MESSAGE value="Implemented Wildcard List Input Field." />
+    <MESSAGE value="Added scrolling to Object Viewer." />
+    <MESSAGE value="Partial implementation of DictTableWidget." />
+    <MESSAGE value="Implemented DictTableWidget." />
+    <MESSAGE value="Fixes to DictTableWidget." />
+    <MESSAGE value="* Fixed circular import.&#10;* Partial implementation of WildcardSet Object Viewer." />
+    <MESSAGE value="Implemented WildcardSet ObjectViewer." />
+    <MESSAGE value="Implemented CompareSet ObjectViewer." />
+    <MESSAGE value="Bugfix for wildcard multiprocessing." />
+    <MESSAGE value="Bugfix for InputField serialization." />
+    <MESSAGE value="Implemented Description tab for Compare ObjectViewer." />
+    <MESSAGE value="Implemented Data Sources tab for Compare ObjectViewer." />
+    <MESSAGE value="Partial implementation of Field Pairs tab for Compare ObjectViewer." />
+    <MESSAGE value="Added PyCharm configuration folder." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added PyCharm configuration folder." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/.venv/Lib/site-packages/pyproject_hooks/_in_process/_in_process.py</url>
+          <line>316</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/test_compare_rule_custom_python.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/i_beg_to_differ/core/extensions/extension/custom_python_extension.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="tests">
+        <watch expression="source_types.data" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
