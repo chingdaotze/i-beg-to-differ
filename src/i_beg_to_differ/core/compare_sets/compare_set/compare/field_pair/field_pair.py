@@ -1,7 +1,7 @@
 from abc import ABC
 
 from .....base import Base
-from .....wildcards_sets.wildcard_field import WildcardField
+from .....input_fields.wildcard_input_fields import WildcardInputField
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .....wildcards_sets import WildcardSets
 
@@ -15,7 +15,7 @@ class FieldPair(
     Data Source > Field > Transform data structure.
     """
 
-    source_field: WildcardField
+    source_field: WildcardInputField
     """
     Source field name. Used as a pointer to the source field.
     """
@@ -25,7 +25,7 @@ class FieldPair(
     List of transformations applied to the source field.
     """
 
-    target_field: WildcardField
+    target_field: WildcardInputField
     """
     Source field name. Used as a pointer to the target field.
     """
@@ -37,8 +37,8 @@ class FieldPair(
 
     def __init__(
         self,
-        source_field: str | WildcardField,
-        target_field: str | WildcardField,
+        source_field: str,
+        target_field: str,
         source_transforms: FieldTransforms | None = None,
         target_transforms: FieldTransforms | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -48,23 +48,17 @@ class FieldPair(
             self=self,
         )
 
-        if isinstance(source_field, str):
-            self.source_field = WildcardField(
-                base_value=source_field,
-                wildcard_sets=wildcard_sets,
-            )
+        self.source_field = WildcardInputField(
+            base_value=source_field,
+            title='Source',
+            wildcard_sets=wildcard_sets,
+        )
 
-        else:
-            self.source_field = source_field
-
-        if isinstance(target_field, str):
-            self.target_field = WildcardField(
-                base_value=target_field,
-                wildcard_sets=wildcard_sets,
-            )
-
-        else:
-            self.target_field = target_field
+        self.target_field = WildcardInputField(
+            base_value=target_field,
+            title='Target',
+            wildcard_sets=wildcard_sets,
+        )
 
         if source_transforms is None:
             self.source_transforms = FieldTransforms()
