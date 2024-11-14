@@ -153,27 +153,27 @@ class Compare(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        if isinstance(self._pk_fields, list):
+        if isinstance(self.base_pk_fields, list):
             pk_fields = [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
-                for instance in self._pk_fields
+                for instance in self.base_pk_fields
             ]
 
         else:
-            pk_fields = self._pk_fields
+            pk_fields = self.base_pk_fields
 
-        if isinstance(self._dt_fields, list):
+        if isinstance(self.base_dt_fields, list):
             dt_fields = [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
-                for instance in self._dt_fields
+                for instance in self.base_dt_fields
             ]
 
         else:
-            dt_fields = self._dt_fields
+            dt_fields = self.base_dt_fields
 
         return {
             'description': self.description.value,

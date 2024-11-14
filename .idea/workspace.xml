@@ -4,7 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da92c5e6-815f-4e36-8b34-f66e98e5cc73" name="Changes" comment="Added PyCharm configuration folder." />
+    <list default="true" id="da92c5e6-815f-4e36-8b34-f66e98e5cc73" name="Changes" comment="Upgraded to PyCharm 2024.3.">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/i_beg_to_differ_cli.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/i_beg_to_differ_gui.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/i_beg_to_differ_gui__test_compare_rule_equals_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/i_beg_to_differ_gui__test_data_source_sqlite_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/pytest_in_tests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/i-beg-to-differ.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/i-beg-to-differ.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/i_beg_to_differ/core/compare_sets/compare_set/compare/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/i_beg_to_differ/core/compare_sets/compare_set/compare/compare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/matches.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/mismatches.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/schema_compare.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/src_dup.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/src_only.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/tgt_dup.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/tgt_only.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/benchmarks/values_compare.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/test.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/test.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_automatch_data_fields/test_automatch_primary_keys_automatch_data_fields.ib2d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/matches.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/mismatches.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/schema_compare.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/src_dup.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/src_only.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/tgt_dup.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/tgt_only.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/benchmarks/values_compare.parquet" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/test.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/test.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_artifacts/test_automatch_primary_keys_empty_data_fields/test_automatch_primary_keys_empty_data_fields.ib2d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_automatch_primary_keys_automatch_data_fields.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_automatch_primary_keys_empty_data_fields.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,59 +76,60 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Python tests.pytest for test_core.test_core.executor": "Debug",
-    "Python tests.pytest for test_numeric_tolerance.test_numeric_tolerance.executor": "Debug",
-    "Python tests.pytest for tests.test_automatch_primary_keys_automatch_data_fields.test_automatch_primary_keys_automatch_data_fields.executor": "Run",
-    "Python tests.pytest for tests.test_automatch_primary_keys_empty_data_fields.test_automatch_primary_keys_empty_data_fields.executor": "Run",
-    "Python tests.pytest for tests.test_compare_rule_custom_python.test_compare_rule_custom_python.executor": "Run",
-    "Python tests.pytest for tests.test_compare_rule_equals.executor": "Debug",
-    "Python tests.pytest for tests.test_compare_rule_equals.test_compare_rule_equals.executor": "Run",
-    "Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_compare_rule_numeric_tolerance.executor": "Debug",
-    "Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_numeric_tolerance.executor": "Debug",
-    "Python tests.pytest for tests.test_data_source_sqlite.test_data_source_sqlite.executor": "Run",
-    "Python tests.pytest for tests.test_data_type_conversion.test_data_type_conversion.executor": "Run",
-    "Python tests.pytest for tests.test_data_type_promotion.test_data_type_promotion.executor": "Run",
-    "Python tests.pytest for tests.test_duplicate_primary_keys.test_duplicate_primary_keys.executor": "Run",
-    "Python tests.pytest for tests.test_field_transform_convert_string_lowercase.test_field_transform_convert_string_lowercase.executor": "Debug",
-    "Python tests.pytest for tests.test_field_transform_convert_string_uppercase.test_field_transform_convert_string_uppercase.executor": "Run",
-    "Python tests.pytest for tests.test_field_transform_custom_python.test_field_transform_custom_python.executor": "Debug",
-    "Python tests.pytest for tests.test_field_transform_replace_null_with_numeric.test_field_transform_replace_null_with_numeric.executor": "Run",
-    "Python tests.pytest for tests.test_field_transform_replace_null_with_string.test_field_transform_replace_null_with_string.executor": "Run",
-    "Python tests.pytest for tests.test_field_transform_strip_whitespace.test_field_transform_strip_whitespace.executor": "Run",
-    "Python tests.pytest for tests.test_no_data_fields.test_no_data_fields.executor": "Run",
-    "Python tests.pytest for tests.test_primary_keys_automatch_data_fields.test_primary_keys_automatch_data_fields.executor": "Run",
-    "Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_no_data_fields.executor": "Debug",
-    "Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_primary_keys_empty_data_fields.executor": "Run",
-    "Python tests.pytest for tests.test_python_edit.test_python_edit.executor": "Run",
-    "Python tests.pytest for tests.test_report_csv.test_report_csv.executor": "Run",
-    "Python tests.pytest for tests.test_report_excel.test_report_excel.executor": "Run",
-    "Python tests.pytest for tests.test_serialize_ib2d_file.test_serialize_ib2d_file.executor": "Run",
-    "Python tests.pytest in test_compare_rule_custom_python.py.executor": "Run",
-    "Python tests.pytest in tests.executor": "Run",
-    "Python.__main__.executor": "Debug",
-    "Python.check_files_utf8.executor": "Debug",
-    "Python.i-beg-to-differ-cli.executor": "Debug",
-    "Python.i-beg-to-differ-gui (test).executor": "Run",
-    "Python.i-beg-to-differ-gui (test_compare_rule_equals).executor": "Run",
-    "Python.i-beg-to-differ-gui (test_data_source_sqlite).executor": "Run",
-    "Python.i-beg-to-differ-gui.executor": "Run",
-    "Python.test_nested_setter.executor": "Debug",
-    "Python.test_zip_io.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Repos/i-beg-to-differ/src/i_beg_to_differ/ui/view/main_window/main_widget/object_viewer/input_field_group_boxes",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Python tests.pytest for test_core.test_core.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for test_numeric_tolerance.test_numeric_tolerance.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_automatch_primary_keys_automatch_data_fields.test_automatch_primary_keys_automatch_data_fields.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_automatch_primary_keys_empty_data_fields.test_automatch_primary_keys_empty_data_fields.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_compare_rule_custom_python.test_compare_rule_custom_python.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_compare_rule_equals.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_compare_rule_equals.test_compare_rule_equals.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_compare_rule_numeric_tolerance.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_compare_rule_numeric_tolerance.test_numeric_tolerance.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_data_source_sqlite.test_data_source_sqlite.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_data_type_conversion.test_data_type_conversion.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_data_type_promotion.test_data_type_promotion.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_duplicate_primary_keys.test_duplicate_primary_keys.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_convert_string_lowercase.test_field_transform_convert_string_lowercase.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_convert_string_uppercase.test_field_transform_convert_string_uppercase.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_custom_python.test_field_transform_custom_python.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_replace_null_with_numeric.test_field_transform_replace_null_with_numeric.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_replace_null_with_string.test_field_transform_replace_null_with_string.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_field_transform_strip_whitespace.test_field_transform_strip_whitespace.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_no_data_fields.test_no_data_fields.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_primary_keys_automatch_data_fields.test_primary_keys_automatch_data_fields.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_no_data_fields.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.pytest for tests.test_primary_keys_empty_data_fields.test_primary_keys_empty_data_fields.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_python_edit.test_python_edit.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_report_csv.test_report_csv.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_report_excel.test_report_excel.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest for tests.test_serialize_ib2d_file.test_serialize_ib2d_file.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest in test_compare_rule_custom_python.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.pytest in tests.executor&quot;: &quot;Run&quot;,
+    &quot;Python.__main__.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.check_files_utf8.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.i-beg-to-differ-cli.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.i-beg-to-differ-gui (test).executor&quot;: &quot;Run&quot;,
+    &quot;Python.i-beg-to-differ-gui (test_compare_rule_equals).executor&quot;: &quot;Run&quot;,
+    &quot;Python.i-beg-to-differ-gui (test_data_source_sqlite).executor&quot;: &quot;Run&quot;,
+    &quot;Python.i-beg-to-differ-gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_nested_setter.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.test_zip_io.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Repos/i-beg-to-differ/src/i_beg_to_differ/ui/view/main_window/main_widget/object_viewer/input_field_group_boxes&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Python&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="i-beg-to-differ" is-module-sdk="true">
@@ -119,116 +155,7 @@
       <recent name="C:\Repos\i-beg-to-differ\src\i_beg_to_differ\ui\model\compare_sets\compare_set\compare\compare" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.i-beg-to-differ-gui (test_data_source_sqlite)">
-    <configuration name="i-beg-to-differ-cli" type="PythonConfigurationType" factoryName="Python">
-      <module name="i-beg-to-differ" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
-      <option name="PARAMETERS" value="cli" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="true" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="i-beg-to-differ-gui (test_compare_rule_equals)" type="PythonConfigurationType" factoryName="Python">
-      <module name="i-beg-to-differ" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
-      <option name="PARAMETERS" value="gui --ib2d-file-path &quot;$ProjectFileDir$\tests\test_artifacts\test_compare_rule_equals\test_compare_rule_equals.ib2d&quot;" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="true" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="i-beg-to-differ-gui (test_data_source_sqlite)" type="PythonConfigurationType" factoryName="Python">
-      <module name="i-beg-to-differ" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
-      <option name="PARAMETERS" value="gui --ib2d-file-path &quot;$ProjectFileDir$\tests\test_artifacts\test_data_source_sqlite\test_data_source_sqlite.ib2d&quot;" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="true" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="i-beg-to-differ-gui" type="PythonConfigurationType" factoryName="Python">
-      <module name="i-beg-to-differ" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (i-beg-to-differ)" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="i_beg_to_differ" />
-      <option name="PARAMETERS" value="gui" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="true" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest in tests" type="tests" factoryName="py.test" nameIsGenerated="true">
-      <module name="i-beg-to-differ" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python tests.pytest in tests">
     <list>
       <item itemvalue="Python.i-beg-to-differ-cli" />
       <item itemvalue="Python.i-beg-to-differ-gui" />
@@ -240,7 +167,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
       </set>
     </attachedChunks>
   </component>
@@ -252,14 +179,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1714319789429</updated>
-    </task>
-    <task id="LOCAL-00043" summary="Implemented numeric tolerance test.">
-      <option name="closed" value="true" />
-      <created>1728022901485</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1728022901485</updated>
     </task>
     <task id="LOCAL-00044" summary="Implemented reports.">
       <option name="closed" value="true" />
@@ -645,7 +564,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731547089989</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Upgraded to PyCharm 2024.3.">
+      <option name="closed" value="true" />
+      <created>1731548452071</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1731548452071</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -660,7 +587,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Intermediate commit. GUI implementation." />
     <MESSAGE value="Implemented object model skeleton." />
     <MESSAGE value="* Tweaks to core object collections.&#10;* Additional TreeView build out." />
     <MESSAGE value="Implemented tree model." />
@@ -685,7 +611,8 @@
     <MESSAGE value="Implemented Data Sources tab for Compare ObjectViewer." />
     <MESSAGE value="Partial implementation of Field Pairs tab for Compare ObjectViewer." />
     <MESSAGE value="Added PyCharm configuration folder." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added PyCharm configuration folder." />
+    <MESSAGE value="Upgraded to PyCharm 2024.3." />
+    <option name="LAST_COMMIT_MESSAGE" value="Upgraded to PyCharm 2024.3." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
