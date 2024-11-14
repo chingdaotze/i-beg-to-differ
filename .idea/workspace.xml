@@ -43,6 +43,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Python tests.pytest for test_core.test_core.executor": "Debug",
     "Python tests.pytest for test_numeric_tolerance.test_numeric_tolerance.executor": "Debug",
     "Python tests.pytest for tests.test_automatch_primary_keys_automatch_data_fields.test_automatch_primary_keys_automatch_data_fields.executor": "Run",
@@ -82,6 +83,7 @@
     "Python.test_nested_setter.executor": "Debug",
     "Python.test_zip_io.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Repos/i-beg-to-differ/src/i_beg_to_differ/ui/view/main_window/main_widget/object_viewer/input_field_group_boxes",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
@@ -250,14 +252,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1714319789429</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Bugfixes to numeric tolerance test.">
-      <option name="closed" value="true" />
-      <created>1727944044863</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1727944044863</updated>
     </task>
     <task id="LOCAL-00043" summary="Implemented numeric tolerance test.">
       <option name="closed" value="true" />
@@ -643,7 +637,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731546848989</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Added PyCharm configuration folder.">
+      <option name="closed" value="true" />
+      <created>1731547089989</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1731547089989</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
