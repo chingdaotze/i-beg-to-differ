@@ -4,8 +4,9 @@ from PySide6.QtWidgets import (
     QTableWidget,
     QVBoxLayout,
     QPushButton,
-    QTableWidgetItem,
     QHeaderView,
+    QLabel,
+    QCheckBox,
 )
 from PySide6.QtCore import Qt
 
@@ -13,6 +14,9 @@ from .......core.compare_sets.compare_set.compare import Compare
 from .......core.compare_sets.compare_set.compare.field_pair import (
     FieldPairPrimaryKey,
     FieldPairData,
+)
+from ......view.main_window.main_widget.object_viewer.input_field_group_boxes.wildcard_input_field_widget import (
+    WildcardInputFieldWidget,
 )
 
 
@@ -127,8 +131,8 @@ class FieldsWidget(
         field_pair: FieldPairPrimaryKey | FieldPairData,
     ) -> None:
         # Build primary key widgets
-        primary_key_checkbox = QTableWidgetItem()
-        compare_rule = QTableWidgetItem()
+        primary_key_checkbox = QCheckBox()
+        compare_rule = QLabel()
 
         if isinstance(field_pair, FieldPairPrimaryKey):
             primary_key_checkbox.setCheckState(
@@ -153,22 +157,20 @@ class FieldsWidget(
         # Assemble row widgets
         row_widgets = [
             primary_key_checkbox,
-            QTableWidgetItem(
-                str(
-                    field_pair.source_field,
-                )
+            WildcardInputFieldWidget(
+                input_field=field_pair.source_field,
+                frame=False,
             ),
-            QTableWidgetItem(
+            QLabel(
                 str(
                     field_pair.source_transforms,
                 )
             ),
-            QTableWidgetItem(
-                str(
-                    field_pair.target_field,
-                )
+            WildcardInputFieldWidget(
+                input_field=field_pair.target_field,
+                frame=False,
             ),
-            QTableWidgetItem(
+            QLabel(
                 str(
                     field_pair.target_transforms,
                 )
@@ -182,7 +184,7 @@ class FieldsWidget(
 
         for column, row_widget in enumerate(row_widgets):
 
-            self.table.setItem(
+            self.table.setCellWidget(
                 row - 1,
                 column,
                 row_widget,

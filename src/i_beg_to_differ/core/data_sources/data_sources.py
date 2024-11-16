@@ -13,8 +13,8 @@ from ..base import (
     log_exception,
     log_runtime,
 )
-from ..extensions.data_sources import DataSourceExtensions
 from .data_source import DataSource
+from ..extensions.data_sources import DataSourceExtensions
 from ..wildcards_sets import WildcardSets
 
 

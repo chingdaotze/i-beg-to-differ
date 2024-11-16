@@ -5,6 +5,7 @@ from abc import (
 from typing import (
     Dict,
     Self,
+    List,
 )
 
 from pandas import DataFrame
@@ -164,3 +165,12 @@ class DataSource(
             str(column): dtype.type.__name__
             for column, dtype in self.cache.dtypes.items()
         }
+
+    @property
+    def columns(
+        self,
+    ) -> List[str]:
+
+        return list(
+            self.py_types.keys(),
+        )
