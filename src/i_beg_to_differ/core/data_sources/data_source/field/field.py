@@ -7,8 +7,6 @@ from typing import (
 from pandas import Series
 
 from ....base import Base, log_exception
-from ....wildcards_sets.wildcard_field import WildcardField
-from ....wildcards_sets import WildcardSets
 from .field_transforms import FieldTransforms
 from .field_transforms.field_transform import FieldTransform
 
@@ -24,7 +22,7 @@ class Field(
     managing transforms over the base data layer.
     """
 
-    name: WildcardField
+    name: str
     """
     Name of this field.
     """
@@ -43,17 +41,13 @@ class Field(
         self,
         name: str,
         data_source: 'DataSource',
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         Base.__init__(
             self=self,
         )
 
-        self.name = WildcardField(
-            base_value=name,
-            wildcard_sets=wildcard_sets,
-        )
+        self.name = name
         self.data_source = data_source
         self.field_transforms = self.manager.dict()
 
@@ -174,7 +168,7 @@ class Field(
         :return: Native data type.
         """
 
-        return self.data_source.native_types[str(self.name)]
+        return self.data_source.native_types[self.name]
 
     @property
     @log_exception
@@ -187,4 +181,4 @@ class Field(
         :return: Python data type.
         """
 
-        return self.data_source.py_types[str(self.name)]
+        return self.data_source.py_types[self.name]

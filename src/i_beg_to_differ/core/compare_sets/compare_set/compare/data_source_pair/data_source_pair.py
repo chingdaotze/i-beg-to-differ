@@ -11,9 +11,9 @@ from pandas import DataFrame
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .....data_sources import DataSources
 from .....input_fields.wildcard_input_fields import WildcardInputField
+from .....wildcards_sets import WildcardSets
 from .data_source_options import DataSourceOptions
 from .....base import log_exception
-from .....wildcards_sets import WildcardSets
 from .....data_sources.data_source import DataSource
 from .....utils.dataframe import dict_to_dataframe
 from i_beg_to_differ.extensions.data_sources.data_source_dataframe import (
@@ -35,14 +35,25 @@ class DataSourcePair(
     """
 
     data_sources: DataSources
-    source_input_field: WildcardInputField
-    target_input_field: WildcardInputField
+    """
+    Global data sources.
+    """
+
+    source_data_source_pointer: WildcardInputField
+    """
+    Pointer to the source data source.
+    """
+
+    target_data_source_pointer: WildcardInputField
+    """
+    Pointer to the target data source.
+    """
 
     def __init__(
         self,
         data_sources: DataSources,
-        source: str,
-        target: str,
+        source_data_source_pointer: str,
+        target_data_source_pointer: str,
         wildcard_sets: WildcardSets | None = None,
     ):
         IB2DFileElement.__init__(
@@ -55,15 +66,15 @@ class DataSourcePair(
             data_sources=self.data_sources,
         )
 
-        self.source_input_field = WildcardInputField(
-            base_value=source,
+        self.source_data_source_pointer = WildcardInputField(
+            base_value=source_data_source_pointer,
             title='Source',
             wildcard_sets=wildcard_sets,
             options=options,
         )
 
-        self.target_input_field = WildcardInputField(
-            base_value=target,
+        self.target_data_source_pointer = WildcardInputField(
+            base_value=target_data_source_pointer,
             title='Target',
             wildcard_sets=wildcard_sets,
             options=options,
@@ -73,31 +84,35 @@ class DataSourcePair(
         self,
     ) -> str:
 
-        return f'{self.source} | {self.target}'
+        return f'{self.source_data_source_pointer} | {self.target_data_source_pointer}'
 
     @property
-    def source(
+    def source_data_source(
         self,
-    ) -> str:
+    ) -> DataSource:
         """
-        Pointer to source data source.
+        Source data source.
         """
 
-        return str(
-            self.source_input_field,
-        )
+        return self.data_sources[
+            str(
+                self.source_data_source_pointer,
+            )
+        ]
 
     @property
-    def target(
+    def target_data_source(
         self,
-    ) -> str:
+    ) -> DataSource:
         """
-        Pointer to target data source.
+        Target data source.
         """
 
-        return str(
-            self.target_input_field,
-        )
+        return self.data_sources[
+            str(
+                self.target_data_source_pointer,
+            )
+        ]
 
     @classmethod
     @log_exception
@@ -112,8 +127,8 @@ class DataSourcePair(
 
         return DataSourcePair(
             data_sources=data_sources,
-            source=instance_data['source'],
-            target=instance_data['target'],
+            source_data_source_pointer=instance_data['source'],
+            target_data_source_pointer=instance_data['target'],
             wildcard_sets=wildcard_sets,
         )
 
@@ -124,8 +139,8 @@ class DataSourcePair(
     ) -> Dict:
 
         return {
-            'source': self.source_input_field.base_value,
-            'target': self.target_input_field.base_value,
+            'source': self.source_data_source_pointer.base_value,
+            'target': self.target_data_source_pointer.base_value,
         }
 
     def init_caches(
@@ -140,8 +155,8 @@ class DataSourcePair(
 
         self.data_sources.init_caches(
             data_sources=[
-                self.source,
-                self.target,
+                self.source_data_source,
+                self.target_data_source,
             ]
         )
 
@@ -202,11 +217,11 @@ class DataSourcePair(
         self.init_caches()
 
         source_types = self.types_to_dataframe(
-            data_source=self.data_sources[self.source],
+            data_source=self.source_data_source,
         )
 
         target_types = self.types_to_dataframe(
-            data_source=self.data_sources[self.target],
+            data_source=self.target_data_source,
         )
 
         source_types = DataSourceDataFrame(
@@ -230,8 +245,8 @@ class DataSourcePair(
             target='target',
             pk_fields=[
                 FieldPairPrimaryKey(
-                    source_field='column_name',
-                    target_field='column_name',
+                    source_field_pointer='column_name',
+                    target_field_pointer='column_name',
                 ),
             ],
             dt_fields=AUTO_MATCH,

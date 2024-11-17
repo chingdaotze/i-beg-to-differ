@@ -14,7 +14,6 @@ from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
 from ...input_fields import TextBoxInputField
-from ...wildcards_sets import WildcardSets
 
 
 class DataSource(
@@ -40,11 +39,6 @@ class DataSource(
     Human-readable description of this data source.
     """
 
-    _wildcard_sets: WildcardSets | None
-    """
-    Attribute, used to initialize Fields on-demand.
-    """
-
     _data: DataFrame | None
     """
     Cached copy of the data.
@@ -53,7 +47,6 @@ class DataSource(
     def __init__(
         self,
         description: str | None = None,
-        wildcard_sets: WildcardSets | None = None,
     ):
 
         IB2DFileElement.__init__(
@@ -65,7 +58,6 @@ class DataSource(
             title='Description',
         )
         self.fields = self.manager.dict()
-        self._wildcard_sets = wildcard_sets
         self._data = None
 
     def __getitem__(
@@ -78,7 +70,6 @@ class DataSource(
             self.fields[name] = Field(
                 name=name,
                 data_source=self,
-                wildcard_sets=self._wildcard_sets,
             )
 
         return self.fields[name]
@@ -170,6 +161,9 @@ class DataSource(
     def columns(
         self,
     ) -> List[str]:
+        """
+        List of columns.
+        """
 
         return list(
             self.py_types.keys(),

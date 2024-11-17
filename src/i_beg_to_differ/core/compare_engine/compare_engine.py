@@ -178,14 +178,8 @@ class CompareEngine(
         :return: List of matching ``FieldPair``'s, less any ``FieldPair``'s explicitly excluded.
         """
 
-        # TODO: Get a list of unique keys and if all values in a column are unique, set that as a primary key
-
-        source_columns = [
-            columns for columns in self.data_sources[self.source].py_types.keys()
-        ]
-        target_columns = [
-            columns for columns in self.data_sources[self.target].py_types.keys()
-        ]
+        source_columns = self.data_sources[self.source].columns
+        target_columns = self.data_sources[self.target].columns
 
         matching_columns = [
             column for column in source_columns if column in target_columns
