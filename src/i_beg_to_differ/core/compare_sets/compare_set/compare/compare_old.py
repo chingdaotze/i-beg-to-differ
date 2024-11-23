@@ -1,13 +1,15 @@
+from pathlib import Path
 from typing import (
+    Callable,
     List,
     Dict,
     Self,
 )
-from pathlib import Path
 from zipfile import ZipFile
+from functools import cached_property
 from io import (
-    BytesIO,
     StringIO,
+    BytesIO,
 )
 
 from pandas import (
@@ -15,74 +17,64 @@ from pandas import (
     ExcelWriter,
 )
 
-from ....data_sources.data_source.field.field_transforms import FieldTransforms
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
-
-from .compare_base import CompareBase
-from .compare_values import CompareValues
-from .compare_matching_records import CompareMatchingRecords
-from .compare_mismatching_records import CompareMismatchingRecords
-from .compare_source_only_records import CompareSourceOnlyRecords
-from .compare_target_only_records import CompareTargetOnlyRecords
-from .compare_source_duplicate_primary_key_records import (
-    CompareSourceDuplicatePrimaryKeyRecords,
+from ....compare_engine import (
+    CompareEngine,
+    AUTO_MATCH,
 )
-from .compare_target_duplicate_primary_key_records import (
-    CompareTargetDuplicatePrimaryKeyRecords,
-)
-from .compare_schema import CompareSchema
-
 from ....input_fields import TextBoxInputField
-from ....data_sources import DataSources
-from .data_source_reference import DataSourceReference
-from .field_reference_pair import (
-    FieldReferencePairPrimaryKey,
-    FieldReferencePairData,
+from .data_source_pair import DataSourcePair
+from .field_pair import (
+    FieldPairPrimaryKey,
+    FieldPairData,
 )
-from .compare_base import AUTO_MATCH
+from ....base import log_exception
+from ....data_sources import DataSources
 from ....wildcards_sets import WildcardSets
 
 
 class Compare(
     IB2DFileElement,
-    CompareValues,
-    CompareMatchingRecords,
-    CompareMismatchingRecords,
-    CompareSourceOnlyRecords,
-    CompareTargetOnlyRecords,
-    CompareSourceDuplicatePrimaryKeyRecords,
-    CompareTargetDuplicatePrimaryKeyRecords,
-    CompareSchema,
+    CompareEngine,
 ):
+    """
+    Compare object.
+    """
 
     description: TextBoxInputField
     """
     Human-readable description.
     """
 
-    _data_sources: DataSources
+    data_source_pair: DataSourcePair
+    """
+    Data source pair.
+    """
+
+    init_caches: Callable
+    """
+    Convenience stub to underlying data_sources.init_caches.
+    """
 
     def __init__(
         self,
-        source_data_source_ref: DataSourceReference,
-        target_data_source_ref: DataSourceReference,
-        pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
-        dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
-        wildcard_sets: WildcardSets | None = None,
+        data_sources: DataSources,
+        data_source_pair: DataSourcePair,
+        pk_fields: List[FieldPairPrimaryKey] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldPairData] | AUTO_MATCH | None = None,
         description: str | None = None,
     ):
-
         IB2DFileElement.__init__(
             self=self,
         )
 
-        CompareBase.__init__(
+        CompareEngine.__init__(
             self=self,
-            source_data_source_ref=source_data_source_ref,
-            target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
+            source=data_source_pair.source,
+            target=data_source_pair.target,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
-            wildcard_sets=wildcard_sets,
         )
 
         self.description = TextBoxInputField(
@@ -90,126 +82,114 @@ class Compare(
             value=description,
         )
 
-    def set_data_sources(
-        self,
-        data_sources: DataSources,
-    ) -> None:
+        self.data_source_pair = data_source_pair
+        self.init_caches = self.data_source_pair.init_caches
 
-        self.source_data_source_ref.data_sources = data_sources
-        self.target_data_source_ref.data_sources = data_sources
+    def __str__(
+        self,
+    ) -> str:
+        # TODO: Implement hash to make this unique
+
+        return str(
+            self.data_source_pair,
+        )
 
     @classmethod
+    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        data_sources: DataSources,
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        data_sources = DataSources()
-
-        source_data_source_ref = DataSourceReference(
-            data_source_name=instance_data['source'],
+        data_source_pair = DataSourcePair.deserialize(
+            instance_data=instance_data,
+            working_dir_path=working_dir_path,
+            ib2d_file=ib2d_file,
             data_sources=data_sources,
+            wildcard_sets=wildcard_sets,
         )
 
-        target_data_source_ref = DataSourceReference(
-            data_source_name=instance_data['target'],
-            data_sources=data_sources,
-        )
+        pk_fields = instance_data['pk_fields']
 
-        pk_fields = [
-            FieldReferencePairPrimaryKey(
-                source_field_name=pk_field_data['source']['name'],
-                source_data_source_ref=source_data_source_ref,
-                target_field_name=pk_field_data['target']['name'],
-                target_data_source_ref=target_data_source_ref,
-                source_field_transforms=FieldTransforms.deserialize(
-                    instance_data=pk_field_data['source']['transforms'],
+        if isinstance(pk_fields, list):
+            pk_fields = [
+                FieldPairPrimaryKey.deserialize(
+                    instance_data=pk_field_data,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
-                ),
-                target_field_transforms=FieldTransforms.deserialize(
-                    instance_data=pk_field_data['target']['transforms'],
-                    working_dir_path=working_dir_path,
-                    ib2d_file=ib2d_file,
-                    wildcard_sets=wildcard_sets,
-                ),
-                wildcard_sets=wildcard_sets,
-            )
-            for pk_field_data in instance_data['pk_fields']
-        ]
+                )
+                for pk_field_data in pk_fields
+            ]
 
         dt_fields = instance_data['dt_fields']
 
         if isinstance(dt_fields, list):
             dt_fields = [
-                FieldReferencePairData(
-                    source_field_name=dt_field_data['source']['name'],
-                    source_data_source_ref=source_data_source_ref,
-                    target_field_name=dt_field_data['target']['name'],
-                    target_data_source_ref=target_data_source_ref,
-                    source_field_transforms=FieldTransforms.deserialize(
-                        instance_data=dt_field_data['source']['transforms'],
-                        working_dir_path=working_dir_path,
-                        ib2d_file=ib2d_file,
-                        wildcard_sets=wildcard_sets,
-                    ),
-                    target_field_transforms=FieldTransforms.deserialize(
-                        instance_data=dt_field_data['target']['transforms'],
-                        working_dir_path=working_dir_path,
-                        ib2d_file=ib2d_file,
-                        wildcard_sets=wildcard_sets,
-                    ),
+                FieldPairData.deserialize(
+                    instance_data=dt_field_data,
+                    working_dir_path=working_dir_path,
+                    ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
                 )
                 for dt_field_data in instance_data['dt_fields']
             ]
 
         return Compare(
-            source_data_source_ref=source_data_source_ref,
-            target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
+            data_source_pair=data_source_pair,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
-            wildcard_sets=wildcard_sets,
             description=instance_data['description'],
         )
 
+    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        pk_fields = self.pk_fields
+        if isinstance(self.base_pk_fields, list):
+            pk_fields = [
+                instance.serialize(
+                    ib2d_file=ib2d_file,
+                )
+                for instance in self.base_pk_fields
+            ]
 
-        if isinstance(self._dt_fields, list):
+        else:
+            pk_fields = self.base_pk_fields
+
+        if isinstance(self.base_dt_fields, list):
             dt_fields = [
                 instance.serialize(
                     ib2d_file=ib2d_file,
                 )
-                for instance in self._dt_fields
+                for instance in self.base_dt_fields
             ]
 
         else:
-            dt_fields = self._dt_fields
+            dt_fields = self.base_dt_fields
 
         return {
             'description': self.description.value,
-            'source': self.source_data_source_ref.data_source_name.base_value,
-            'target': self.target_data_source_ref.data_source_name.base_value,
+            'source': self.source,
+            'target': self.target,
             'pk_fields': pk_fields,
             'dt_fields': dt_fields,
         }
 
-    @property
+    @cached_property
     def all_reports(
         self,
     ) -> Dict[str, DataFrame]:
 
         return {
-            'schema_compare': self.schema_compare,
+            'schema_compare': self.data_source_pair.schema_comparison,
             'values_compare': self.values_comparison,
             'mismatches': self.mismatching_records,
             'matches': self.matching_records,

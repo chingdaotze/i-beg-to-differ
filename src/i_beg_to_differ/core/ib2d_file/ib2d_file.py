@@ -255,8 +255,11 @@ class IB2DFile(
                 instance_data=compare_set_data,
                 working_dir_path=working_dir_path,
                 ib2d_file=ib2d_file,
-                data_sources=data_sources,
                 wildcard_sets=wildcard_sets,
+            )
+
+            compare_sets.set_data_sources(
+                data_sources=data_sources,
             )
 
             # Create instance

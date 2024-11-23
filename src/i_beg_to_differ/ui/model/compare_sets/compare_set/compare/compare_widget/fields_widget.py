@@ -11,9 +11,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 
 from .......core.compare_sets.compare_set.compare import Compare
-from .......core.compare_sets.compare_set.compare.field_pair import (
-    FieldPairPrimaryKey,
-    FieldPairData,
+from .......core.compare_sets.compare_set.compare.field_reference_pair import (
+    FieldReferencePairPrimaryKey,
+    FieldReferencePairData,
 )
 from ......view.main_window.main_widget.object_viewer.input_field_group_boxes.wildcard_input_field_widget import (
     WildcardInputFieldWidget,
@@ -128,13 +128,13 @@ class FieldsWidget(
 
     def append_row(
         self,
-        field_pair: FieldPairPrimaryKey | FieldPairData,
+        field_pair: FieldReferencePairPrimaryKey | FieldReferencePairData,
     ) -> None:
         # Build primary key widgets
         primary_key_checkbox = QCheckBox()
         compare_rule = QLabel()
 
-        if isinstance(field_pair, FieldPairPrimaryKey):
+        if isinstance(field_pair, FieldReferencePairPrimaryKey):
             primary_key_checkbox.setCheckState(
                 Qt.CheckState.Checked,
             )

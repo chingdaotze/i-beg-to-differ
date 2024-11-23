@@ -1,4 +1,4 @@
-from ..compare_sets.compare_set.compare.field_pair.compare_rule import (
+from ..compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
     CompareRule,
 )
 from . import Extensions

@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 from pandas import Series
 
-from i_beg_to_differ.core.compare_sets.compare_set.compare.field_pair.compare_rule import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
     CompareRule,
 )
 from i_beg_to_differ.core.input_fields.wildcard_input_fields import WildcardInputField

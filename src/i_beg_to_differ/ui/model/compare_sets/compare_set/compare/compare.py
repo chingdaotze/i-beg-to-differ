@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QWidget
 from ....base import ModelBase
 from ......core.compare_sets.compare_set.compare import Compare
 from .compare_widget import CompareWidget
-from .field_pair import ModelFieldPair
 
 
 class ModelCompare(

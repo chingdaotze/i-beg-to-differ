@@ -6,7 +6,9 @@ from PySide6.QtWidgets import (
 from ......view.main_window.main_widget.object_viewer.input_field_group_boxes import (
     WildcardInputFieldGroupBox,
 )
-from .......core.compare_sets.compare_set.compare.data_source_pair import DataSourcePair
+from .......core.compare_sets.compare_set.compare.data_source_reference import (
+    DataSourceReference,
+)
 from .......core.data_sources import DataSources
 
 
@@ -21,7 +23,7 @@ class DataSourcesWidget(
 
     def __init__(
         self,
-        data_source_pair: DataSourcePair,
+        data_source_pair: DataSourceReference,
         parent: QWidget | None = None,
     ):
 
