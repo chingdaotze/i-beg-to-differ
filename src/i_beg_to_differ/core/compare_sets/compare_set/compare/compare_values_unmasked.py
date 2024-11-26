@@ -7,6 +7,7 @@ from .compare_base import (
     AUTO_MATCH,
 )
 from .data_source_reference import DataSourceReference
+from ....data_sources import DataSources
 from .field_reference_pair import (
     FieldReferencePairPrimaryKey,
     FieldReferencePairData,
@@ -22,6 +23,7 @@ class CompareValuesUnmasked(
         self,
         source_data_source_ref: DataSourceReference,
         target_data_source_ref: DataSourceReference,
+        data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
         dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -31,6 +33,7 @@ class CompareValuesUnmasked(
             self=self,
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             wildcard_sets=wildcard_sets,
@@ -77,10 +80,18 @@ class CompareValuesUnmasked(
 
         dataframe = DataFrame(
             data=data,
-            index=[
+        )
+
+        dataframe.columns.rename(
+            names=[
                 'field_pair',
-                'source_or_target',
+                'value_type',
             ],
+            level=[
+                0,
+                1,
+            ],
+            inplace=True,
         )
 
         return dataframe

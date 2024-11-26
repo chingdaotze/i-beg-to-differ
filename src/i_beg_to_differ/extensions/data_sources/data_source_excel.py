@@ -104,7 +104,7 @@ class DataSourceExcel(
 
     def load(
         self,
-    ) -> Self:
+    ) -> DataFrame:
         path = str(
             self.path,
         )
@@ -168,12 +168,10 @@ class DataSourceExcel(
         columns = next(data)
         data = list(data)
 
-        self.cache = DataFrame(
+        return DataFrame(
             data=data,
             columns=columns,
         )
-
-        return self
 
     @classmethod
     @log_exception

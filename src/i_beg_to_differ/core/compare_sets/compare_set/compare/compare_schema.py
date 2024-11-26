@@ -26,11 +26,11 @@ class CompareSchema(
     ) -> DataFrame:
 
         source_types = DataSourceDataFrame(
-            data=self.source_data_source_ref.data_types,
+            data=self.source_data_source.data_types,
         )
 
         target_types = DataSourceDataFrame(
-            data=self.target_data_source_ref.data_types,
+            data=self.target_data_source.data_types,
         )
 
         data_sources = DataSources(
@@ -42,23 +42,20 @@ class CompareSchema(
 
         source_data_source_ref = DataSourceReference(
             data_source_name='source',
-            data_sources=data_sources,
         )
 
         target_data_source_ref = DataSourceReference(
             data_source_name='target',
-            data_sources=data_sources,
         )
 
         compare_values = CompareValues(
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
             pk_fields=[
                 FieldReferencePairPrimaryKey(
                     source_field_name='column_name',
-                    source_data_source_ref=source_data_source_ref,
                     target_field_name='column_name',
-                    target_data_source_ref=target_data_source_ref,
                 )
             ],
             dt_fields=AUTO_MATCH,

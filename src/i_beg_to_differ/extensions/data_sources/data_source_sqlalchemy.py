@@ -12,7 +12,10 @@ from sqlalchemy import (
     MetaData,
 )
 from sqlalchemy.util import EMPTY_DICT
-from pandas import read_sql
+from pandas import (
+    read_sql,
+    DataFrame,
+)
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
 from i_beg_to_differ.core.input_fields.wildcard_input_fields import WildcardInputField
@@ -306,7 +309,7 @@ class DataSourceSqlAlchemy(
 
     def load(
         self,
-    ) -> Self:
+    ) -> DataFrame:
         self.log_info(
             msg=f'Loading data from URL: {self.url} ...',
         )
@@ -325,12 +328,10 @@ class DataSourceSqlAlchemy(
 
         self.log_info(msg=f'Loading table using query:\n\n{sql}')
 
-        self.cache = read_sql(
+        return read_sql(
             sql=sql,
             con=engine,
         )
-
-        return self
 
     @classmethod
     @log_exception

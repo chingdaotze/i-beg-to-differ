@@ -66,6 +66,7 @@ class Compare(
         self,
         source_data_source_ref: DataSourceReference,
         target_data_source_ref: DataSourceReference,
+        data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
         dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -80,6 +81,7 @@ class Compare(
             self=self,
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             wildcard_sets=wildcard_sets,
@@ -90,41 +92,28 @@ class Compare(
             value=description,
         )
 
-    def set_data_sources(
-        self,
-        data_sources: DataSources,
-    ) -> None:
-
-        self.source_data_source_ref.data_sources = data_sources
-        self.target_data_source_ref.data_sources = data_sources
-
     @classmethod
     def deserialize(
         cls,
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
+        data_sources: DataSources = None,
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        data_sources = DataSources()
-
         source_data_source_ref = DataSourceReference(
             data_source_name=instance_data['source'],
-            data_sources=data_sources,
         )
 
         target_data_source_ref = DataSourceReference(
             data_source_name=instance_data['target'],
-            data_sources=data_sources,
         )
 
         pk_fields = [
             FieldReferencePairPrimaryKey(
                 source_field_name=pk_field_data['source']['name'],
-                source_data_source_ref=source_data_source_ref,
                 target_field_name=pk_field_data['target']['name'],
-                target_data_source_ref=target_data_source_ref,
                 source_field_transforms=FieldTransforms.deserialize(
                     instance_data=pk_field_data['source']['transforms'],
                     working_dir_path=working_dir_path,
@@ -148,9 +137,7 @@ class Compare(
             dt_fields = [
                 FieldReferencePairData(
                     source_field_name=dt_field_data['source']['name'],
-                    source_data_source_ref=source_data_source_ref,
                     target_field_name=dt_field_data['target']['name'],
-                    target_data_source_ref=target_data_source_ref,
                     source_field_transforms=FieldTransforms.deserialize(
                         instance_data=dt_field_data['source']['transforms'],
                         working_dir_path=working_dir_path,
@@ -171,6 +158,7 @@ class Compare(
         return Compare(
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             wildcard_sets=wildcard_sets,

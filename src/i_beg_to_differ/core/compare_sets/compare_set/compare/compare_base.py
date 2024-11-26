@@ -9,12 +9,14 @@ from pandas import DataFrame
 from ....base import (
     Base,
 )
+from .data_source_reference import DataSourceReference
+from ....data_sources import DataSources
 from .field_reference_pair import (
     FieldReferencePairPrimaryKey,
     FieldReferencePairData,
 )
-from .data_source_reference import DataSourceReference
 from ....wildcards_sets import WildcardSets
+from ....data_sources.data_source import DataSource
 
 
 AUTO_MATCH: Final[str] = 'auto_match'
@@ -28,16 +30,18 @@ class CompareBase(
     Base comparison class. Provides methods and structure for data access.
     """
 
-    _pk_fields: List[FieldReferencePairPrimaryKey]
-    _dt_fields: List[FieldReferencePairData] | AUTO_MATCH
     _source_data_source_ref: DataSourceReference
     _target_data_source_ref: DataSourceReference
+    data_sources: DataSources
+    _pk_fields: List[FieldReferencePairPrimaryKey]
+    _dt_fields: List[FieldReferencePairData] | AUTO_MATCH
     _wildcard_sets: WildcardSets
 
     def __init__(
         self,
         source_data_source_ref: DataSourceReference,
         target_data_source_ref: DataSourceReference,
+        data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
         dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
         wildcard_sets: WildcardSets | None = None,
@@ -52,6 +56,7 @@ class CompareBase(
 
         self._source_data_source_ref = source_data_source_ref
         self._target_data_source_ref = target_data_source_ref
+        self.data_sources = data_sources
 
         self._wildcard_sets = wildcard_sets
 
@@ -64,6 +69,20 @@ class CompareBase(
                 self,
             ),
         )
+
+    @property
+    def source_data_source(
+        self,
+    ) -> DataSource:
+
+        return self.data_sources[self.source_data_source_ref]
+
+    @property
+    def target_data_source(
+        self,
+    ) -> DataSource:
+
+        return self.data_sources[self.target_data_source_ref]
 
     @property
     def pk_fields(
@@ -99,8 +118,8 @@ class CompareBase(
         using column names to match.
         """
 
-        source_columns = self.source_data_source_ref.data_source.columns
-        target_columns = self.target_data_source_ref.data_source.columns
+        source_columns = self.source_data_source.columns
+        target_columns = self.target_data_source.columns
 
         matching_columns = [
             column for column in source_columns if column in target_columns
@@ -112,9 +131,7 @@ class CompareBase(
             if (
                 field_pair := FieldReferencePairData(
                     source_field_name=field,
-                    source_data_source_ref=self.source_data_source_ref,
                     target_field_name=field,
-                    target_data_source_ref=self.target_data_source_ref,
                     wildcard_sets=self._wildcard_sets,
                 )
             )
@@ -225,7 +242,10 @@ class CompareBase(
 
         futures = {
             field_pair: self.pool.apply_async(
-                func=field_pair.source_field_ref.get_field_value,
+                func=self.source_data_source.calculate_field,
+                kwds={
+                    'field_reference': field_pair.source_field_ref,
+                },
             )
             for field_pair in self.fields
         }
@@ -267,7 +287,10 @@ class CompareBase(
 
         futures = {
             field_pair: self.pool.apply_async(
-                func=field_pair.target_field_ref.get_field_value,
+                func=self.target_data_source.calculate_field,
+                kwds={
+                    'field_reference': field_pair.target_field_ref,
+                },
             )
             for field_pair in self.fields
         }

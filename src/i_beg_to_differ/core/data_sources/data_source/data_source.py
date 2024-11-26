@@ -2,18 +2,26 @@ from abc import (
     ABC,
     abstractmethod,
 )
+from multiprocessing.managers import Namespace
+from multiprocessing import Lock
 from typing import (
     Dict,
-    Self,
     List,
 )
 
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    Series,
+)
 
-from .field import Field
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
 from ...input_fields import TextBoxInputField
+from .field.field_transforms import FieldTransforms
+from ...compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+    FieldReference,
+)
+from ...utils.dataframe import dict_to_dataframe
 
 
 class DataSource(
@@ -29,19 +37,24 @@ class DataSource(
     This class must be pickleable.
     """
 
-    fields: Dict[str, Field]
-    """
-    Collection of Fields, specific to this data source.
-    """
-
     description: TextBoxInputField
     """
     Human-readable description of this data source.
     """
 
-    _data: DataFrame | None
+    _cache_namespace: Namespace
     """
-    Cached copy of the data.
+    Cache namespace; stores DataFrame for multiprocessing, under the cache attribute.
+    """
+
+    _cache_lock: Lock
+    """
+    Cache lock; synchronizes multiple processes during cache access. 
+    """
+
+    _field_transform_cache: Dict[str, Dict[FieldTransforms, Series]]
+    """
+    Cached computed values for transformed fields.
     """
 
     def __init__(
@@ -57,22 +70,43 @@ class DataSource(
             value=description,
             title='Description',
         )
-        self.fields = self.manager.dict()
-        self._data = None
+
+        self._cache_namespace = self.manager.Namespace()
+        self._cache_namespace.cache = None
+        self._cache_lock = self.manager.Lock()
+
+        self._field_transform_cache = self.manager.dict()
 
     def __getitem__(
         self,
-        name: str,
-    ) -> Field:
+        field_reference: FieldReference,
+    ) -> Series:
+        # Lookup field name
+        field_name = str(
+            field_reference.field_name,
+        )
 
-        if name not in self.fields:
+        if field_name not in self._field_transform_cache:
+            # Create new field entry in cache
+            self._field_transform_cache[field_name] = {
+                FieldTransforms(): self.cache[field_name]
+            }
 
-            self.fields[name] = Field(
-                name=name,
-                data_source=self,
+        # Lookup field transforms
+        field_transforms = field_reference.transforms
+
+        if field_transforms not in self._field_transform_cache[field_name]:
+            # Compute and save field transform
+            self._field_transform_cache[field_name][field_transforms] = (
+                field_transforms.apply(
+                    values=self.cache[field_name],
+                )
             )
 
-        return self.fields[name]
+        # Retrieve saved field transform
+        transformed_values = self._field_transform_cache[field_name][field_transforms]
+
+        return transformed_values
 
     @property
     def cache(
@@ -82,33 +116,14 @@ class DataSource(
         Cached copy of the data source, for quicker local processing.
         """
 
-        if self.empty:
-            self.load()
+        self._cache_lock.acquire()
 
-        return self._data
+        if self._cache_namespace.cache is None:
+            self._cache_namespace.cache = self.load()
 
-    @cache.setter
-    def cache(
-        self,
-        value: DataFrame,
-    ) -> None:
+        self._cache_lock.release()
 
-        self._data = value
-
-    @property
-    def empty(
-        self,
-    ) -> bool:
-        """
-        Boolean flag that indicates whether the cache is empty.
-        ``True`` if the cache is empty, otherwise ``False``.
-        """
-
-        if self._data is None:
-            return True
-
-        else:
-            return False
+        return self._cache_namespace.cache
 
     def clear(
         self,
@@ -119,16 +134,16 @@ class DataSource(
         :return:
         """
 
-        self._data = None
+        self._cache = None
 
     @abstractmethod
     def load(
         self,
-    ) -> Self:
+    ) -> DataFrame:
         """
-        Reads data from a data source and sets the cache attribute. Must be multiprocess-safe.
+        Reads data from a data source.
 
-        :return: Instance where cache has been loaded.
+        :return: A DataFrame of loaded data.
         """
 
     @property
@@ -168,3 +183,44 @@ class DataSource(
         return list(
             self.py_types.keys(),
         )
+
+    @property
+    def data_types(
+        self,
+    ) -> DataFrame:
+        """
+        DataFrame that contains data types.
+
+        - ``column_name``: Name of the column.
+        - ``native_type``: Data type recognized by the data source's underlying system.
+        - ``py_type``: Data type recognized by Python.
+        """
+
+        native_types = dict_to_dataframe(
+            data=self.native_types,
+            index='column_name',
+            column='native_type',
+        )
+
+        data_types = dict_to_dataframe(
+            data=self.py_types,
+            index='column_name',
+            column='py_type',
+        )
+
+        data_types = native_types.join(
+            other=data_types,
+            how='inner',
+        )
+
+        data_types.reset_index(
+            inplace=True,
+        )
+
+        return data_types
+
+    def calculate_field(
+        self,
+        field_reference: FieldReference,
+    ) -> Series:
+        return self[field_reference]

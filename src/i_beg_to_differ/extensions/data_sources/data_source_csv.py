@@ -5,7 +5,10 @@ from typing import (
 )
 from zipfile import ZipFile
 
-from pandas import read_csv
+from pandas import (
+    read_csv,
+    DataFrame,
+)
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
 from i_beg_to_differ.core.input_fields.wildcard_input_fields import (
@@ -57,7 +60,7 @@ class DataSourceCsv(
 
     def load(
         self,
-    ) -> Self:
+    ) -> DataFrame:
         path = str(
             self.path,
         )
@@ -66,12 +69,10 @@ class DataSourceCsv(
             msg=f'Loading *.csv file: {path} ...',
         )
 
-        self.cache = read_csv(
+        return read_csv(
             filepath_or_buffer=path,
             engine='pyarrow',
         )
-
-        return self
 
     @classmethod
     @log_exception

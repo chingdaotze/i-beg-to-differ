@@ -47,10 +47,8 @@ class DataSourceDataFrame(
 
     def load(
         self,
-    ) -> Self:
-        self.cache = self.data
-
-        return self
+    ) -> DataFrame:
+        return self.data
 
     @classmethod
     @log_exception

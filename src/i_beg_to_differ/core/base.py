@@ -1,3 +1,8 @@
+from multiprocessing import (
+    Lock,
+    Pool,
+    Manager,
+)
 from typing import (
     Callable,
     Any,
@@ -13,12 +18,13 @@ from logging import (
     getLogger,
     Logger,
 )
-from multiprocessing import (
-    Lock,
-    Pool,
-    Manager,
-)
 from psutil import cpu_count
+
+
+lock = Lock()
+"""
+Global multiprocessing lock.
+"""
 
 
 def log_runtime(
@@ -48,11 +54,11 @@ def log_runtime(
         end_time = time()
         runtime = end_time - start_time
 
-        self.lock.acquire()
+        lock.acquire()
         self.logger.info(
             msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
         )
-        self.lock.release()
+        lock.release()
 
         return result
 
@@ -87,11 +93,11 @@ def log_exception(
 
         except Exception as e:
 
-            self.lock.acquire()
+            lock.acquire()
             self.logger.exception(
                 msg='Encountered exception. Traceback below:\n\n',
             )
-            self.lock.release()
+            lock.release()
 
             raise e
 
@@ -103,11 +109,6 @@ class Base(
 ):
     """
     Base class for object model.
-    """
-
-    lock: ClassVar[Lock] = Lock()
-    """
-    Global multiprocessing lock.
     """
 
     logger: Logger
@@ -197,11 +198,11 @@ class Base(
         :return:
         """
 
-        self.lock.acquire()
+        lock.acquire()
         self.logger.info(
             msg=msg,
         )
-        self.lock.release()
+        lock.release()
 
     @property
     def pool(

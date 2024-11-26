@@ -1,7 +1,6 @@
 from typing import (
     Dict,
     ClassVar,
-    List,
     Union,
     Self,
 )
@@ -9,12 +8,10 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..base import (
-    log_exception,
-    log_runtime,
-)
+from ..base import log_exception
 from .data_source import DataSource
 from ..extensions.data_sources import DataSourceExtensions
+from ..compare_sets.compare_set.compare.data_source_reference import DataSourceReference
 from ..wildcards_sets import WildcardSets
 
 
@@ -44,10 +41,10 @@ class DataSources(
             self=self,
         )
 
-        self.data_sources = self.manager.dict()
-
         if data_sources is None:
             data_sources = {}
+
+        self.data_sources = {}
 
         for key, data_source in data_sources.items():
             self.data_sources[key] = data_source
@@ -61,83 +58,42 @@ class DataSources(
     @log_exception
     def __getitem__(
         self,
-        data_source_: str | DataSource,
+        data_source: str | DataSource | DataSourceReference,
     ) -> DataSource:
 
-        if isinstance(data_source_, DataSource):
-            data_source_ = str(
-                data_source_,
+        return self.data_sources[
+            str(
+                data_source,
             )
-
-        return self.data_sources[data_source_]
+        ]
 
     @log_exception
     def append(
         self,
-        data_source_: DataSource,
+        data_source: DataSource,
     ) -> None:
         """
         Add data source to the collection of data sources.
 
-        :param data_source_: Data source to add.
+        :param data_source: Data source to add.
         :return:
         """
 
-        self.data_sources[str(data_source_)] = data_source_
+        self.data_sources[str(data_source)] = data_source
 
     @log_exception
     def remove(
         self,
-        data_source_: DataSource,
+        data_source: DataSource | DataSourceReference,
     ) -> None:
         """
         Delete data source from the collection of data sources.
 
-        :param data_source_: Transforms to delete.
+        :param data_source: Transforms to delete.
         :return:
         """
 
-        del self.data_sources[str(data_source_)]
-
-    @log_exception
-    @log_runtime
-    def init_caches(
-        self,
-        data_sources: List[str | DataSource],
-        force_reload: bool = False,
-    ) -> None:
-        """
-        Prepares specified caches for reading. Uses multiprocessing, so can be more performant than lazy loading.
-        If a cache has not been loaded yet, loads the cache.
-        If a cache has already been loaded, the cached copy will continue to be used.
-        Optionally, can force a reload of all specified caches.
-
-        :param data_sources: List of data sources to init.
-        :param force_reload: Set to ``True`` to force a cache reload.
-        :return:
-        """
-
-        futures = []
-
-        for data_source_ in data_sources:
-            data_source_ = self[data_source_]
-
-            if data_source_.empty or force_reload:
-                futures.append(
-                    self.pool.apply_async(
-                        func=data_source_.load,
-                    ),
-                )
-
-            else:
-                self.log_info(
-                    msg=f'Using cached data for data source: {data_source_} ...',
-                )
-
-        for future in futures:
-            self.append(
-                future.get(),
-            )
+        del self.data_sources[str(data_source)]
 
     @classmethod
     @log_exception
