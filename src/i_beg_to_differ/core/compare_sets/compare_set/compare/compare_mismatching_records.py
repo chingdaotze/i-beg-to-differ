@@ -60,14 +60,8 @@ class CompareMismatchingRecords(
 
         mismatching_records = mismatching_records[keep_rows]
 
-        for field_pair in self.dt_fields:
-            mismatching_records[field_pair]['diff'] = mismatching_records[field_pair][
-                'diff'
-            ].replace(
-                to_replace={
-                    True: '',
-                    False: '*',
-                },
-            )
+        mismatching_records = self.apply_mask(
+            dataframe=mismatching_records,
+        )
 
         return mismatching_records

@@ -39,6 +39,35 @@ class CompareValuesUnmasked(
             wildcard_sets=wildcard_sets,
         )
 
+    def apply_mask(self, dataframe: DataFrame) -> DataFrame:
+        """
+        Applies a masking character to diff columns.
+        """
+
+        for field_pair in self.dt_fields:
+            dataframe[
+                [
+                    (
+                        field_pair,
+                        'diff',
+                    )
+                ]
+            ] = dataframe[
+                [
+                    (
+                        field_pair,
+                        'diff',
+                    )
+                ]
+            ].replace(
+                to_replace={
+                    True: '',
+                    False: '*',
+                },
+            )
+
+        return dataframe
+
     @property
     def values_comparison_unmasked(
         self,

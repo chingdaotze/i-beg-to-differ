@@ -46,14 +46,8 @@ class CompareValues(
             deep=True,
         )
 
-        for field_pair in self.dt_fields:
-            values_comparison[field_pair]['diff'] = values_comparison[field_pair][
-                'diff'
-            ].replace(
-                to_replace={
-                    True: '',
-                    False: '*',
-                },
-            )
+        values_comparison = self.apply_mask(
+            dataframe=values_comparison,
+        )
 
         return values_comparison

@@ -34,6 +34,7 @@ class CompareMatchingRecords(
             self=self,
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
+            data_sources=data_sources,
             pk_fields=pk_fields,
             dt_fields=dt_fields,
             wildcard_sets=wildcard_sets,
@@ -59,14 +60,8 @@ class CompareMatchingRecords(
 
         matching_records = matching_records[keep_rows]
 
-        for field_pair in self.dt_fields:
-            matching_records[field_pair]['diff'] = matching_records[field_pair][
-                'diff'
-            ].replace(
-                to_replace={
-                    True: '',
-                    False: '*',
-                },
-            )
+        matching_records = self.apply_mask(
+            dataframe=matching_records,
+        )
 
         return matching_records

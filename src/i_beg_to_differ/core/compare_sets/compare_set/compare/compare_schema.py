@@ -7,9 +7,6 @@ from .compare_base import (
     AUTO_MATCH,
 )
 from .compare_values import CompareValues
-from i_beg_to_differ.extensions.data_sources.data_source_dataframe import (
-    DataSourceDataFrame,
-)
 from ....data_sources import DataSources
 from .field_reference_pair import FieldReferencePairPrimaryKey
 from .data_source_reference import DataSourceReference
@@ -25,11 +22,11 @@ class CompareSchema(
         self,
     ) -> DataFrame:
 
-        source_types = DataSourceDataFrame(
+        source_types = DataSources.data_source_extensions['data_source_dataframe'](
             data=self.source_data_source.data_types,
         )
 
-        target_types = DataSourceDataFrame(
+        target_types = DataSources.data_source_extensions['data_source_dataframe'](
             data=self.target_data_source.data_types,
         )
 
