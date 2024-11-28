@@ -325,10 +325,13 @@ class Compare(
         all_reports = self.all_reports
 
         for report_name, report_data in all_reports.items():
-            report_data.to_excel(
-                excel_writer=excel_writer,
-                sheet_name=report_name,
-            )
+            # TODO: Outstanding pandas bug: https://github.com/pandas-dev/pandas/issues/57696
+            #   Revisit this once pandas 3.0 is released.
+            if not report_data.empty:
+                report_data.to_excel(
+                    excel_writer=excel_writer,
+                    sheet_name=report_name,
+                )
 
         excel_writer.close()
 
