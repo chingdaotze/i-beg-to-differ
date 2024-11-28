@@ -13,7 +13,7 @@ def test_python_edit(
         compare_set = ib2d_file.compare_sets['CompareSet0']
         compare = compare_set['Compare1']
 
-        compare.dt_fields[0].source_transforms.transforms[0].edit_python_file()
+        compare.dt_fields[0].source_field_ref.transforms[0].edit_python_file()
 
         report_path = tmp_path / 'report.xlsx'
         compare.to_excel(

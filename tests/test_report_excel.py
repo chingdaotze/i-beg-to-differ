@@ -9,6 +9,7 @@ from pandas import (
 from .fixture_ib2d_file import ib2d_file
 from .fixture_excel_file_benchmarks import excel_file_benchmarks
 from i_beg_to_differ.core import IB2DFile
+from .compare_benchmarks import compare_benchmark_data
 
 
 def test_report_excel(
@@ -31,7 +32,8 @@ def test_report_excel(
             sheet_name=None,
         )
 
-        for benchmark_sheet_name, benchmark_sheet_data in excel_file_benchmarks.items():
-            assert benchmark_sheet_data.equals(
-                other=excel_file[benchmark_sheet_name],
-            )
+        compare_benchmark_data(
+            ib2d_file=ib2d_file,
+            benchmarks=excel_file_benchmarks,
+            test_reports=excel_file,
+        )

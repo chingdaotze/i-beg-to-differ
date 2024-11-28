@@ -1,6 +1,9 @@
 from typing import List
 
-from pandas import DataFrame
+from pandas import (
+    DataFrame,
+    MultiIndex,
+)
 
 from .compare_base import (
     CompareBase,
@@ -88,40 +91,44 @@ class CompareValuesUnmasked(
         target_table = target_table.loc[intersection]
 
         # Compute compares
-        futures = {
-            (field_pair, 'diff'): self.pool.apply_async(
-                func=field_pair.compare_rule.convert_compare,
-                kwds={
-                    'source_field': source_table[field_pair],
-                    'target_field': target_table[field_pair],
-                },
+        if self.dt_fields:
+            futures = {
+                (field_pair, 'diff'): self.pool.apply_async(
+                    func=field_pair.compare_rule.convert_compare,
+                    kwds={
+                        'source_field': source_table[field_pair],
+                        'target_field': target_table[field_pair],
+                    },
+                )
+                for field_pair in self.dt_fields
+            }
+
+            # Build DataFrame
+            data = {}
+
+            for field_pair in self.dt_fields:
+                data[(field_pair, 'source')] = source_table[field_pair]
+                data[(field_pair, 'target')] = target_table[field_pair]
+                data[(field_pair, 'diff')] = futures[(field_pair, 'diff')].get()
+
+            dataframe = DataFrame(
+                data=data,
             )
-            for field_pair in self.dt_fields
-        }
 
-        # Build DataFrame
-        data = {}
+            dataframe.columns.rename(
+                names=[
+                    'field_pair',
+                    'value_type',
+                ],
+                level=[
+                    0,
+                    1,
+                ],
+                inplace=True,
+            )
 
-        for field_pair in self.dt_fields:
-            data[(field_pair, 'source')] = source_table[field_pair]
-            data[(field_pair, 'target')] = target_table[field_pair]
-            data[(field_pair, 'diff')] = futures[(field_pair, 'diff')].get()
-
-        dataframe = DataFrame(
-            data=data,
-        )
-
-        dataframe.columns.rename(
-            names=[
-                'field_pair',
-                'value_type',
-            ],
-            level=[
-                0,
-                1,
-            ],
-            inplace=True,
-        )
+        else:
+            dataframe = source_table
 
         return dataframe
 

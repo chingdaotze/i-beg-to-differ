@@ -9,6 +9,7 @@ from .fixture_csv_benchmarks import (
     load_csv_files,
 )
 from i_beg_to_differ.core import IB2DFile
+from .compare_benchmarks import compare_benchmark_data
 
 
 def test_report_csv(
@@ -29,7 +30,8 @@ def test_report_csv(
             path=tmp_path,
         )
 
-        for benchmark_file_name, benchmark_file_data in csv_benchmarks.items():
-            assert benchmark_file_data.equals(
-                other=csv_files[benchmark_file_name],
-            )
+        compare_benchmark_data(
+            ib2d_file=ib2d_file,
+            benchmarks=csv_benchmarks,
+            test_reports=csv_files,
+        )

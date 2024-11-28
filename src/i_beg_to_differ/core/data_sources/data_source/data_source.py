@@ -6,6 +6,7 @@ from multiprocessing.managers import Namespace
 from multiprocessing import Lock
 from typing import (
     Dict,
+    Tuple,
     List,
 )
 
@@ -52,7 +53,7 @@ class DataSource(
     Cache lock; synchronizes multiple processes during cache access. 
     """
 
-    _field_transform_cache: Dict[str, Dict[FieldTransforms, Series]]
+    _field_transform_cache: Dict[Tuple[str, FieldTransforms], Series]
     """
     Cached computed values for transformed fields.
     """
@@ -88,23 +89,28 @@ class DataSource(
 
         if field_name not in self._field_transform_cache:
             # Create new field entry in cache
-            self._field_transform_cache[field_name] = {
-                FieldTransforms(): self.cache[field_name]
-            }
+            self._field_transform_cache[(field_name, FieldTransforms())] = self.cache[
+                field_name
+            ]
 
         # Lookup field transforms
         field_transforms = field_reference.transforms
 
-        if field_transforms not in self._field_transform_cache[field_name]:
+        field_transform_cache_key = (
+            field_name,
+            field_transforms,
+        )
+
+        if field_transform_cache_key not in self._field_transform_cache:
             # Compute and save field transform
-            self._field_transform_cache[field_name][field_transforms] = (
+            self._field_transform_cache[field_transform_cache_key] = (
                 field_transforms.apply(
                     values=self.cache[field_name],
                 )
             )
 
         # Retrieve saved field transform
-        transformed_values = self._field_transform_cache[field_name][field_transforms]
+        transformed_values = self._field_transform_cache[field_transform_cache_key]
 
         return transformed_values
 

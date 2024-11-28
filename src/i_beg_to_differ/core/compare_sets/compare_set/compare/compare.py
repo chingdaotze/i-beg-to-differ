@@ -15,7 +15,6 @@ from pandas import (
     ExcelWriter,
 )
 
-from ....data_sources.data_source.field.field_transforms import FieldTransforms
 from ....ib2d_file.ib2d_file_element import IB2DFileElement
 
 from .compare_base import CompareBase
@@ -111,21 +110,10 @@ class Compare(
         )
 
         pk_fields = [
-            FieldReferencePairPrimaryKey(
-                source_field_name=pk_field_data['source']['name'],
-                target_field_name=pk_field_data['target']['name'],
-                source_field_transforms=FieldTransforms.deserialize(
-                    instance_data=pk_field_data['source']['transforms'],
-                    working_dir_path=working_dir_path,
-                    ib2d_file=ib2d_file,
-                    wildcard_sets=wildcard_sets,
-                ),
-                target_field_transforms=FieldTransforms.deserialize(
-                    instance_data=pk_field_data['target']['transforms'],
-                    working_dir_path=working_dir_path,
-                    ib2d_file=ib2d_file,
-                    wildcard_sets=wildcard_sets,
-                ),
+            FieldReferencePairPrimaryKey.deserialize(
+                instance_data=pk_field_data,
+                working_dir_path=working_dir_path,
+                ib2d_file=ib2d_file,
                 wildcard_sets=wildcard_sets,
             )
             for pk_field_data in instance_data['pk_fields']
@@ -135,21 +123,10 @@ class Compare(
 
         if isinstance(dt_fields, list):
             dt_fields = [
-                FieldReferencePairData(
-                    source_field_name=dt_field_data['source']['name'],
-                    target_field_name=dt_field_data['target']['name'],
-                    source_field_transforms=FieldTransforms.deserialize(
-                        instance_data=dt_field_data['source']['transforms'],
-                        working_dir_path=working_dir_path,
-                        ib2d_file=ib2d_file,
-                        wildcard_sets=wildcard_sets,
-                    ),
-                    target_field_transforms=FieldTransforms.deserialize(
-                        instance_data=dt_field_data['target']['transforms'],
-                        working_dir_path=working_dir_path,
-                        ib2d_file=ib2d_file,
-                        wildcard_sets=wildcard_sets,
-                    ),
+                FieldReferencePairData.deserialize(
+                    instance_data=dt_field_data,
+                    working_dir_path=working_dir_path,
+                    ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
                 )
                 for dt_field_data in instance_data['dt_fields']
@@ -170,7 +147,12 @@ class Compare(
         ib2d_file: ZipFile,
     ) -> Dict:
 
-        pk_fields = self.pk_fields
+        pk_fields = [
+            instance.serialize(
+                ib2d_file=ib2d_file,
+            )
+            for instance in self.pk_fields
+        ]
 
         if isinstance(self._dt_fields, list):
             dt_fields = [
@@ -237,9 +219,11 @@ class Compare(
             msg=f'Saving *.parquet file reports to location: "{str(dir_path.absolute())}" ...',
         )
 
-        buffers = {report_name: BytesIO() for report_name in self.all_reports.keys()}
+        all_reports = self.all_reports
 
-        for report_name, report_data in self.all_reports.items():
+        buffers = {report_name: BytesIO() for report_name in all_reports.keys()}
+
+        for report_name, report_data in all_reports.items():
             report_data.to_parquet(
                 path=buffers[report_name],
             )
@@ -288,9 +272,11 @@ class Compare(
             msg=f'Saving *.csv file reports to location: "{str(dir_path.absolute())}" ...',
         )
 
-        buffers = {report_name: StringIO() for report_name in self.all_reports.keys()}
+        all_reports = self.all_reports
 
-        for report_name, report_data in self.all_reports.items():
+        buffers = {report_name: StringIO() for report_name in all_reports.keys()}
+
+        for report_name, report_data in all_reports.items():
             report_data.to_csv(
                 path_or_buf=buffers[report_name],
             )
@@ -336,7 +322,9 @@ class Compare(
             engine='openpyxl',
         )
 
-        for report_name, report_data in self.all_reports.items():
+        all_reports = self.all_reports
+
+        for report_name, report_data in all_reports.items():
             report_data.to_excel(
                 excel_writer=excel_writer,
                 sheet_name=report_name,

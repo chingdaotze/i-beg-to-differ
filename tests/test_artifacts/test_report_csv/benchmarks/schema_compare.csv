@@ -1,4 +1,6 @@
-src.[column_name] | tgt.[column_name],src.[native_type],tgt.[native_type],dif.(src.[native_type] | tgt.[native_type]),src.[py_type],tgt.[py_type],dif.(src.[py_type] | tgt.[py_type])
+field_pair,native_type | native_type,native_type | native_type,native_type | native_type,py_type | py_type,py_type | py_type,py_type | py_type
+value_type,source,target,diff,source,target,diff
+column_name | column_name,,,,,,
 pk0,str,OPENPYXL_TYPE_STRING,*,object_,object_,
 pk1,str,OPENPYXL_TYPE_STRING,*,object_,object_,
 dt0,str,OPENPYXL_TYPE_STRING,*,object_,object_,

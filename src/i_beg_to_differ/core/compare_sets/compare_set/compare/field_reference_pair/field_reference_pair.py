@@ -1,13 +1,13 @@
 from abc import ABC
 
-from .....base import Base
+from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .field_reference import FieldReference
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .....wildcards_sets import WildcardSets
 
 
 class FieldReferencePair(
-    Base,
+    IB2DFileElement,
     ABC,
 ):
     """
@@ -25,11 +25,6 @@ class FieldReferencePair(
     Target field pointer.
     """
 
-    is_primary_key: bool
-    """
-    Indicator for whether this field pair is a primary key.
-    """
-
     def __init__(
         self,
         source_field_name: str,
@@ -39,7 +34,7 @@ class FieldReferencePair(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        Base.__init__(
+        IB2DFileElement.__init__(
             self=self,
         )
 
