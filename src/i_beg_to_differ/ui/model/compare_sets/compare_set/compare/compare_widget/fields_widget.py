@@ -74,9 +74,9 @@ class FieldsWidget(
             True,
         )
 
-        for field_pair in self.compare.fields:
+        for field_ref_pair in self.compare.fields:
             self.append_row(
-                field_pair=field_pair,
+                field_ref_pair=field_ref_pair,
             )
 
         self.table.cellChanged.connect(
@@ -128,13 +128,13 @@ class FieldsWidget(
 
     def append_row(
         self,
-        field_pair: FieldReferencePairPrimaryKey | FieldReferencePairData,
+        field_ref_pair: FieldReferencePairPrimaryKey | FieldReferencePairData,
     ) -> None:
         # Build primary key widgets
         primary_key_checkbox = QCheckBox()
         compare_rule = QLabel()
 
-        if isinstance(field_pair, FieldReferencePairPrimaryKey):
+        if isinstance(field_ref_pair, FieldReferencePairPrimaryKey):
             primary_key_checkbox.setCheckState(
                 Qt.CheckState.Checked,
             )
@@ -143,22 +143,27 @@ class FieldsWidget(
                 '',
             )
 
-        else:
+        elif isinstance(field_ref_pair, FieldReferencePairData):
             primary_key_checkbox.setCheckState(
                 Qt.CheckState.Unchecked,
             )
 
             compare_rule.setText(
                 str(
-                    field_pair.compare_rule,
+                    field_ref_pair.compare_rule,
                 ),
+            )
+
+        else:
+            raise TypeError(
+                f'Unhandled type for field_ref_pair: {type(field_ref_pair).__name__}!',
             )
 
         # Assemble row widgets
         row_widgets = [
             primary_key_checkbox,
             WildcardInputFieldWidget(
-                input_field=field_pair.source_field,
+                input_field=field_pair.source_field_ref.field_name,
                 frame=False,
             ),
             QLabel(

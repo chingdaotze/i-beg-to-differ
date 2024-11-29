@@ -1,5 +1,5 @@
 from __future__ import annotations
-from copy import deepcopy
+from typing import Any
 from functools import cached_property
 from inspect import getmembers
 
@@ -23,7 +23,7 @@ class ModelBase(
     QStandardItem,
 ):
 
-    base_state: Base
+    _base_state: int
     current_state: Base
     _object_name: str | None
 
@@ -39,9 +39,7 @@ class ModelBase(
 
         self._object_name = object_name
 
-        self.base_state = deepcopy(
-            current_state,
-        )
+        self.base_state = current_state
         self.current_state = current_state
 
         self.setEditable(
@@ -50,6 +48,23 @@ class ModelBase(
 
         self.setText(
             self.object_name,
+        )
+
+    @property
+    def base_state(
+        self,
+    ) -> int:
+
+        return self._base_state
+
+    @base_state.setter
+    def base_state(
+        self,
+        value: Any,
+    ) -> None:
+
+        self._base_state = hash(
+            value,
         )
 
     def appendRow(
@@ -98,7 +113,12 @@ class ModelBase(
         self,
     ) -> bool:
 
-        return self.current_state != self.base_state
+        return (
+            hash(
+                self.current_state,
+            )
+            != self.base_state
+        )
 
     @property
     def modified_indicator(
@@ -179,15 +199,3 @@ class ModelBase(
 
         else:
             return None
-
-    def save(
-        self,
-    ) -> None:
-
-        self.base_state = self.current_state
-
-    def undo(
-        self,
-    ) -> None:
-
-        self.current_state = self.base_state

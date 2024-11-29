@@ -103,10 +103,14 @@ class Compare(
 
         source_data_source_ref = DataSourceReference(
             data_source_name=instance_data['source'],
+            title='Source',
+            wildcard_sets=wildcard_sets,
         )
 
         target_data_source_ref = DataSourceReference(
             data_source_name=instance_data['target'],
+            title='Target',
+            wildcard_sets=wildcard_sets,
         )
 
         pk_fields = [

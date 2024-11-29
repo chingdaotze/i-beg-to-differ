@@ -1,5 +1,5 @@
 from ....base import Base
-from ....wildcards_sets.wildcard_field import WildcardField
+from ....input_fields.wildcard_input_fields import WildcardInputField
 from ....wildcards_sets import WildcardSets
 
 
@@ -10,7 +10,7 @@ class DataSourceReference(
     Pointer to a Data Source.
     """
 
-    data_source_name: WildcardField
+    data_source_name: WildcardInputField
     """
     Name of the data source.
     """
@@ -18,6 +18,7 @@ class DataSourceReference(
     def __init__(
         self,
         data_source_name: str,
+        title: str,
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -25,8 +26,9 @@ class DataSourceReference(
             self=self,
         )
 
-        self.data_source_name = WildcardField(
+        self.data_source_name = WildcardInputField(
             base_value=data_source_name,
+            title=title,
             wildcard_sets=wildcard_sets,
         )
 

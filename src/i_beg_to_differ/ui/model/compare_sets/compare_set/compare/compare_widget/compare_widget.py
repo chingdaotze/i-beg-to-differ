@@ -38,7 +38,7 @@ class CompareWidget(
         )
 
         self.data_sources_widget = DataSourcesWidget(
-            data_source_pair=compare.data_source_pair,
+            compare=compare,
         )
 
         self.addTab(
