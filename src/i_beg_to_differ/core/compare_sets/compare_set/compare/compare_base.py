@@ -1,7 +1,4 @@
-from typing import (
-    Final,
-    List,
-)
+from typing import List
 from abc import ABC
 
 from pandas import DataFrame
@@ -19,9 +16,6 @@ from ....wildcards_sets import WildcardSets
 from ....data_sources.data_source import DataSource
 
 
-AUTO_MATCH: Final[str] = 'auto_match'
-
-
 class CompareBase(
     Base,
     ABC,
@@ -34,7 +28,7 @@ class CompareBase(
     _target_data_source_ref: DataSourceReference
     data_sources: DataSources
     _pk_fields: List[FieldReferencePairPrimaryKey]
-    _dt_fields: List[FieldReferencePairData] | AUTO_MATCH
+    _dt_fields: List[FieldReferencePairData]
     _wildcard_sets: WildcardSets
 
     def __init__(
@@ -43,7 +37,7 @@ class CompareBase(
         target_data_source_ref: DataSourceReference,
         data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
-        dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldReferencePairData] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
@@ -146,23 +140,14 @@ class CompareBase(
     ) -> List[FieldReferencePairData]:
         """
         Data field pairs.
-
-        #. If data fields are provided, those will be used.
-        #. If data fields are set to ``AUTO_MATCH``, those will be matched, less any primary keys.
         """
 
-        if self._dt_fields == AUTO_MATCH:
-            dt_fields = self.auto_match_dt_fields
-
-        else:
-            dt_fields = self._dt_fields
-
-        return dt_fields
+        return self._dt_fields
 
     @dt_fields.setter
     def dt_fields(
         self,
-        value: List[FieldReferencePairData] | AUTO_MATCH | None = None,
+        value: List[FieldReferencePairData] | None = None,
     ) -> None:
         """
         Data field pairs.

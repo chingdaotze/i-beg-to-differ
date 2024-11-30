@@ -1,4 +1,5 @@
 from .....base import Base
+from .....input_fields.wildcard_input_fields import WildcardInputField
 from .....wildcards_sets.wildcard_field import WildcardField
 from .....data_sources.data_source.field.field_transforms import FieldTransforms
 from .....wildcards_sets import WildcardSets
@@ -11,7 +12,7 @@ class FieldReference(
     Pointer to a Field within a Data Source.
     """
 
-    field_name: WildcardField
+    field_name: WildcardInputField
     """
     Name of a field within a Data Source.
     """
@@ -32,7 +33,7 @@ class FieldReference(
             self=self,
         )
 
-        self.field_name = WildcardField(
+        self.field_name = WildcardInputField(
             base_value=field_name,
             wildcard_sets=wildcard_sets,
         )

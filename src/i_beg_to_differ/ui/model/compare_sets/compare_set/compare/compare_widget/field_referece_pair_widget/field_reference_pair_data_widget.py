@@ -6,21 +6,18 @@ from PySide6.QtWidgets import (
     QPushButton,
     QHeaderView,
     QLabel,
-    QCheckBox,
 )
-from PySide6.QtCore import Qt
 
-from .......core.compare_sets.compare_set.compare import Compare
-from .......core.compare_sets.compare_set.compare.field_reference_pair import (
-    FieldReferencePairPrimaryKey,
+from ........core.compare_sets.compare_set.compare import Compare
+from ........core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairData,
 )
-from ......view.main_window.main_widget.object_viewer.input_field_group_boxes.wildcard_input_field_widget import (
+from .......view.main_window.main_widget.object_viewer.input_field_group_boxes.wildcard_input_field_widget import (
     WildcardInputFieldWidget,
 )
 
 
-class FieldsWidget(
+class FieldReferencePairDataWidget(
     QWidget,
 ):
 
@@ -47,13 +44,12 @@ class FieldsWidget(
 
         self.table = QTableWidget(
             0,
-            6,
+            5,
             self,
         )
 
         self.table.setHorizontalHeaderLabels(
             [
-                'Primary Key',
                 'Source',
                 'Source Transforms',
                 'Target',
@@ -74,9 +70,9 @@ class FieldsWidget(
             True,
         )
 
-        for field_ref_pair in self.compare.fields:
+        for dt_field in self.compare.dt_fields:
             self.append_row(
-                field_ref_pair=field_ref_pair,
+                dt_field=dt_field,
             )
 
         self.table.cellChanged.connect(
@@ -102,6 +98,11 @@ class FieldsWidget(
             self,
         )
 
+        self.auto_match_button = QPushButton(
+            'Auto-Match Fields',
+            self,
+        )
+
         self.add_button.clicked.connect(
             self.add_row,
         )
@@ -110,12 +111,20 @@ class FieldsWidget(
             self.delete_current_row,
         )
 
+        self.auto_match_button.clicked.connect(
+            self.auto_match_rows,
+        )
+
         button_layout.addWidget(
             self.add_button,
         )
 
         button_layout.addWidget(
             self.delete_button,
+        )
+
+        button_layout.addWidget(
+            self.auto_match_button,
         )
 
         button_layout.addStretch()
@@ -128,59 +137,33 @@ class FieldsWidget(
 
     def append_row(
         self,
-        field_ref_pair: FieldReferencePairPrimaryKey | FieldReferencePairData,
+        dt_field: FieldReferencePairData,
     ) -> None:
-        # Build primary key widgets
-        primary_key_checkbox = QCheckBox()
-        compare_rule = QLabel()
-
-        if isinstance(field_ref_pair, FieldReferencePairPrimaryKey):
-            primary_key_checkbox.setCheckState(
-                Qt.CheckState.Checked,
-            )
-
-            compare_rule.setText(
-                '',
-            )
-
-        elif isinstance(field_ref_pair, FieldReferencePairData):
-            primary_key_checkbox.setCheckState(
-                Qt.CheckState.Unchecked,
-            )
-
-            compare_rule.setText(
-                str(
-                    field_ref_pair.compare_rule,
-                ),
-            )
-
-        else:
-            raise TypeError(
-                f'Unhandled type for field_ref_pair: {type(field_ref_pair).__name__}!',
-            )
-
         # Assemble row widgets
         row_widgets = [
-            primary_key_checkbox,
             WildcardInputFieldWidget(
-                input_field=field_pair.source_field_ref.field_name,
+                input_field=dt_field.source_field_ref.field_name,
                 frame=False,
             ),
             QLabel(
                 str(
-                    field_pair.source_transforms,
+                    dt_field.source_field_ref.transforms,
                 )
             ),
             WildcardInputFieldWidget(
-                input_field=field_pair.target_field,
+                input_field=dt_field.target_field_ref.field_name,
                 frame=False,
             ),
             QLabel(
                 str(
-                    field_pair.target_transforms,
+                    dt_field.target_field_ref.transforms,
                 )
             ),
-            compare_rule,
+            QLabel(
+                str(
+                    dt_field.compare_rule,
+                )
+            ),
         ]
 
         # Add row
@@ -201,7 +184,7 @@ class FieldsWidget(
         column: int,
     ) -> None:
 
-        # TODO: Rebuild pk_fields and dt_fields from widgets
+        # TODO: Rebuild dt_fields from widgets
 
         item = self.table.item(
             row,
@@ -232,3 +215,18 @@ class FieldsWidget(
         self.table.removeRow(
             row,
         )
+
+    def auto_match_rows(
+        self,
+    ) -> None:
+
+        self.table.setRowCount(
+            0,
+        )
+
+        self.compare.dt_fields = self.compare.auto_match_dt_fields
+
+        for dt_field in self.compare.dt_fields:
+            self.append_row(
+                dt_field=dt_field,
+            )

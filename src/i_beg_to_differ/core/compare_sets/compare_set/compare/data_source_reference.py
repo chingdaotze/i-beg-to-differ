@@ -18,7 +18,7 @@ class DataSourceReference(
     def __init__(
         self,
         data_source_name: str,
-        title: str,
+        title: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 

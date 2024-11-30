@@ -6,7 +6,6 @@ from pandas import (
 )
 
 from .compare_values_unmasked import CompareValuesUnmasked
-from .compare_base import AUTO_MATCH
 from .data_source_reference import DataSourceReference
 from ....data_sources import DataSources
 from .field_reference_pair import (
@@ -26,7 +25,7 @@ class CompareMismatchingRecords(
         target_data_source_ref: DataSourceReference,
         data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
-        dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldReferencePairData] | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 

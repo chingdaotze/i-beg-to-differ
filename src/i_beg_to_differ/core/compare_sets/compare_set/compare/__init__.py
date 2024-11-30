@@ -1,4 +1,1 @@
-from .compare import (
-    Compare,
-    AUTO_MATCH,
-)
+from .compare import Compare

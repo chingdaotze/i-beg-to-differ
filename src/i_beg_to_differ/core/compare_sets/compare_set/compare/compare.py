@@ -38,7 +38,6 @@ from .field_reference_pair import (
     FieldReferencePairPrimaryKey,
     FieldReferencePairData,
 )
-from .compare_base import AUTO_MATCH
 from ....wildcards_sets import WildcardSets
 
 
@@ -67,7 +66,7 @@ class Compare(
         target_data_source_ref: DataSourceReference,
         data_sources: DataSources,
         pk_fields: List[FieldReferencePairPrimaryKey] | None = None,
-        dt_fields: List[FieldReferencePairData] | AUTO_MATCH | None = None,
+        dt_fields: List[FieldReferencePairData] | None = None,
         wildcard_sets: WildcardSets | None = None,
         description: str | None = None,
     ):

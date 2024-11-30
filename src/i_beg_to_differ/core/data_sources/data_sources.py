@@ -61,11 +61,15 @@ class DataSources(
         data_source: str | DataSource | DataSourceReference,
     ) -> DataSource:
 
-        return self.data_sources[
-            str(
+        if isinstance(data_source, DataSourceReference):
+            key = data_source.data_source_name.base_value
+
+        else:
+            key = str(
                 data_source,
             )
-        ]
+
+        return self.data_sources[key]
 
     @log_exception
     def append(

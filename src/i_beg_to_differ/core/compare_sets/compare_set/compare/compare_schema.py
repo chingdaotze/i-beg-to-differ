@@ -2,10 +2,7 @@ from abc import ABC
 
 from pandas import DataFrame
 
-from .compare_base import (
-    CompareBase,
-    AUTO_MATCH,
-)
+from .compare_base import CompareBase
 from .compare_values import CompareValues
 from ....data_sources import DataSources
 from .field_reference_pair import FieldReferencePairPrimaryKey
@@ -55,7 +52,8 @@ class CompareSchema(
                     target_field_name='column_name',
                 )
             ],
-            dt_fields=AUTO_MATCH,
         )
+
+        compare_values.dt_fields = compare_values.auto_match_dt_fields
 
         return compare_values.values_comparison
