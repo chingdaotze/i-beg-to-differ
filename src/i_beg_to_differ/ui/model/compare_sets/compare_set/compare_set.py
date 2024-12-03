@@ -1,11 +1,19 @@
-from ...model_base import ModelBase
+from PySide6.QtWidgets import (
+    QWidget,
+    QTabWidget,
+)
+
+from ...model_base_object_viewer import ModelBaseObjectViewer
+from .compare_set_description_widget import CompareSetDescriptionWidget
 from .....core.compare_sets.compare_set import CompareSet
 from .compare import ModelCompare
 
 
 class ModelCompareSet(
-    ModelBase,
+    ModelBaseObjectViewer,
 ):
+
+    compare_set_description_widget: CompareSetDescriptionWidget
 
     def __init__(
         self,
@@ -13,10 +21,14 @@ class ModelCompareSet(
         compare_set: CompareSet,
     ):
 
-        ModelBase.__init__(
+        ModelBaseObjectViewer.__init__(
             self=self,
             current_state=compare_set,
             object_name=object_name,
+        )
+
+        self.compare_set_description_widget = CompareSetDescriptionWidget(
+            compare_set=compare_set,
         )
 
         for name, compare in compare_set.compares.items():
@@ -27,3 +39,18 @@ class ModelCompareSet(
                     compare=compare,
                 )
             )
+
+    @property
+    def object_viewer_widget(
+        self,
+    ) -> QWidget:
+
+        # Add description
+        tab_widget = QTabWidget()
+
+        tab_widget.addTab(
+            self.compare_set_description_widget,
+            'Description',
+        )
+
+        return tab_widget

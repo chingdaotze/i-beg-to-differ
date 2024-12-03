@@ -68,7 +68,7 @@ class DataSourcesWidget(
         )
 
         target_field_group_box.layout.addWidget(
-            self.source_field_input_widget,
+            self.target_field_input_widget,
             0,
             0,
         )

@@ -16,13 +16,13 @@ class CompareDescriptionWidget(
         parent: QWidget | None = None,
     ):
 
+        self.compare = compare
+
         DescriptionWidget.__init__(
             self=self,
             value=compare.description,
             parent=parent,
         )
-
-        self.compare = compare
 
     def text_changed(
         self,
