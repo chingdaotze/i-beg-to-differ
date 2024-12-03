@@ -4,16 +4,16 @@ from PySide6.QtWidgets import (
 )
 
 from .......core.compare_sets.compare_set.compare import Compare
-from .description_widget import DescriptionWidget
+from .compare_description_widget import CompareDescriptionWidget
 from .data_sources_widget import DataSourcesWidget
-from .field_referece_pair_widget import FieldReferencePairWidget
+from .field_reference_pair_widget import FieldReferencePairWidget
 
 
 class CompareWidget(
     QTabWidget,
 ):
 
-    description_widget: DescriptionWidget
+    description_widget: CompareDescriptionWidget
     data_sources_widget: DataSourcesWidget
     field_reference_pair_widget: FieldReferencePairWidget
 
@@ -28,8 +28,8 @@ class CompareWidget(
             parent=parent,
         )
 
-        self.description_widget = DescriptionWidget(
-            description_field=compare.description,
+        self.description_widget = CompareDescriptionWidget(
+            compare=compare,
         )
 
         self.addTab(

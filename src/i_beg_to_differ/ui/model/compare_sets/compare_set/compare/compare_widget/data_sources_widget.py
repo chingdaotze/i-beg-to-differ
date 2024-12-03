@@ -4,8 +4,9 @@ from PySide6.QtWidgets import (
 )
 
 from .......core.compare_sets.compare_set.compare import Compare
-from ......view.main_window.main_widget.object_viewer.input_field_group_boxes import (
-    WildcardInputFieldGroupBox,
+from ......widgets import (
+    WildcardInputWidget,
+    GroupBox,
 )
 
 
@@ -16,8 +17,8 @@ class DataSourcesWidget(
     layout: QVBoxLayout
     compare: Compare
 
-    source_field_group_box: WildcardInputFieldGroupBox
-    target_field_group_box: WildcardInputFieldGroupBox
+    source_field_input_widget: WildcardInputWidget
+    target_field_input_widget: WildcardInputWidget
 
     def __init__(
         self,
@@ -38,20 +39,42 @@ class DataSourcesWidget(
             self.layout,
         )
 
-        self.source_field_group_box = WildcardInputFieldGroupBox(
-            input_field=self.compare.source_data_source_ref.data_source_name,
+        source_field_group_box = GroupBox(
+            title='Source',
+        )
+
+        self.source_field_input_widget = WildcardInputWidget(
+            wildcard_field=self.compare.source_data_source_ref.data_source_name,
+            options=self.compare.data_sources.list_data_sources,
+        )
+
+        source_field_group_box.layout.addWidget(
+            self.source_field_input_widget,
+            0,
+            0,
         )
 
         self.layout.addWidget(
-            self.source_field_group_box,
+            source_field_group_box,
         )
 
-        self.target_field_group_box = WildcardInputFieldGroupBox(
-            input_field=self.compare.target_data_source_ref.data_source_name,
+        target_field_group_box = GroupBox(
+            title='Target',
+        )
+
+        self.target_field_input_widget = WildcardInputWidget(
+            wildcard_field=self.compare.target_data_source_ref.data_source_name,
+            options=self.compare.data_sources.list_data_sources,
+        )
+
+        target_field_group_box.layout.addWidget(
+            self.source_field_input_widget,
+            0,
+            0,
         )
 
         self.layout.addWidget(
-            self.target_field_group_box,
+            target_field_group_box,
         )
 
         self.layout.addStretch()

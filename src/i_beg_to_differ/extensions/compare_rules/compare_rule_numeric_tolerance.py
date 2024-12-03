@@ -11,10 +11,7 @@ from pandas import Series
 from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
     CompareRule,
 )
-from i_beg_to_differ.core.input_fields.wildcard_input_fields import WildcardInputField
-from i_beg_to_differ.core.input_fields.input_field_options import (
-    StaticInputFieldOptions,
-)
+from i_beg_to_differ.core.extensions.ui import WildcardInputField
 from i_beg_to_differ.core.extensions.extension import DataType
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from i_beg_to_differ.core.base import log_exception
@@ -59,30 +56,26 @@ class CompareRuleNumericTolerance(
 
         self._tolerance = WildcardInputField(
             base_value=str(tolerance),
-            title='Tolerance',
             wildcard_sets=wildcard_sets,
+            title='Tolerance',
         )
 
         self._diff_mode = WildcardInputField(
             base_value=diff_mode,
-            title='Difference Mode: ',
             wildcard_sets=wildcard_sets,
-            options=StaticInputFieldOptions(
-                options=list(
-                    DiffMode,
-                ),
+            options=list(
+                DiffMode,
             ),
+            title='Difference Mode: ',
         )
 
         self._numeric_mode = WildcardInputField(
             base_value=numeric_mode,
-            title='Numeric Mode: ',
             wildcard_sets=wildcard_sets,
-            options=StaticInputFieldOptions(
-                options=list(
-                    NumericMode,
-                ),
+            options=list(
+                NumericMode,
             ),
+            title='Numeric Mode: ',
         )
 
     def __str__(

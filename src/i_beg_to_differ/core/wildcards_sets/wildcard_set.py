@@ -6,10 +6,6 @@ from typing import (
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..input_fields import (
-    TextBoxInputField,
-    DictInputField,
-)
 from ..base import log_exception
 
 
@@ -20,12 +16,12 @@ class WildcardSet(
     Collection of wildcards, used to replace values.
     """
 
-    description: TextBoxInputField
+    description: str | None
     """
     Human-readable description of this Wildcard Set.
     """
 
-    user_replacement_values: DictInputField
+    user_replacement_values: Dict[str, str]
     """
     User-defined wildcard replacement values.
     """
@@ -46,23 +42,13 @@ class WildcardSet(
             self=self,
         )
 
-        self.description = TextBoxInputField(
-            title='Description',
-            value=description,
-        )
+        self.description = description
 
-        user_replacement_values_ = self.manager.dict()
+        self.user_replacement_values = self.manager.dict()
 
         if user_replacement_values is not None:
             for key, value in user_replacement_values.items():
-                user_replacement_values_[key] = value
-
-        self.user_replacement_values = DictInputField(
-            title='Wildcards',
-            values=user_replacement_values_,
-            key_column='Wildcard Name',
-            value_column='Wildcard Value',
-        )
+                self.user_replacement_values[key] = value
 
         self.system_replacement_values = self.manager.dict()
 
@@ -92,7 +78,7 @@ class WildcardSet(
         )
 
         user_replacement_values = dict(
-            self.user_replacement_values.values,
+            self.user_replacement_values,
         )
 
         return system_replacement_values | user_replacement_values
@@ -151,10 +137,10 @@ class WildcardSet(
     ) -> Dict:
 
         replacement_values = dict(
-            self.user_replacement_values.values,
+            self.user_replacement_values,
         )
 
         return {
-            'description': self.description.value,
+            'description': self.description,
             'replacement_values': replacement_values,
         }

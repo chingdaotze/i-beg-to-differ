@@ -1,2 +1,0 @@
-from .dict_table_widget import DictTableWidget
-from .wildcard_dict_table_widget import WildcardDictTableWidget

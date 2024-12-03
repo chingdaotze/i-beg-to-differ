@@ -1,82 +1,45 @@
-from ..base import Base
+from .wildcard_field_base import WildcardFieldBase
 from . import WildcardSets
 
 
 class WildcardField(
-    Base,
+    WildcardFieldBase,
 ):
     """
     Wildcard-linked text field.
     """
 
-    base_value: str
-    """
-    Base value, without wildcard replacement.
-    """
-
-    wildcard_sets: WildcardSets | None
-    """
-    Wildcard sets, used to perform replacement.
-    """
+    _base_value: str
 
     def __init__(
         self,
         base_value: str,
         wildcard_sets: WildcardSets | None = None,
     ):
-        Base.__init__(
+        WildcardFieldBase.__init__(
             self=self,
+            wildcard_sets=wildcard_sets,
         )
 
-        self.base_value = base_value
-        self.wildcard_sets = wildcard_sets
+        self._base_value = base_value
 
-    def __str__(
+    @property
+    def base_value(
         self,
     ) -> str:
+        """
+        Base value, without wildcard replacement.
+        """
 
-        if self.wildcard_sets is not None:
-            return self.wildcard_sets.replace_wildcards(
-                string=self.base_value,
-            )
+        return self._base_value
 
-        else:
-            return self.base_value
-
-    def __hash__(
+    @base_value.setter
+    def base_value(
         self,
-    ) -> int:
+        value: str,
+    ) -> None:
+        """
+        Base value, without wildcard replacement.
+        """
 
-        return hash(
-            self.base_value,
-        )
-
-    def __float__(
-        self,
-    ) -> float:
-
-        return float(
-            str(
-                self,
-            ),
-        )
-
-    def __int__(
-        self,
-    ) -> int:
-
-        return int(
-            str(
-                self,
-            ),
-        )
-
-    def __bool__(
-        self,
-    ) -> bool:
-
-        return bool(
-            str(
-                self,
-            ),
-        )
+        self._base_value = value

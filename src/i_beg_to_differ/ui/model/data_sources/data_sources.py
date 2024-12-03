@@ -1,4 +1,4 @@
-from ..base import ModelBase
+from ..model_base import ModelBase
 from ....core.data_sources import DataSources
 from .data_source import ModelDataSource
 

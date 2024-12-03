@@ -1,8 +1,9 @@
-from PySide6.QtWidgets import QTreeView, QWidget
-from PySide6.QtGui import QStandardItem
+from PySide6.QtWidgets import QTreeView
+from PySide6.QtCore import QModelIndex
 
 from .....model import Model
-from .....model.base import ModelBase
+from .....model.model_base import ModelBase
+from .....model.model_base_object_viewer import ModelBaseObjectViewer
 from ..object_viewer import ObjectViewer
 
 
@@ -34,29 +35,38 @@ class ObjectExplorer(
 
     def open_in_object_viewer(
         self,
-        item: QStandardItem,
+        item: ModelBase,
     ) -> None:
 
-        if issubclass(type(item), ModelBase):
-            item: ModelBase
+        # TODO: Check if item is already opened and activate tab. Do not allow duplicate items.
+
+        if isinstance(item, ModelBaseObjectViewer):
             object_viewer_widget = item.object_viewer_widget
 
-            if isinstance(object_viewer_widget, QWidget):
-                self.object_viewer.addTab(
-                    object_viewer_widget,
-                    f'{item.object_type}: {item.object_name}',
-                )
+            self.object_viewer.addTab(
+                object_viewer_widget,
+                f'{item.object_type}: {item.object_name}',
+            )
 
-                self.object_viewer.setCurrentWidget(
-                    object_viewer_widget,
-                )
+            self.object_viewer.setCurrentWidget(
+                object_viewer_widget,
+            )
 
     def double_click(
         self,
-        index,
+        index: QModelIndex,
     ) -> None:
 
-        item = self.model().itemFromIndex(
+        model = self.model()
+
+        """
+        index = model.index(
+            index.row(),
+            0,
+        )
+        """
+
+        item = model.itemFromIndex(
             index,
         )
 

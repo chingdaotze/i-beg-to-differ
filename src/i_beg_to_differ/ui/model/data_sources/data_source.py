@@ -1,9 +1,9 @@
-from ..base import ModelBase
+from ..model_base_extension import ModelBaseExtension
 from ....core.data_sources.data_source import DataSource
 
 
 class ModelDataSource(
-    ModelBase,
+    ModelBaseExtension,
 ):
 
     def __init__(
@@ -13,7 +13,7 @@ class ModelDataSource(
     ):
         self._object_name = object_name
 
-        ModelBase.__init__(
+        ModelBaseExtension.__init__(
             self=self,
             current_state=data_source,
             object_name=object_name,

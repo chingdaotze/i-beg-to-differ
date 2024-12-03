@@ -10,7 +10,7 @@ from pandas import Series
 from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
+from i_beg_to_differ.core.extensions.ui import WildcardInputField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from i_beg_to_differ.core.base import log_exception
 
@@ -19,7 +19,7 @@ class FieldTransformReplaceNullWithString(
     FieldTransform,
 ):
 
-    replacement_value: WildcardField
+    replacement_value: WildcardInputField
     """
     Replacement value for null value.
     """
@@ -36,9 +36,10 @@ class FieldTransformReplaceNullWithString(
             self=self,
         )
 
-        self.replacement_value = WildcardField(
+        self.replacement_value = WildcardInputField(
             base_value=replacement_value,
             wildcard_sets=wildcard_sets,
+            title='Replacement Value',
         )
 
     def __str__(

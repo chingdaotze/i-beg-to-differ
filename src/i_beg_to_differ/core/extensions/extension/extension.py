@@ -1,7 +1,20 @@
 from abc import ABC
 from typing import ClassVar
 
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QScrollArea,
+    QLabel,
+    QTabWidget,
+)
+from PySide6.QtCore import Qt
+
 from ...base import Base
+from ..ui import (
+    InputField,
+    DescriptionInputField,
+)
 
 
 class Extension(
@@ -44,4 +57,74 @@ class Extension(
 
         return cls.__module__.split('.')[-1]
 
-    # TODO: Figure out how to auto-generate Extension UI elements
+    @property
+    def object_viewer_widget(
+        self,
+    ) -> QWidget:
+        """
+        Defines this Extension's Object Viewer widget. Override this method to provide a custom widget in the UI.
+        By default, this method parses the Extension object for attributes to add to the widget.
+
+        :return: Object Viewer widget.
+        """
+
+        # Initialize widget
+        input_field_widget = QWidget()
+        input_field_layout = QVBoxLayout()
+
+        input_field_widget.setLayout(
+            input_field_layout,
+        )
+
+        input_field_layout.setAlignment(
+            Qt.AlignmentFlag.AlignTop,
+        )
+
+        input_field_scroll_area = QScrollArea()
+
+        input_field_scroll_area.setWidget(
+            input_field_widget,
+        )
+
+        input_field_scroll_area.setWidgetResizable(
+            True,
+        )
+
+        # Scan for Input Fields
+        description_widget = None
+
+        for attribute, value in self.__dict__.items():
+            if isinstance(value, DescriptionInputField):
+                description_widget = value.description_widget
+
+            elif isinstance(value, InputField):
+                input_field_layout.addWidget(
+                    value.layout_component,
+                )
+
+        # Set default input field widget
+        if not input_field_layout.count():
+            input_field_layout.addWidget(
+                QLabel(
+                    'No Object Viewer widget defined for this extension.',
+                )
+            )
+
+        # Create Description tab
+        if description_widget is not None:
+            object_viewer_widget = QTabWidget()
+
+            object_viewer_widget.addTab(
+                description_widget,
+                'Description',
+            )
+
+            object_viewer_widget.addTab(
+                input_field_scroll_area,
+                'Parameters',
+            )
+
+        else:
+            object_viewer_widget = input_field_scroll_area
+
+        return object_viewer_widget

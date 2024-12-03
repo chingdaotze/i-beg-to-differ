@@ -1,7 +1,7 @@
 from typing import (
     Dict,
     ClassVar,
-    Union,
+    List,
     Self,
 )
 from pathlib import Path
@@ -99,6 +99,14 @@ class DataSources(
 
         del self.data_sources[str(data_source)]
 
+    def list_data_sources(
+        self,
+    ) -> List[str]:
+
+        return list(
+            self.data_sources.keys(),
+        )
+
     @classmethod
     @log_exception
     def deserialize(
@@ -106,7 +114,7 @@ class DataSources(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
-        wildcard_sets: Union['WildcardSets', None] = None,
+        wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
         data_sources = {}

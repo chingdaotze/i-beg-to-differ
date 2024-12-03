@@ -31,7 +31,6 @@ from .compare_target_duplicate_primary_key_records import (
 )
 from .compare_schema import CompareSchema
 
-from ....input_fields import TextBoxInputField
 from ....data_sources import DataSources
 from .data_source_reference import DataSourceReference
 from .field_reference_pair import (
@@ -53,7 +52,7 @@ class Compare(
     CompareSchema,
 ):
 
-    description: TextBoxInputField
+    description: str | None
     """
     Human-readable description.
     """
@@ -85,10 +84,7 @@ class Compare(
             wildcard_sets=wildcard_sets,
         )
 
-        self.description = TextBoxInputField(
-            title='Description',
-            value=description,
-        )
+        self.description = description
 
     @classmethod
     def deserialize(
@@ -102,13 +98,11 @@ class Compare(
 
         source_data_source_ref = DataSourceReference(
             data_source_name=instance_data['source'],
-            title='Source',
             wildcard_sets=wildcard_sets,
         )
 
         target_data_source_ref = DataSourceReference(
             data_source_name=instance_data['target'],
-            title='Target',
             wildcard_sets=wildcard_sets,
         )
 
@@ -169,7 +163,7 @@ class Compare(
             dt_fields = self._dt_fields
 
         return {
-            'description': self.description.value,
+            'description': self.description,
             'source': self.source_data_source_ref.data_source_name.base_value,
             'target': self.target_data_source_ref.data_source_name.base_value,
             'pk_fields': pk_fields,

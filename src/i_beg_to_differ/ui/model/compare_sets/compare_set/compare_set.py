@@ -1,4 +1,4 @@
-from ...base import ModelBase
+from ...model_base import ModelBase
 from .....core.compare_sets.compare_set import CompareSet
 from .compare import ModelCompare
 

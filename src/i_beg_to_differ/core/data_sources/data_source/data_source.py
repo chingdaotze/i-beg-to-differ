@@ -17,7 +17,7 @@ from pandas import (
 
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
 from ...extensions.extension import Extension
-from ...input_fields import TextBoxInputField
+from ...extensions.ui import DescriptionInputField
 from .field.field_transforms import FieldTransforms
 from ...compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
@@ -38,7 +38,7 @@ class DataSource(
     This class must be pickleable.
     """
 
-    description: TextBoxInputField
+    description: DescriptionInputField
     """
     Human-readable description of this data source.
     """
@@ -67,9 +67,8 @@ class DataSource(
             self=self,
         )
 
-        self.description = TextBoxInputField(
+        self.description = DescriptionInputField(
             value=description,
-            title='Description',
         )
 
         self._cache_namespace = self.manager.Namespace()
@@ -140,7 +139,7 @@ class DataSource(
         :return:
         """
 
-        self._cache = None
+        self._cache_namespace._cache = None
 
     @abstractmethod
     def load(

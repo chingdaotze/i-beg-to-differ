@@ -14,7 +14,7 @@ from i_beg_to_differ.core import (
     open_ib2d_file,
     setup_logger,
 )
-from i_beg_to_differ.ui import MainWindow
+from i_beg_to_differ.ui.view.main_window import MainWindow
 
 
 typer_app = Typer()

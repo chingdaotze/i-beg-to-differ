@@ -1,4 +1,4 @@
-from ..base import ModelBase
+from ..model_base import ModelBase
 from ....core.wildcards_sets import WildcardSets
 from .wildcard_set import ModelWildcardSet
 
@@ -6,6 +6,8 @@ from .wildcard_set import ModelWildcardSet
 class ModelWildcardSets(
     ModelBase,
 ):
+
+    current_state: WildcardSets
 
     def __init__(
         self,
@@ -17,7 +19,7 @@ class ModelWildcardSets(
             current_state=wildcard_sets,
         )
 
-        for name, wildcard_set in wildcard_sets.wildcard_sets.items():
+        for name, wildcard_set in self.current_state.wildcard_sets.items():
 
             self.appendRow(
                 ModelWildcardSet(
