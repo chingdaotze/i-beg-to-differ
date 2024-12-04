@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
 from .field_reference_pair_primary_key_widget import FieldReferencePairPrimaryKeyWidget
 from .field_reference_pair_data_widget import FieldReferencePairDataWidget
 from ........core.compare_sets.compare_set.compare import Compare
+from .......widgets import GroupBox
 
 
 class FieldReferencePairWidget(
@@ -34,24 +35,44 @@ class FieldReferencePairWidget(
             self.layout,
         )
 
+        primary_key_group_box = GroupBox(
+            title='Primary Keys',
+        )
+
         self.field_reference_pair_primary_key_widget = (
             FieldReferencePairPrimaryKeyWidget(
                 compare=compare,
             )
         )
 
-        self.layout.addWidget(
+        primary_key_group_box.layout.addWidget(
             self.field_reference_pair_primary_key_widget,
             0,
             0,
+        )
+
+        self.layout.addWidget(
+            primary_key_group_box,
+            0,
+            0,
+        )
+
+        data_field_group_box = GroupBox(
+            title='Data Fields',
         )
 
         self.field_reference_pair_data_widget = FieldReferencePairDataWidget(
             compare=compare,
         )
 
-        self.layout.addWidget(
+        data_field_group_box.layout.addWidget(
             self.field_reference_pair_data_widget,
+            0,
+            0,
+        )
+
+        self.layout.addWidget(
+            data_field_group_box,
             0,
             1,
         )

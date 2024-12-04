@@ -61,6 +61,4 @@ class WildcardFilePathInputField(
         )
 
         if path:
-            self.input_widget.set_text(
-                value=path,
-            )
+            self.base_value = path

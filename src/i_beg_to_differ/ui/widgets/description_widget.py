@@ -1,13 +1,14 @@
 from PySide6.QtWidgets import (
     QWidget,
     QPlainTextEdit,
-    QGridLayout,
     QSizePolicy,
 )
 
+from .widget import Widget
+
 
 class DescriptionWidget(
-    QWidget,
+    Widget,
 ):
     """
     Description text widget. Creates a markdown editor and viewer.
@@ -22,7 +23,7 @@ class DescriptionWidget(
         parent: QWidget | None = None,
     ):
 
-        QWidget.__init__(
+        Widget.__init__(
             self,
             parent,
         )
@@ -45,17 +46,15 @@ class DescriptionWidget(
         )
 
         # Layout
-        layout = QGridLayout()
-
-        layout.addWidget(
+        self.layout.addWidget(
             self.text_edit,
             0,
             0,
         )
 
-        # Group box
-        self.setLayout(
-            layout,
+        self.layout.setRowStretch(
+            1,
+            2,
         )
 
         self.setSizePolicy(

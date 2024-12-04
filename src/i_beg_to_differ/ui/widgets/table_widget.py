@@ -3,19 +3,19 @@ from abc import abstractmethod
 
 from PySide6.QtWidgets import (
     QWidget,
-    QGridLayout,
     QTableWidget,
     QPushButton,
     QVBoxLayout,
 )
 
+from .widget import Widget
+
 
 class TableWidget(
-    QWidget,
+    Widget,
 ):
 
     columns: List[str]
-    layout: QGridLayout
     table: QTableWidget
     add_button: QPushButton
     delete_button: QPushButton
@@ -26,18 +26,12 @@ class TableWidget(
         parent: QWidget | None = None,
     ):
 
-        QWidget.__init__(
+        Widget.__init__(
             self,
             parent,
         )
 
         self.columns = columns
-
-        # Layout
-        self.layout = QGridLayout()
-        self.setLayout(
-            self.layout,
-        )
 
         # Construct table
         self.table = QTableWidget(

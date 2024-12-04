@@ -9,7 +9,7 @@ from ...wildcards_sets.wildcard_field_base import WildcardFieldBase
 from ...wildcards_sets.wildcard_field import WildcardField
 from .input_field import InputField
 from ....ui.widgets import (
-    WildcardInputWidget,
+    WildcardInputWidgetPreview,
     GroupBox,
 )
 from ...wildcards_sets import WildcardSets
@@ -30,7 +30,7 @@ class WildcardInputField(
     """
 
     title: str | None
-    wildcard_input_widget: WildcardInputWidget
+    wildcard_input_widget: WildcardInputWidgetPreview
 
     def __init__(
         self,
@@ -47,7 +47,7 @@ class WildcardInputField(
 
         self.title = title
 
-        self.wildcard_input_widget = WildcardInputWidget(
+        self.wildcard_input_widget = WildcardInputWidgetPreview(
             wildcard_field=WildcardField(
                 base_value=base_value,
                 wildcard_sets=wildcard_sets,

@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
 
 from .......core.compare_sets.compare_set.compare import Compare
 from ......widgets import (
-    WildcardInputWidget,
+    WildcardInputWidgetPreview,
     GroupBox,
 )
 
@@ -17,8 +17,8 @@ class DataSourcesWidget(
     layout: QVBoxLayout
     compare: Compare
 
-    source_field_input_widget: WildcardInputWidget
-    target_field_input_widget: WildcardInputWidget
+    source_field_input_widget: WildcardInputWidgetPreview
+    target_field_input_widget: WildcardInputWidgetPreview
 
     def __init__(
         self,
@@ -43,7 +43,7 @@ class DataSourcesWidget(
             title='Source',
         )
 
-        self.source_field_input_widget = WildcardInputWidget(
+        self.source_field_input_widget = WildcardInputWidgetPreview(
             wildcard_field=self.compare.source_data_source_ref.data_source_name,
             options=self.compare.data_sources.list_data_sources,
         )
@@ -62,7 +62,7 @@ class DataSourcesWidget(
             title='Target',
         )
 
-        self.target_field_input_widget = WildcardInputWidget(
+        self.target_field_input_widget = WildcardInputWidgetPreview(
             wildcard_field=self.compare.target_data_source_ref.data_source_name,
             options=self.compare.data_sources.list_data_sources,
         )

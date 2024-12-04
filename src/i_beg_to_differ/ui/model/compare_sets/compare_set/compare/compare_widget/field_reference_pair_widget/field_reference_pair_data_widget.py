@@ -138,18 +138,30 @@ class FieldReferencePairDataWidget(
         dt_field: FieldReferencePairData,
     ) -> None:
         # Assemble row widgets
+        source_widget = WildcardInputWidget(
+            wildcard_field=dt_field.source_field_ref.field_name,
+        )
+
+        source_widget.input_widget.setFrame(
+            False,
+        )
+
+        target_widget = WildcardInputWidget(
+            wildcard_field=dt_field.target_field_ref.field_name,
+        )
+
+        target_widget.input_widget.setFrame(
+            False,
+        )
+
         row_widgets = [
-            WildcardInputWidget(
-                wildcard_field=dt_field.source_field_ref.field_name,
-            ),
+            source_widget,
             QLabel(
                 str(
                     dt_field.source_field_ref.transforms,
                 )
             ),
-            WildcardInputWidget(
-                wildcard_field=dt_field.target_field_ref.field_name,
-            ),
+            target_widget,
             QLabel(
                 str(
                     dt_field.target_field_ref.transforms,

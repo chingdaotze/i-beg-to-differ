@@ -124,18 +124,32 @@ class FieldReferencePairPrimaryKeyWidget(
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:
         # Assemble row widgets
+        source_widget = WildcardInputWidget(
+            wildcard_field=pk_field.source_field_ref.field_name,
+            options=self.compare.source_data_source.columns,
+        )
+
+        source_widget.input_widget.setFrame(
+            True,
+        )
+
+        target_widget = WildcardInputWidget(
+            wildcard_field=pk_field.target_field_ref.field_name,
+            options=self.compare.target_data_source.columns,
+        )
+
+        target_widget.input_widget.setFrame(
+            True,
+        )
+
         row_widgets = [
-            WildcardInputWidget(
-                wildcard_field=pk_field.source_field_ref.field_name,
-            ),
+            source_widget,
             QLabel(
                 str(
                     pk_field.source_field_ref.transforms,
                 )
             ),
-            WildcardInputWidget(
-                wildcard_field=pk_field.target_field_ref.field_name,
-            ),
+            target_widget,
             QLabel(
                 str(
                     pk_field.target_field_ref.transforms,

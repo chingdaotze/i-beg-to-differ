@@ -3,12 +3,10 @@ from typing import (
     List,
 )
 
-from PySide6.QtWidgets import (
-    QLabel,
-    QWidget,
-    QGridLayout,
-)
+from PySide6.QtWidgets import QWidget
 
+from .widget import Widget
+from .combo_box.combo_box import ComboBox
 from ...core.wildcards_sets.wildcard_field import WildcardField
 from . import (
     TextWidget,
@@ -19,7 +17,7 @@ from . import (
 
 
 class WildcardInputWidget(
-    QWidget,
+    Widget,
 ):
     """
     Wildcard input field widget. Creates a text input field that updates the base value of a WildCard field. Options
@@ -32,9 +30,7 @@ class WildcardInputWidget(
     """
 
     wildcard_field: WildcardField
-    layout: QGridLayout
-    preview: QLabel
-    input_widget: TextWidget | QWidget
+    input_widget: TextWidget | ComboBox | LineEdit
 
     def __init__(
         self,
@@ -43,26 +39,13 @@ class WildcardInputWidget(
         parent: QWidget | None = None,
     ):
 
-        QWidget.__init__(
+        Widget.__init__(
             self,
             parent,
         )
 
         # Create WildCard field
         self.wildcard_field = wildcard_field
-
-        # Create preview
-        self.preview = QLabel()
-
-        font = self.preview.font()
-        font.setItalic(
-            True,
-        )
-        self.preview.setFont(
-            font,
-        )
-
-        self.update_preview()
 
         # Create input widget
         if isinstance(options, list):
@@ -94,39 +77,10 @@ class WildcardInputWidget(
         )
 
         # Set layout
-        self.layout = QGridLayout()
-
-        self.setLayout(
-            self.layout,
-        )
-
-        self.layout.setContentsMargins(
-            0,
-            0,
-            0,
-            0,
-        )
-
         self.layout.addWidget(
             self.input_widget,
             0,
             0,
-        )
-
-        self.layout.addWidget(
-            self.preview,
-            1,
-            0,
-        )
-
-    def update_preview(
-        self,
-    ) -> None:
-
-        self.preview.setText(
-            str(
-                self.wildcard_field,
-            ),
         )
 
     def text_changed(
@@ -134,4 +88,3 @@ class WildcardInputWidget(
     ) -> None:
 
         self.wildcard_field.base_value = self.input_widget.get_text()
-        self.update_preview()
