@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from ....model_base_object_viewer import ModelBaseObjectViewer
 from ......core.compare_sets.compare_set.compare import Compare
-from .compare_widget import CompareWidget
+from .compare_object_viewer_widget import CompareObjectViewerWidget
 
 
 class ModelCompare(
@@ -28,6 +28,6 @@ class ModelCompare(
         self,
     ) -> QWidget | None:
 
-        return CompareWidget(
+        return CompareObjectViewerWidget(
             compare=self.current_state,
         )

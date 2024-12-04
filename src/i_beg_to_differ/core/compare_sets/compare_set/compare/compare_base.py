@@ -29,7 +29,7 @@ class CompareBase(
     data_sources: DataSources
     _pk_fields: List[FieldReferencePairPrimaryKey]
     _dt_fields: List[FieldReferencePairData]
-    _wildcard_sets: WildcardSets
+    wildcard_sets: WildcardSets
 
     def __init__(
         self,
@@ -52,7 +52,7 @@ class CompareBase(
         self._target_data_source_ref = target_data_source_ref
         self.data_sources = data_sources
 
-        self._wildcard_sets = wildcard_sets
+        self.wildcard_sets = wildcard_sets
 
     def __str__(
         self,
@@ -126,7 +126,7 @@ class CompareBase(
                 field_pair := FieldReferencePairData(
                     source_field_name=field,
                     target_field_name=field,
-                    wildcard_sets=self._wildcard_sets,
+                    wildcard_sets=self.wildcard_sets,
                 )
             )
             not in self.pk_fields

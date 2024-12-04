@@ -10,7 +10,7 @@ from ......widgets import (
 )
 
 
-class DataSourcesWidget(
+class DataSourcesTab(
     QWidget,
 ):
 

@@ -4,7 +4,7 @@ from ......widgets import DescriptionWidget
 from .......core.compare_sets.compare_set.compare import Compare
 
 
-class CompareDescriptionWidget(
+class CompareDescriptionTab(
     DescriptionWidget,
 ):
 

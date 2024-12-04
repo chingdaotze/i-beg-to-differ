@@ -9,7 +9,7 @@ from ........core.compare_sets.compare_set.compare import Compare
 from .......widgets import GroupBox
 
 
-class FieldReferencePairWidget(
+class FieldReferencePairTab(
     QWidget,
 ):
 

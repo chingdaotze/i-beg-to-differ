@@ -1,0 +1,1 @@
+from .compare_object_viewer_widget import CompareObjectViewerWidget

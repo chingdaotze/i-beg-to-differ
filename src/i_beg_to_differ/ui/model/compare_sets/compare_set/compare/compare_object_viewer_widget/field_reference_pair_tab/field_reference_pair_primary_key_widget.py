@@ -5,14 +5,16 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QPushButton,
     QHeaderView,
-    QLabel,
 )
+from PySide6.QtCore import QModelIndex
 
 from ........core.compare_sets.compare_set.compare import Compare
 from ........core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairPrimaryKey,
 )
-from .......widgets import WildcardInputWidget
+from .field_name_table_item_dialog import FieldNameTableItemDialog
+from .field_transform_table_item_dialog import FieldTransformTableItemDialog
+from .......widgets import TableItemDialog
 
 
 class FieldReferencePairPrimaryKeyWidget(
@@ -65,6 +67,10 @@ class FieldReferencePairPrimaryKeyWidget(
 
         self.table.setShowGrid(
             True,
+        )
+
+        self.table.doubleClicked.connect(
+            self.open_dialog,
         )
 
         for pk_field in self.compare.pk_fields:
@@ -123,37 +129,23 @@ class FieldReferencePairPrimaryKeyWidget(
         self,
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:
-        # Assemble row widgets
-        source_widget = WildcardInputWidget(
-            wildcard_field=pk_field.source_field_ref.field_name,
-            options=self.compare.source_data_source.columns,
-        )
-
-        source_widget.input_widget.setFrame(
-            True,
-        )
-
-        target_widget = WildcardInputWidget(
-            wildcard_field=pk_field.target_field_ref.field_name,
-            options=self.compare.target_data_source.columns,
-        )
-
-        target_widget.input_widget.setFrame(
-            True,
-        )
-
-        row_widgets = [
-            source_widget,
-            QLabel(
-                str(
-                    pk_field.source_field_ref.transforms,
-                )
+        # Assemble row items
+        items = [
+            FieldNameTableItemDialog(
+                field_reference=pk_field.source_field_ref,
+                data_source=self.compare.source_data_source,
+                wildcard_sets=self.compare.wildcard_sets,
             ),
-            target_widget,
-            QLabel(
-                str(
-                    pk_field.target_field_ref.transforms,
-                )
+            FieldTransformTableItemDialog(
+                field_reference=pk_field.source_field_ref,
+            ),
+            FieldNameTableItemDialog(
+                field_reference=pk_field.target_field_ref,
+                data_source=self.compare.target_data_source,
+                wildcard_sets=self.compare.wildcard_sets,
+            ),
+            FieldTransformTableItemDialog(
+                field_reference=pk_field.target_field_ref,
             ),
         ]
 
@@ -161,13 +153,29 @@ class FieldReferencePairPrimaryKeyWidget(
         self.add_row()
         row = self.table.rowCount()
 
-        for column, row_widget in enumerate(row_widgets):
+        for column, item in enumerate(items):
 
-            self.table.setCellWidget(
+            self.table.setItem(
                 row - 1,
                 column,
-                row_widget,
+                item,
             )
+
+    def open_dialog(
+        self,
+        index: QModelIndex,
+    ) -> None:
+
+        item: TableItemDialog = self.table.itemFromIndex(
+            index,
+        )
+
+        item.open_dialog()
+
+        self.table.cellChanged.emit(
+            index.row(),
+            index.column(),
+        )
 
     def cell_changed(
         self,
@@ -175,12 +183,12 @@ class FieldReferencePairPrimaryKeyWidget(
         column: int,
     ) -> None:
 
-        # TODO: Rebuild pk_fields from widgets
-
-        item = self.table.item(
+        item: TableItemDialog = self.table.item(
             row,
-            0,
+            column,
         )
+
+        item.set_text()
 
     def add_row(
         self,
