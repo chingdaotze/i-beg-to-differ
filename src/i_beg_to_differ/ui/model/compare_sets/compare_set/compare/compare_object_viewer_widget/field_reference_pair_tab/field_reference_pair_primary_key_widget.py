@@ -12,9 +12,9 @@ from ........core.compare_sets.compare_set.compare import Compare
 from ........core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairPrimaryKey,
 )
-from .field_name_table_item_dialog import FieldNameTableItemDialog
+from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog
 from .field_transform_table_item_dialog import FieldTransformTableItemDialog
-from .......widgets import TableItemDialog
+from .......widgets import TableWidgetItemDialog
 
 
 class FieldReferencePairPrimaryKeyWidget(
@@ -74,7 +74,7 @@ class FieldReferencePairPrimaryKeyWidget(
         )
 
         for pk_field in self.compare.pk_fields:
-            self.append_row(
+            self.add_row(
                 pk_field=pk_field,
             )
 
@@ -102,7 +102,7 @@ class FieldReferencePairPrimaryKeyWidget(
         )
 
         self.add_button.clicked.connect(
-            self.add_row,
+            self.add_new_row,
         )
 
         self.delete_button.clicked.connect(
@@ -125,13 +125,37 @@ class FieldReferencePairPrimaryKeyWidget(
             1,
         )
 
-    def append_row(
+    def add_new_row(
+        self,
+    ) -> None:
+
+        # Add new primary key field pair
+        pk_fields = self.compare.pk_fields
+
+        pk_field = FieldReferencePairPrimaryKey(
+            source_field_name='',
+            target_field_name='',
+            wildcard_sets=self.compare.wildcard_sets,
+        )
+
+        pk_fields.append(
+            pk_field,
+        )
+
+        self.compare.pk_fields = pk_fields
+
+        self.add_row(
+            pk_field=pk_field,
+        )
+
+    def add_row(
         self,
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:
+
         # Assemble row items
         items = [
-            FieldNameTableItemDialog(
+            FieldNameTableWidgetItemDialog(
                 field_reference=pk_field.source_field_ref,
                 data_source=self.compare.source_data_source,
                 wildcard_sets=self.compare.wildcard_sets,
@@ -139,7 +163,7 @@ class FieldReferencePairPrimaryKeyWidget(
             FieldTransformTableItemDialog(
                 field_reference=pk_field.source_field_ref,
             ),
-            FieldNameTableItemDialog(
+            FieldNameTableWidgetItemDialog(
                 field_reference=pk_field.target_field_ref,
                 data_source=self.compare.target_data_source,
                 wildcard_sets=self.compare.wildcard_sets,
@@ -150,13 +174,16 @@ class FieldReferencePairPrimaryKeyWidget(
         ]
 
         # Add row
-        self.add_row()
         row = self.table.rowCount()
+
+        self.table.insertRow(
+            row,
+        )
 
         for column, item in enumerate(items):
 
             self.table.setItem(
-                row - 1,
+                row,
                 column,
                 item,
             )
@@ -166,7 +193,7 @@ class FieldReferencePairPrimaryKeyWidget(
         index: QModelIndex,
     ) -> None:
 
-        item: TableItemDialog = self.table.itemFromIndex(
+        item: TableWidgetItemDialog = self.table.itemFromIndex(
             index,
         )
 
@@ -183,20 +210,12 @@ class FieldReferencePairPrimaryKeyWidget(
         column: int,
     ) -> None:
 
-        item: TableItemDialog = self.table.item(
+        item: TableWidgetItemDialog = self.table.item(
             row,
             column,
         )
 
         item.set_text()
-
-    def add_row(
-        self,
-    ) -> None:
-
-        self.table.insertRow(
-            self.table.rowCount(),
-        )
 
     def delete_current_row(
         self,
@@ -204,12 +223,9 @@ class FieldReferencePairPrimaryKeyWidget(
 
         row = self.table.currentRow()
 
-        item = self.table.item(
-            row,
-            0,
-        )
-
-        # TODO: Check if this event triggers cell_changed. If not, add a generic method to reload objects from table.
+        pk_fields = self.compare.pk_fields
+        del pk_fields[row]
+        self.compare.pk_fields = pk_fields
 
         self.table.removeRow(
             row,

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtCore import Qt
 
 
-class TableItemDialog(
+class TableWidgetItemDialog(
     QTableWidgetItem,
 ):
 

@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
 from ........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
-from .......widgets import TableItemDialog
+from .......widgets import TableWidgetItemDialog
 
 
 class FieldTransformDialog(
@@ -30,7 +30,7 @@ class FieldTransformDialog(
 
 
 class FieldTransformTableItemDialog(
-    TableItemDialog,
+    TableWidgetItemDialog,
 ):
 
     field_reference: FieldReference
@@ -42,7 +42,7 @@ class FieldTransformTableItemDialog(
 
         self.field_reference = field_reference
 
-        TableItemDialog.__init__(
+        TableWidgetItemDialog.__init__(
             self=self,
         )
 
