@@ -19,7 +19,7 @@ class FieldTransformStripWhitespace(
     FieldTransform,
 ):
 
-    extension_name = "Convert to Upper Case"
+    extension_name = "Strip Whitespace"
     data_type = DataType.STRING
 
     def __init__(

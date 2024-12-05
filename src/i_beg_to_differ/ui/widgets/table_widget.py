@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QTableWidget,
     QPushButton,
+    QHeaderView,
     QVBoxLayout,
 )
 
@@ -40,7 +41,13 @@ class TableWidget(
             self,
         )
 
-        self.table.setHorizontalHeaderLabels(columns)
+        self.table.setHorizontalHeaderLabels(
+            columns,
+        )
+
+        self.table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents,
+        )
 
         self.table.verticalHeader().setVisible(
             False,

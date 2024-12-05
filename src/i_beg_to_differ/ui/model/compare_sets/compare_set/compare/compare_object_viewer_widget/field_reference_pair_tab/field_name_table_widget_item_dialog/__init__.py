@@ -1,1 +1,0 @@
-from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog

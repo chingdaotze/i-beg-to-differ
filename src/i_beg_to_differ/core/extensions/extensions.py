@@ -92,3 +92,10 @@ class Extensions[T](
             raise KeyError(
                 f'Extension: {extension_id} has not been registered!',
             )
+
+    @property
+    def collection(
+        self,
+    ) -> Dict[str, Type[T]]:
+
+        return self._collection

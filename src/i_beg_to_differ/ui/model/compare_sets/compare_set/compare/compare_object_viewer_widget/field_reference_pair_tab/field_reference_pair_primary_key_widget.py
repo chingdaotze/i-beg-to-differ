@@ -1,29 +1,23 @@
-from PySide6.QtWidgets import (
-    QWidget,
-    QGridLayout,
-    QTableWidget,
-    QVBoxLayout,
-    QPushButton,
-    QHeaderView,
-)
+from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QModelIndex
 
+from .......widgets import (
+    TableWidget,
+    TableWidgetItemDialog,
+)
 from ........core.compare_sets.compare_set.compare import Compare
 from ........core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairPrimaryKey,
 )
-from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog
-from .field_transform_table_item_dialog import FieldTransformTableItemDialog
-from .......widgets import TableWidgetItemDialog
+from .field_name_table_widget_item import FieldNameTableWidgetItem
+from .field_transform_table_widget_item import FieldTransformTableWidgetItem
 
 
 class FieldReferencePairPrimaryKeyWidget(
-    QWidget,
+    TableWidget,
 ):
 
     compare: Compare
-    layout: QGridLayout
-    table: QTableWidget
 
     def __init__(
         self,
@@ -31,101 +25,29 @@ class FieldReferencePairPrimaryKeyWidget(
         parent: QWidget | None = None,
     ):
 
-        QWidget.__init__(
+        TableWidget.__init__(
             self,
-            parent=parent,
-        )
-
-        self.compare = compare
-
-        self.layout = QGridLayout(
-            self,
-        )
-
-        self.table = QTableWidget(
-            0,
-            4,
-            self,
-        )
-
-        self.table.setHorizontalHeaderLabels(
-            [
+            columns=[
                 'Source',
                 'Source Transforms',
                 'Target',
                 'Target Transforms',
-            ]
+            ],
+            parent=parent,
         )
 
-        self.table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents,
-        )
-
-        self.table.verticalHeader().setVisible(
-            False,
-        )
-
-        self.table.setShowGrid(
-            True,
-        )
+        self.compare = compare
 
         self.table.doubleClicked.connect(
             self.open_dialog,
         )
 
         for pk_field in self.compare.pk_fields:
-            self.add_row(
+            self.insert_table_widget(
                 pk_field=pk_field,
             )
 
-        self.table.cellChanged.connect(
-            self.cell_changed,
-        )
-
-        self.layout.addWidget(
-            self.table,
-            0,
-            0,
-        )
-
-        # Construct buttons
-        button_layout = QVBoxLayout()
-
-        self.add_button = QPushButton(
-            'Add',
-            self,
-        )
-
-        self.delete_button = QPushButton(
-            'Delete',
-            self,
-        )
-
-        self.add_button.clicked.connect(
-            self.add_new_row,
-        )
-
-        self.delete_button.clicked.connect(
-            self.delete_current_row,
-        )
-
-        button_layout.addWidget(
-            self.add_button,
-        )
-
-        button_layout.addWidget(
-            self.delete_button,
-        )
-
-        button_layout.addStretch()
-
-        self.layout.addLayout(
-            button_layout,
-            0,
-            1,
-        )
-
-    def add_new_row(
+    def add_row(
         self,
     ) -> None:
 
@@ -144,31 +66,56 @@ class FieldReferencePairPrimaryKeyWidget(
 
         self.compare.pk_fields = pk_fields
 
-        self.add_row(
+        self.insert_table_widget(
             pk_field=pk_field,
         )
 
-    def add_row(
+    def cell_changed(
+        self,
+        row: int,
+        column: int,
+    ) -> None:
+
+        item: TableWidgetItemDialog = self.table.item(
+            row,
+            column,
+        )
+
+        item.set_text()
+
+    def delete_current_row(
+        self,
+    ) -> None:
+
+        row = self.table.currentRow()
+
+        pk_fields = self.compare.pk_fields
+        del pk_fields[row]
+        self.compare.pk_fields = pk_fields
+
+        self.table.removeRow(
+            row,
+        )
+
+    def insert_table_widget(
         self,
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:
 
         # Assemble row items
         items = [
-            FieldNameTableWidgetItemDialog(
+            FieldNameTableWidgetItem(
                 field_reference=pk_field.source_field_ref,
                 data_source=self.compare.source_data_source,
-                wildcard_sets=self.compare.wildcard_sets,
             ),
-            FieldTransformTableItemDialog(
+            FieldTransformTableWidgetItem(
                 field_reference=pk_field.source_field_ref,
             ),
-            FieldNameTableWidgetItemDialog(
+            FieldNameTableWidgetItem(
                 field_reference=pk_field.target_field_ref,
                 data_source=self.compare.target_data_source,
-                wildcard_sets=self.compare.wildcard_sets,
             ),
-            FieldTransformTableItemDialog(
+            FieldTransformTableWidgetItem(
                 field_reference=pk_field.target_field_ref,
             ),
         ]
@@ -202,31 +149,4 @@ class FieldReferencePairPrimaryKeyWidget(
         self.table.cellChanged.emit(
             index.row(),
             index.column(),
-        )
-
-    def cell_changed(
-        self,
-        row: int,
-        column: int,
-    ) -> None:
-
-        item: TableWidgetItemDialog = self.table.item(
-            row,
-            column,
-        )
-
-        item.set_text()
-
-    def delete_current_row(
-        self,
-    ) -> None:
-
-        row = self.table.currentRow()
-
-        pk_fields = self.compare.pk_fields
-        del pk_fields[row]
-        self.compare.pk_fields = pk_fields
-
-        self.table.removeRow(
-            row,
         )

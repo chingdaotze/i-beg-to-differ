@@ -3,11 +3,10 @@ from .........core.compare_sets.compare_set.compare.field_reference_pair.field_r
 )
 from .........core.data_sources.data_source import DataSource
 from ........widgets import TableWidgetItemDialog
-from .........core.wildcards_sets import WildcardSets
-from .field_name_dialog import FieldNameDialog
+from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog
 
 
-class FieldNameTableWidgetItemDialog(
+class FieldNameTableWidgetItem(
     TableWidgetItemDialog,
 ):
 
@@ -16,16 +15,9 @@ class FieldNameTableWidgetItemDialog(
 
     def __init__(
         self,
-        field_reference: FieldReference | None = None,
+        field_reference: FieldReference,
         data_source: DataSource | None = None,
-        wildcard_sets: WildcardSets | None = None,
     ):
-
-        if field_reference is None:
-            field_reference = FieldReference(
-                field_name='',
-                wildcard_sets=wildcard_sets,
-            )
 
         self.field_reference = field_reference
         self.data_source = data_source
@@ -48,7 +40,7 @@ class FieldNameTableWidgetItemDialog(
         self,
     ) -> None:
 
-        dialog = FieldNameDialog(
+        dialog = FieldNameTableWidgetItemDialog(
             field_reference=self.field_reference,
             data_source=self.data_source,
         )

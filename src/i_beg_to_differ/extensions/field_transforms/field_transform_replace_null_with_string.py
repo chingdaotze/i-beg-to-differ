@@ -46,7 +46,7 @@ class FieldTransformReplaceNullWithString(
         self,
     ) -> str:
 
-        return self.extension_name
+        return f'{self.extension_name}: {self.replacement_value.base_value}'
 
     def transform(
         self,

@@ -10,7 +10,7 @@ from .........core.compare_sets.compare_set.compare.field_reference_pair.field_r
 from .........core.data_sources.data_source import DataSource
 
 
-class FieldNameDialog(
+class FieldNameTableWidgetItemDialog(
     Dialog,
 ):
 

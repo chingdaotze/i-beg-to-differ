@@ -13,8 +13,8 @@ class Dialog(
 
     layout: QGridLayout
 
-    MIN_WIDTH: ClassVar[int]
-    MIN_HEIGHT: ClassVar[int]
+    MIN_WIDTH: ClassVar[int | None] = None
+    MIN_HEIGHT: ClassVar[int | None] = None
 
     def __init__(
         self,
@@ -34,18 +34,21 @@ class Dialog(
             )
 
         # Sizing
-        self.resize(
-            self.MIN_WIDTH,
-            self.MIN_HEIGHT,
-        )
+        if self.MIN_WIDTH is not None and self.MIN_HEIGHT is not None:
+            self.resize(
+                self.MIN_WIDTH,
+                self.MIN_HEIGHT,
+            )
 
-        self.setMinimumWidth(
-            self.MIN_WIDTH,
-        )
+        if self.MIN_WIDTH is not None:
+            self.setMinimumWidth(
+                self.MIN_WIDTH,
+            )
 
-        self.setMinimumHeight(
-            self.MIN_HEIGHT,
-        )
+        if self.MIN_HEIGHT is not None:
+            self.setMinimumHeight(
+                self.MIN_HEIGHT,
+            )
 
         # Layout
         self.layout = QGridLayout()

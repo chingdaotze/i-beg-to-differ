@@ -42,7 +42,7 @@ class FieldTransformReplaceNullWithNumber(
         self,
     ) -> str:
 
-        return self.extension_name
+        return f'{self.extension_name}: {self._replacement_value.base_value}'
 
     @property
     @log_exception
