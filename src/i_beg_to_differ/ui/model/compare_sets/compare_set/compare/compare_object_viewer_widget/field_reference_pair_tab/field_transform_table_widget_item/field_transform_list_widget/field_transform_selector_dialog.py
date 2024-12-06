@@ -74,7 +74,7 @@ class FieldTransformSelectorDialog(
         current_index = self.field_transform_selector_widget.currentIndex()
         field_transform_type = self.extension_name_map[current_index][1]
 
-        if issubclass(type(field_transform_type), CustomPythonExtension):
+        if issubclass(field_transform_type, CustomPythonExtension):
             field_transform = field_transform_type(
                 working_dir_path=self.working_dir_path,
             )
