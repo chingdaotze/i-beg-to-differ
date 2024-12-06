@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QWidget
 
 from ....model_base_object_viewer import ModelBaseObjectViewer
@@ -10,11 +12,13 @@ class ModelCompare(
 ):
 
     current_state: Compare
+    working_dir_path: Path
 
     def __init__(
         self,
         object_name: str,
         compare: Compare,
+        working_dir_path: Path,
     ):
 
         ModelBaseObjectViewer.__init__(
@@ -23,6 +27,8 @@ class ModelCompare(
             object_name=object_name,
         )
 
+        self.working_dir_path = working_dir_path
+
     @property
     def object_viewer_widget(
         self,
@@ -30,4 +36,5 @@ class ModelCompare(
 
         return CompareObjectViewerWidget(
             compare=self.current_state,
+            working_dir_path=self.working_dir_path,
         )

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QModelIndex
 
@@ -18,10 +20,12 @@ class FieldReferencePairPrimaryKeyWidget(
 ):
 
     compare: Compare
+    working_dir_path: Path
 
     def __init__(
         self,
         compare: Compare,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -37,6 +41,7 @@ class FieldReferencePairPrimaryKeyWidget(
         )
 
         self.compare = compare
+        self.working_dir_path = working_dir_path
 
         self.table.doubleClicked.connect(
             self.open_dialog,
@@ -110,6 +115,7 @@ class FieldReferencePairPrimaryKeyWidget(
             ),
             FieldTransformTableWidgetItem(
                 field_reference=pk_field.source_field_ref,
+                working_dir_path=self.working_dir_path,
             ),
             FieldNameTableWidgetItem(
                 field_reference=pk_field.target_field_ref,
@@ -117,6 +123,7 @@ class FieldReferencePairPrimaryKeyWidget(
             ),
             FieldTransformTableWidgetItem(
                 field_reference=pk_field.target_field_ref,
+                working_dir_path=self.working_dir_path,
             ),
         ]
 

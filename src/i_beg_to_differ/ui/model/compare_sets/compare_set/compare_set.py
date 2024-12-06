@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import (
     QWidget,
     QTabWidget,
@@ -19,6 +21,7 @@ class ModelCompareSet(
         self,
         object_name: str,
         compare_set: CompareSet,
+        working_dir_path: Path,
     ):
 
         ModelBaseObjectViewer.__init__(
@@ -37,6 +40,7 @@ class ModelCompareSet(
                 ModelCompare(
                     object_name=name,
                     compare=compare,
+                    working_dir_path=working_dir_path,
                 )
             )
 

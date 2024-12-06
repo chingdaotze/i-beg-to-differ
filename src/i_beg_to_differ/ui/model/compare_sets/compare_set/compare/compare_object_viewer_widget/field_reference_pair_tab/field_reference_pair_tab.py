@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import (
     QWidget,
     QGridLayout,
@@ -21,6 +23,7 @@ class FieldReferencePairTab(
     def __init__(
         self,
         compare: Compare,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -42,6 +45,7 @@ class FieldReferencePairTab(
         self.field_reference_pair_primary_key_widget = (
             FieldReferencePairPrimaryKeyWidget(
                 compare=compare,
+                working_dir_path=working_dir_path,
             )
         )
 

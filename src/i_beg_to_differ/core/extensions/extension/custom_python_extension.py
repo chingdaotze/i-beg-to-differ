@@ -54,7 +54,7 @@ class CustomPythonExtension(
         else:
             self.py_file_name = py_file_name
 
-        py_file_path = self.working_dir_path / py_file_name
+        py_file_path = self.working_dir_path / self.py_file_name
 
         if isinstance(py_file_path, Path):
             if not py_file_path.exists():

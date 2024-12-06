@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QWidget
 
 from ........widgets import Dialog
@@ -20,6 +22,7 @@ class FieldTransformTableWidgetItemDialog(
     def __init__(
         self,
         field_reference: FieldReference,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -33,6 +36,7 @@ class FieldTransformTableWidgetItemDialog(
 
         self.field_transform_list_widget = FieldTransformListWidget(
             field_reference=self.field_reference,
+            working_dir_path=working_dir_path,
             parent=self,
         )
 

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
@@ -12,13 +14,16 @@ class FieldTransformTableWidgetItem(
 ):
 
     field_reference: FieldReference
+    working_dir_path: Path
 
     def __init__(
         self,
         field_reference: FieldReference,
+        working_dir_path: Path,
     ):
 
         self.field_reference = field_reference
+        self.working_dir_path = working_dir_path
 
         TableWidgetItemDialog.__init__(
             self=self,
@@ -38,6 +43,7 @@ class FieldTransformTableWidgetItem(
 
         dialog = FieldTransformTableWidgetItemDialog(
             field_reference=self.field_reference,
+            working_dir_path=self.working_dir_path,
         )
 
         dialog.exec()

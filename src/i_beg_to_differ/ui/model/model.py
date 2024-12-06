@@ -41,6 +41,7 @@ class Model(
         self.appendRow(
             ModelCompareSets(
                 compare_sets=self.ib2d_file.compare_sets,
+                working_dir_path=self.ib2d_file.working_dir_path,
             )
         )
 

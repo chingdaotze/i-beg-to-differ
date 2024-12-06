@@ -1,6 +1,8 @@
+from pathlib import Path
 from typing import (
     List,
     Tuple,
+    Type,
 )
 
 from PySide6.QtWidgets import QWidget, QComboBox
@@ -12,6 +14,9 @@ from ..........core.compare_sets.compare_set.compare.field_reference_pair.field_
 from ..........core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
+from ..........core.extensions.extension.custom_python_extension import (
+    CustomPythonExtension,
+)
 
 
 class FieldTransformSelectorDialog(
@@ -19,12 +24,14 @@ class FieldTransformSelectorDialog(
 ):
 
     field_reference: FieldReference
+    working_dir_path: Path
     field_transform_selector_widget: QComboBox
-    extension_name_map: List[Tuple[str, FieldTransform]]
+    extension_name_map: List[Tuple[str, Type[FieldTransform]]]
 
     def __init__(
         self,
         field_reference: FieldReference,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -35,6 +42,7 @@ class FieldTransformSelectorDialog(
         )
 
         self.field_reference = field_reference
+        self.working_dir_path = working_dir_path
 
         self.extension_name_map = [
             (field_transform.extension_name, field_transform)
@@ -64,6 +72,14 @@ class FieldTransformSelectorDialog(
     ) -> FieldTransform:
 
         current_index = self.field_transform_selector_widget.currentIndex()
-        field_transform = self.extension_name_map[current_index][1]
+        field_transform_type = self.extension_name_map[current_index][1]
+
+        if issubclass(type(field_transform_type), CustomPythonExtension):
+            field_transform = field_transform_type(
+                working_dir_path=self.working_dir_path,
+            )
+
+        else:
+            field_transform = field_transform_type()
 
         return field_transform

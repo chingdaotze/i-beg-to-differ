@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import (
     QTabWidget,
     QWidget,
@@ -20,6 +22,7 @@ class CompareObjectViewerWidget(
     def __init__(
         self,
         compare: Compare,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -48,6 +51,7 @@ class CompareObjectViewerWidget(
 
         self.field_reference_pair_tab = FieldReferencePairTab(
             compare=compare,
+            working_dir_path=working_dir_path,
         )
 
         self.addTab(

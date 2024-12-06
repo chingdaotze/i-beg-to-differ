@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from ..model_base import ModelBase
 from ....core.compare_sets import CompareSets
 from .compare_set import ModelCompareSet
@@ -10,6 +12,7 @@ class ModelCompareSets(
     def __init__(
         self,
         compare_sets: CompareSets,
+        working_dir_path: Path,
     ):
 
         ModelBase.__init__(
@@ -23,5 +26,6 @@ class ModelCompareSets(
                 ModelCompareSet(
                     object_name=name,
                     compare_set=compare_set,
+                    working_dir_path=working_dir_path,
                 )
             )

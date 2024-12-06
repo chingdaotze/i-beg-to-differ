@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QModelIndex
 
@@ -17,10 +19,12 @@ class FieldTransformListWidget(
 ):
 
     field_reference: FieldReference
+    working_dir_path: Path
 
     def __init__(
         self,
         field_reference: FieldReference,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
@@ -33,6 +37,7 @@ class FieldTransformListWidget(
         )
 
         self.field_reference = field_reference
+        self.working_dir_path = working_dir_path
 
         self.table.doubleClicked.connect(
             self.open_dialog,
@@ -50,6 +55,7 @@ class FieldTransformListWidget(
 
         field_transform_selector_dialog = FieldTransformSelectorDialog(
             field_reference=self.field_reference,
+            working_dir_path=self.working_dir_path,
             parent=self,
         )
 
