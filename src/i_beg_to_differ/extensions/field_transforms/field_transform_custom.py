@@ -4,7 +4,6 @@ from typing import (
     Self,
 )
 from zipfile import ZipFile
-from copy import copy
 
 from pandas import Series
 
@@ -12,13 +11,16 @@ from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_
     FieldTransform,
 )
 from i_beg_to_differ.core.extensions.extension import CustomPythonExtension
+from i_beg_to_differ.extensions.field_transforms.field_transform_custom_prototype import (
+    transform,
+)
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from i_beg_to_differ.core.base import log_exception
 
 
 class FieldTransformCustom(
-    FieldTransform,
     CustomPythonExtension,
+    FieldTransform,
 ):
 
     extension_name = 'Custom Python Transform Script'
@@ -30,16 +32,16 @@ class FieldTransformCustom(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        FieldTransform.__init__(
-            self=self,
-        )
-
         CustomPythonExtension.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_func=self.transform,
+            extension_func_prototype=transform,
             py_file_name=py_file_name,
             wildcard_sets=wildcard_sets,
+        )
+
+        FieldTransform.__init__(
+            self=self,
         )
 
     def __str__(
@@ -64,7 +66,7 @@ class FieldTransformCustom(
         return extension_func(
             values=values,
             wildcards=(
-                copy(self.wildcard_sets.active_wildcard_set.replacement_values)
+                self.wildcard_sets.active_wildcard_set.replacement_values
                 if isinstance(self.wildcard_sets, WildcardSets)
                 else {}
             ),

@@ -16,8 +16,8 @@ class FieldTransformTableWidgetItemDialog(
     field_reference: FieldReference
     field_transform_list_widget: FieldTransformListWidget
 
-    MIN_WIDTH = 300
-    # MIN_HEIGHT = 65
+    MIN_WIDTH = 600
+    MIN_HEIGHT = 480
 
     def __init__(
         self,

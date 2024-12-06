@@ -12,13 +12,16 @@ from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.
     CompareRule,
 )
 from i_beg_to_differ.core.extensions.extension import CustomPythonExtension
+from i_beg_to_differ.extensions.compare_rules.compare_rule_custom_prototype import (
+    compare,
+)
 from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
 class CompareRuleCustom(
-    CompareRule,
     CustomPythonExtension,
+    CompareRule,
 ):
 
     extension_name = 'Custom Python Compare Script'
@@ -30,23 +33,21 @@ class CompareRuleCustom(
         wildcard_sets: WildcardSets | None = None,
     ):
 
-        CompareRule.__init__(
-            self=self,
-        )
-
         CustomPythonExtension.__init__(
             self=self,
             working_dir_path=working_dir_path,
-            extension_func=self.compare,
+            extension_func_prototype=compare,
             py_file_name=py_file_name,
             wildcard_sets=wildcard_sets,
+        )
+
+        CompareRule.__init__(
+            self=self,
         )
 
     def __str__(
         self,
     ) -> str:
-
-        # TODO: Add file hash in addition to file name.
 
         return f'{self.extension_name}: {self.py_file_name}'
 
@@ -71,7 +72,7 @@ class CompareRuleCustom(
             source_field=source_field,
             target_field=target_field,
             wildcards=(
-                copy(self.wildcard_sets.active_wildcard_set.replacement_values)
+                self.wildcard_sets.active_wildcard_set.replacement_values
                 if isinstance(self.wildcard_sets, WildcardSets)
                 else {}
             ),

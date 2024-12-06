@@ -1,16 +1,14 @@
 from abc import ABC
 from pathlib import Path
-from typing import (
-    Callable,
-    Dict,
-)
+from typing import Callable
 from uuid import uuid4
 from inspect import (
     Signature,
     signature,
-    Parameter,
+    getfile,
 )
 from zipfile import ZipFile
+from shutil import copyfile
 from importlib.util import (
     spec_from_file_location,
     module_from_spec,
@@ -18,53 +16,67 @@ from importlib.util import (
 from sys import modules
 from subprocess import call
 
+from PySide6.QtWidgets import (
+    QWidget,
+    QPushButton,
+)
+
+from .extension import Extension
 from ...wildcards_sets import WildcardSets
+from ....ui.widgets import Widget
 
 
 class CustomPythonExtension(
+    Extension,
     ABC,
 ):
 
     working_dir_path: Path
     py_file_name: str
     py_file_path: Path
-    extension_func: Callable
+    extension_func_prototype: Callable
+    extension_func_prototype_path: Path
     wildcard_sets: WildcardSets | None
 
     def __init__(
         self,
         working_dir_path: Path,
-        extension_func: Callable,
+        extension_func_prototype: Callable,
         py_file_name: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 
+        Extension.__init__(
+            self=self,
+        )
+
         self.working_dir_path = working_dir_path
-        self.extension_func = extension_func
+        self.extension_func_prototype = extension_func_prototype
+        self.extension_func_prototype_path = Path(
+            getfile(
+                self.extension_func_prototype,
+            ),
+        )
         self.wildcard_sets = wildcard_sets
 
         if py_file_name is None:
-            self.py_file_name = str(
-                uuid4(),
-            ).replace(
-                '-',
-                '_',
+            self.py_file_name = (
+                str(
+                    uuid4(),
+                ).replace(
+                    '-',
+                    '_',
+                )
+                + '.py'
             )
 
         else:
             self.py_file_name = py_file_name
 
-        py_file_path = self.working_dir_path / self.py_file_name
+        self.py_file_path = self.working_dir_path / self.py_file_name
 
-        if isinstance(py_file_path, Path):
-            if not py_file_path.exists():
-                self.py_file_path = self.create_python_file()
-
-            else:
-                self.py_file_path = py_file_path
-
-        else:
-            self.py_file_path = self.create_python_file()
+        if not self.py_file_path.exists():
+            self.create_python_file()
 
     @property
     def extension_func_name(
@@ -76,7 +88,7 @@ class CustomPythonExtension(
         :return:
         """
 
-        return self.extension_func.__name__
+        return self.extension_func_prototype.__name__
 
     @property
     def extension_func_signature(
@@ -89,38 +101,10 @@ class CustomPythonExtension(
         """
 
         extension_func_signature = signature(
-            obj=self.extension_func,
-        )
-
-        parameters = {
-            parameter_name: parameter
-            for parameter_name, parameter in extension_func_signature.parameters.items()
-        }
-
-        parameters['wildcards'] = Parameter(
-            name='wildcards',
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            annotation=Dict[str, str],
-        )
-
-        extension_func_signature = Signature(
-            parameters=[parameter for parameter in parameters.values()],
-            return_annotation=extension_func_signature.return_annotation,
+            obj=self.extension_func_prototype,
         )
 
         return extension_func_signature
-
-    @property
-    def extension_func_docstring(
-        self,
-    ) -> Signature:
-        """
-        Python function docstring that contains main extension logic. Used to build a new Python file.
-
-        :return:
-        """
-
-        return self.extension_func.__doc__
 
     def inflate_py_file(
         self,
@@ -151,19 +135,23 @@ class CustomPythonExtension(
         :return:
         """
 
-        # TODO: Deflate file
+        ib2d_file.write(
+            filename=self.py_file_path,
+        )
 
     def create_python_file(
         self,
-    ) -> Path:
+    ) -> None:
         """
         Creates a new Python file with an appropriate Python function signature.
 
         :return:
         """
 
-        # TODO: Create a Python file with the appropriate signature
-        pass
+        copyfile(
+            src=self.extension_func_prototype_path,
+            dst=self.py_file_path,
+        )
 
     def edit_python_file(
         self,
@@ -182,7 +170,7 @@ class CustomPythonExtension(
             shell=True,
         )
 
-        self.get_extension_func()
+        self.get_extension_func()  # Use this to validate the Python file
 
     def validate_extension_func(
         self,
@@ -237,3 +225,26 @@ class CustomPythonExtension(
         )
 
         return extension_func
+
+    @property
+    def object_viewer_widget(
+        self,
+    ) -> QWidget:
+
+        # Create button
+        button = QPushButton(
+            'Edit Python File',
+        )
+
+        button.clicked.connect(
+            self.edit_python_file,
+        )
+
+        # Create widget
+        widget = Widget()
+
+        widget.layout.addWidget(
+            button,
+        )
+
+        return widget

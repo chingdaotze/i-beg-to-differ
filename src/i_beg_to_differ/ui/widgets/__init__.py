@@ -9,5 +9,6 @@ from .line_edit import LineEdit
 from .table_widget import TableWidget
 from .table_widget_item_dialog import TableWidgetItemDialog
 from .text_widget import TextWidget
+from .widget import Widget
 from .wildcard_input_widget import WildcardInputWidget
 from .wildcard_input_widget_preview import WildcardInputWidgetPreview
