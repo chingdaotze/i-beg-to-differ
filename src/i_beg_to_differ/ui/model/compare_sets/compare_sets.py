@@ -16,7 +16,7 @@ class ModelCompareSets(
     ModelBase,
 ):
 
-    compare_sets: CompareSets
+    current_state: CompareSets
     working_dir_path: Path
 
     def __init__(
@@ -30,10 +30,9 @@ class ModelCompareSets(
             current_state=compare_sets,
         )
 
-        self.compare_sets = compare_sets
         self.working_dir_path = working_dir_path
 
-        for name, compare_set in self.compare_sets.compare_sets.items():
+        for name, compare_set in self.current_state.compare_sets.items():
 
             self.appendRow(
                 ModelCompareSet(
@@ -47,6 +46,7 @@ class ModelCompareSets(
         self,
     ) -> None:
 
+        # Create / show Dialog
         dialog = Dialog(
             title='New Compare Set',
         )
@@ -63,11 +63,12 @@ class ModelCompareSets(
 
         dialog.exec()
 
+        # Create CompareSet object and update model
         compare_set_name = input_widget.text()
 
         compare_set = CompareSet()
 
-        self.compare_sets[compare_set_name] = compare_set
+        self.current_state[compare_set_name] = compare_set
 
         self.appendRow(
             ModelCompareSet(
