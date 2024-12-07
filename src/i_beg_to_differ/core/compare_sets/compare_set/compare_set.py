@@ -41,7 +41,14 @@ class CompareSet(
             self=self,
         )
 
+        if description is None:
+            description = ''
+
         self.description = description
+
+        if compares is None:
+            compares = {}
+
         self.compares = compares
 
     def __str__(

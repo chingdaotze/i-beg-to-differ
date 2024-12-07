@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QTreeView
 from PySide6.QtCore import QModelIndex
+from PySide6.QtGui import QCursor
 
 from .....model import Model
 from .....model.model_base import ModelBase
@@ -72,4 +73,19 @@ class ObjectExplorer(
 
         self.open_in_object_viewer(
             item=item,
+        )
+
+    def contextMenuEvent(
+        self,
+        arg__1,
+    ):
+
+        index = self.currentIndex()
+
+        item = self.model().itemFromIndex(
+            index,
+        )
+
+        item.context_menu.exec_(
+            QCursor.pos(),
         )

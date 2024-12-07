@@ -1,8 +1,10 @@
 from __future__ import annotations
 from typing import Any
 from functools import cached_property
+from abc import abstractmethod
 
 from PySide6.QtGui import QStandardItem
+from PySide6.QtWidgets import QMenu
 
 from ...core.base import Base
 
@@ -131,3 +133,12 @@ class ModelBase(
             return str(
                 self.current_state,
             )
+
+    @property
+    @abstractmethod
+    def context_menu(
+        self,
+    ) -> QMenu:
+        """
+        Generates a menu, defined by the object.
+        """

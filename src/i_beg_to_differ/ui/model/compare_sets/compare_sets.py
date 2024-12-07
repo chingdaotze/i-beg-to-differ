@@ -1,13 +1,23 @@
 from pathlib import Path
 
+from PySide6.QtWidgets import QMenu
+
 from ..model_base import ModelBase
 from ....core.compare_sets import CompareSets
+from ....core.compare_sets.compare_set import CompareSet
 from .compare_set import ModelCompareSet
+from ...widgets import (
+    Dialog,
+    LineEdit,
+)
 
 
 class ModelCompareSets(
     ModelBase,
 ):
+
+    compare_sets: CompareSets
+    working_dir_path: Path
 
     def __init__(
         self,
@@ -20,7 +30,10 @@ class ModelCompareSets(
             current_state=compare_sets,
         )
 
-        for name, compare_set in compare_sets.compare_sets.items():
+        self.compare_sets = compare_sets
+        self.working_dir_path = working_dir_path
+
+        for name, compare_set in self.compare_sets.compare_sets.items():
 
             self.appendRow(
                 ModelCompareSet(
@@ -29,3 +42,51 @@ class ModelCompareSets(
                     working_dir_path=working_dir_path,
                 )
             )
+
+    def add_compare_set(
+        self,
+    ) -> None:
+
+        dialog = Dialog(
+            title='New Compare Set',
+        )
+
+        input_widget = LineEdit(
+            parent=dialog,
+        )
+
+        dialog.layout.addWidget(
+            input_widget,
+            0,
+            0,
+        )
+
+        dialog.exec()
+
+        compare_set_name = input_widget.text()
+
+        compare_set = CompareSet()
+
+        self.compare_sets[compare_set_name] = compare_set
+
+        self.appendRow(
+            ModelCompareSet(
+                object_name=compare_set_name,
+                compare_set=compare_set,
+                working_dir_path=self.working_dir_path,
+            )
+        )
+
+    @property
+    def context_menu(
+        self,
+    ) -> QMenu:
+
+        menu = QMenu()
+
+        menu.addAction(
+            'Add Compare Set',
+            self.add_compare_set,
+        )
+
+        return menu
