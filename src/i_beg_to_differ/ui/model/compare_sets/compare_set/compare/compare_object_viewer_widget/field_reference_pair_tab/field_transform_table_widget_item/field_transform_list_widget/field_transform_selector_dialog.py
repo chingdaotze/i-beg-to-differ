@@ -5,7 +5,10 @@ from typing import (
     Type,
 )
 
-from PySide6.QtWidgets import QWidget, QComboBox
+from PySide6.QtWidgets import (
+    QWidget,
+    QComboBox,
+)
 
 from .........widgets import Dialog
 from ..........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
@@ -73,6 +76,8 @@ class FieldTransformSelectorDialog(
 
         current_index = self.field_transform_selector_widget.currentIndex()
         field_transform_type = self.extension_name_map[current_index][1]
+
+        # FIXME: Some classes require wildcard_sets. Figure out how to pass those in.
 
         if issubclass(field_transform_type, CustomPythonExtension):
             field_transform = field_transform_type(

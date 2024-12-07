@@ -33,7 +33,9 @@ class FieldTransformReplaceNullWithNumber(
         )
 
         self._replacement_value = WildcardInputField(
-            base_value=str(replacement_value),
+            base_value=str(
+                replacement_value,
+            ),
             wildcard_sets=wildcard_sets,
             title='Replacement Value',
         )

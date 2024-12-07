@@ -48,7 +48,7 @@ class FieldReferencePairPrimaryKeyWidget(
         )
 
         for pk_field in self.compare.pk_fields:
-            self.insert_table_widget(
+            self.insert_table_widgets(
                 pk_field=pk_field,
             )
 
@@ -71,7 +71,7 @@ class FieldReferencePairPrimaryKeyWidget(
 
         self.compare.pk_fields = pk_fields
 
-        self.insert_table_widget(
+        self.insert_table_widgets(
             pk_field=pk_field,
         )
 
@@ -102,7 +102,7 @@ class FieldReferencePairPrimaryKeyWidget(
             row,
         )
 
-    def insert_table_widget(
+    def insert_table_widgets(
         self,
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:

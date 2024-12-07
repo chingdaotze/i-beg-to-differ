@@ -18,6 +18,7 @@ class TableWidget(
 
     columns: List[str]
     table: QTableWidget
+    button_layout: QVBoxLayout
     add_button: QPushButton
     delete_button: QPushButton
 
@@ -68,7 +69,7 @@ class TableWidget(
         )
 
         # Construct buttons
-        button_layout = QVBoxLayout()
+        self.button_layout = QVBoxLayout()
 
         self.add_button = QPushButton(
             'Add',
@@ -88,18 +89,18 @@ class TableWidget(
             self.delete_current_row,
         )
 
-        button_layout.addWidget(
+        self.button_layout.addWidget(
             self.add_button,
         )
 
-        button_layout.addWidget(
+        self.button_layout.addWidget(
             self.delete_button,
         )
 
-        button_layout.addStretch()
+        self.button_layout.addStretch()
 
         self.layout.addLayout(
-            button_layout,
+            self.button_layout,
             0,
             1,
         )

@@ -1,0 +1,1 @@
+from .compare_rule_table_widget_item import CompareRuleTableWidgetItem

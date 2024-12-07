@@ -29,7 +29,7 @@ class CompareRuleCustom(
     def __init__(
         self,
         working_dir_path: Path,
-        py_file_name: str | Path | None,
+        py_file_name: str | Path | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
 

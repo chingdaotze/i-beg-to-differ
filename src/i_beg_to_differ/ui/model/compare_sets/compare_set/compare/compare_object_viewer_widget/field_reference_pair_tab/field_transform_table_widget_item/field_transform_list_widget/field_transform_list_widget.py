@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import (
+    QWidget,
+    QPushButton,
+)
 from PySide6.QtCore import QModelIndex
 
 from .........widgets import TableWidget
@@ -39,6 +42,7 @@ class FieldTransformListWidget(
         self.field_reference = field_reference
         self.working_dir_path = working_dir_path
 
+        # Build table
         self.table.doubleClicked.connect(
             self.open_dialog,
         )
@@ -47,6 +51,20 @@ class FieldTransformListWidget(
             self.insert_table_widget(
                 field_transform=field_transform,
             )
+
+        # Build edit button
+        edit_button = QPushButton(
+            'Edit',
+        )
+
+        edit_button.clicked.connect(
+            self.click_edit_button,
+        )
+
+        self.button_layout.insertWidget(
+            1,
+            edit_button,
+        )
 
     def add_row(
         self,
@@ -118,6 +136,15 @@ class FieldTransformListWidget(
                 column,
                 item,
             )
+
+    def click_edit_button(
+        self,
+    ) -> None:
+        index = self.table.currentIndex()
+
+        self.open_dialog(
+            index=index,
+        )
 
     def open_dialog(
         self,

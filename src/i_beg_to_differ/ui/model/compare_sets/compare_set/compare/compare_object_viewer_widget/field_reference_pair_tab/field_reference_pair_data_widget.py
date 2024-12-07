@@ -1,210 +1,98 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import (
     QWidget,
-    QGridLayout,
-    QTableWidget,
-    QVBoxLayout,
     QPushButton,
-    QHeaderView,
-    QLabel,
 )
+from PySide6.QtCore import QModelIndex
 
+from .......widgets import (
+    TableWidget,
+    TableWidgetItemDialog,
+)
 from ........core.compare_sets.compare_set.compare import Compare
 from ........core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairData,
 )
-from .......widgets import WildcardInputWidget
+from .field_name_table_widget_item import FieldNameTableWidgetItem
+from .field_transform_table_widget_item import FieldTransformTableWidgetItem
+from .compare_rule_table_widget_item import CompareRuleTableWidgetItem
 
 
 class FieldReferencePairDataWidget(
-    QWidget,
+    TableWidget,
 ):
 
     compare: Compare
-    layout: QGridLayout
-    table: QTableWidget
+    working_dir_path: Path
 
     def __init__(
         self,
         compare: Compare,
+        working_dir_path: Path,
         parent: QWidget | None = None,
     ):
 
-        QWidget.__init__(
+        TableWidget.__init__(
             self,
-            parent=parent,
-        )
-
-        self.compare = compare
-
-        self.layout = QGridLayout(
-            self,
-        )
-
-        self.table = QTableWidget(
-            0,
-            5,
-            self,
-        )
-
-        self.table.setHorizontalHeaderLabels(
-            [
+            columns=[
                 'Source',
                 'Source Transforms',
                 'Target',
                 'Target Transforms',
                 'Compare Rule',
-            ]
+            ],
+            parent=parent,
         )
 
-        self.table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents,
-        )
+        self.compare = compare
+        self.working_dir_path = working_dir_path
 
-        self.table.verticalHeader().setVisible(
-            False,
-        )
-
-        self.table.setShowGrid(
-            True,
+        self.table.doubleClicked.connect(
+            self.open_dialog,
         )
 
         for dt_field in self.compare.dt_fields:
-            self.append_row(
+            self.insert_table_widgets(
                 dt_field=dt_field,
             )
 
-        self.table.cellChanged.connect(
-            self.cell_changed,
-        )
-
-        self.layout.addWidget(
-            self.table,
-            0,
-            0,
-        )
-
         # Construct buttons
-        button_layout = QVBoxLayout()
-
-        self.add_button = QPushButton(
-            'Add',
-            self,
-        )
-
-        self.delete_button = QPushButton(
-            'Delete',
-            self,
-        )
-
         self.auto_match_button = QPushButton(
             'Auto-Match Fields',
             self,
-        )
-
-        self.add_button.clicked.connect(
-            self.add_row,
-        )
-
-        self.delete_button.clicked.connect(
-            self.delete_current_row,
         )
 
         self.auto_match_button.clicked.connect(
             self.auto_match_rows,
         )
 
-        button_layout.addWidget(
-            self.add_button,
-        )
-
-        button_layout.addWidget(
-            self.delete_button,
-        )
-
-        button_layout.addWidget(
+        self.button_layout.insertWidget(
+            2,
             self.auto_match_button,
-        )
-
-        button_layout.addStretch()
-
-        self.layout.addLayout(
-            button_layout,
-            0,
-            1,
-        )
-
-    def append_row(
-        self,
-        dt_field: FieldReferencePairData,
-    ) -> None:
-        # Assemble row widgets
-        source_widget = WildcardInputWidget(
-            wildcard_field=dt_field.source_field_ref.field_name,
-        )
-
-        source_widget.input_widget.setFrame(
-            False,
-        )
-
-        target_widget = WildcardInputWidget(
-            wildcard_field=dt_field.target_field_ref.field_name,
-        )
-
-        target_widget.input_widget.setFrame(
-            False,
-        )
-
-        row_widgets = [
-            source_widget,
-            QLabel(
-                str(
-                    dt_field.source_field_ref.transforms,
-                )
-            ),
-            target_widget,
-            QLabel(
-                str(
-                    dt_field.target_field_ref.transforms,
-                )
-            ),
-            QLabel(
-                str(
-                    dt_field.compare_rule,
-                )
-            ),
-        ]
-
-        # Add row
-        self.add_row()
-        row = self.table.rowCount()
-
-        for column, row_widget in enumerate(row_widgets):
-
-            self.table.setCellWidget(
-                row - 1,
-                column,
-                row_widget,
-            )
-
-    def cell_changed(
-        self,
-        row: int,
-        column: int,
-    ) -> None:
-
-        # TODO: Rebuild dt_fields from widgets
-
-        item = self.table.item(
-            row,
-            0,
         )
 
     def add_row(
         self,
     ) -> None:
 
-        self.table.insertRow(
-            self.table.rowCount(),
+        # Add new data field pair
+        dt_fields = self.compare.dt_fields
+
+        dt_field = FieldReferencePairData(
+            source_field_name='',
+            target_field_name='',
+            wildcard_sets=self.compare.wildcard_sets,
+        )
+
+        dt_fields.append(
+            dt_field,
+        )
+
+        self.compare.dt_fields = dt_fields
+
+        self.insert_table_widgets(
+            dt_field=dt_field,
         )
 
     def delete_current_row(
@@ -213,16 +101,70 @@ class FieldReferencePairDataWidget(
 
         row = self.table.currentRow()
 
-        item = self.table.item(
-            row,
-            0,
-        )
-
-        # TODO: Check if this event triggers cell_changed. If not, add a generic method to reload objects from table.
+        dt_fields = self.compare.dt_fields
+        del dt_fields[row]
+        self.compare.dt_fields = dt_fields
 
         self.table.removeRow(
             row,
         )
+
+    def insert_table_widgets(
+        self,
+        dt_field: FieldReferencePairData,
+    ) -> None:
+
+        # Assemble row items
+        items = [
+            FieldNameTableWidgetItem(
+                field_reference=dt_field.source_field_ref,
+                data_source=self.compare.source_data_source,
+            ),
+            FieldTransformTableWidgetItem(
+                field_reference=dt_field.source_field_ref,
+                working_dir_path=self.working_dir_path,
+            ),
+            FieldNameTableWidgetItem(
+                field_reference=dt_field.target_field_ref,
+                data_source=self.compare.target_data_source,
+            ),
+            FieldTransformTableWidgetItem(
+                field_reference=dt_field.target_field_ref,
+                working_dir_path=self.working_dir_path,
+            ),
+            CompareRuleTableWidgetItem(
+                field_reference_pair=dt_field,
+                working_dir_path=self.working_dir_path,
+            ),
+        ]
+
+        # Add row
+        row = self.table.rowCount()
+
+        self.table.insertRow(
+            row,
+        )
+
+        for column, item in enumerate(items):
+
+            self.table.setItem(
+                row,
+                column,
+                item,
+            )
+
+    def cell_changed(
+        self,
+        row: int,
+        column: int,
+    ) -> None:
+
+        item: TableWidgetItemDialog = self.table.item(
+            row,
+            column,
+        )
+
+        item.set_text()
 
     def auto_match_rows(
         self,
@@ -235,6 +177,22 @@ class FieldReferencePairDataWidget(
         self.compare.dt_fields = self.compare.auto_match_dt_fields
 
         for dt_field in self.compare.dt_fields:
-            self.append_row(
+            self.insert_table_widgets(
                 dt_field=dt_field,
             )
+
+    def open_dialog(
+        self,
+        index: QModelIndex,
+    ) -> None:
+
+        item: TableWidgetItemDialog = self.table.itemFromIndex(
+            index,
+        )
+
+        item.open_dialog()
+
+        self.table.cellChanged.emit(
+            index.row(),
+            index.column(),
+        )

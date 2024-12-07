@@ -21,7 +21,7 @@ class FieldReferencePairData(
     Pair of primary key references for aligning data fields.
     """
 
-    _compare_rule_extensions: ClassVar[CompareRuleExtensions] = CompareRuleExtensions()
+    compare_rule_extensions: ClassVar[CompareRuleExtensions] = CompareRuleExtensions()
 
     def __init__(
         self,
@@ -43,7 +43,7 @@ class FieldReferencePairData(
         )
 
         if compare_rule is None:
-            self.compare_rule = self._compare_rule_extensions['compare_rule_equals']()
+            self.compare_rule = self.compare_rule_extensions['compare_rule_equals']()
 
         else:
             self.compare_rule = compare_rule
@@ -73,7 +73,7 @@ class FieldReferencePairData(
                 wildcard_sets=wildcard_sets,
             ),
             wildcard_sets=wildcard_sets,
-            compare_rule=cls._compare_rule_extensions[
+            compare_rule=cls.compare_rule_extensions[
                 instance_data['compare_rule']['extension_id']
             ].deserialize(
                 instance_data=instance_data['compare_rule'],

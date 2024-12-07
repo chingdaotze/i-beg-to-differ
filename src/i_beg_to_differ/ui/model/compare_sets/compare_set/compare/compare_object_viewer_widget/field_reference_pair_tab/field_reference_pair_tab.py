@@ -67,6 +67,7 @@ class FieldReferencePairTab(
 
         self.field_reference_pair_data_widget = FieldReferencePairDataWidget(
             compare=compare,
+            working_dir_path=working_dir_path,
         )
 
         data_field_group_box.layout.addWidget(
