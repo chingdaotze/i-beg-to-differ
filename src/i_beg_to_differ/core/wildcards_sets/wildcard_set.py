@@ -16,6 +16,11 @@ class WildcardSet(
     Collection of wildcards, used to replace values.
     """
 
+    name: str
+    """
+    Unique name for this Wildcard Set.
+    """
+
     description: str | None
     """
     Human-readable description of this Wildcard Set.
@@ -35,12 +40,18 @@ class WildcardSet(
 
     def __init__(
         self,
+        name: str,
         description: str | None = None,
         user_replacement_values: Dict[str, str] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
+
+        self.name = name
+
+        if description is None:
+            description = ''
 
         self.description = description
 
@@ -56,9 +67,7 @@ class WildcardSet(
         self,
     ) -> str:
 
-        return str(
-            self.replacement_values,
-        )
+        return self.name
 
     @property
     @log_exception
@@ -126,6 +135,7 @@ class WildcardSet(
     ) -> Self:
 
         return WildcardSet(
+            name=instance_data['name'],
             description=instance_data['description'],
             user_replacement_values=instance_data['replacement_values'],
         )

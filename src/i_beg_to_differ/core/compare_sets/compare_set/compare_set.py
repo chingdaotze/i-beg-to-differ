@@ -1,4 +1,5 @@
 from typing import (
+    List,
     Dict,
     Self,
 )
@@ -6,10 +7,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ...ib2d_file.ib2d_file_element import IB2DFileElement
-from ...base import (
-    log_exception,
-    log_runtime,
-)
+from ...base import log_exception
 from .compare import Compare
 from ...wildcards_sets import WildcardSets
 from ...data_sources import DataSources
@@ -22,24 +20,29 @@ class CompareSet(
     Compare set object. Contains a collection of compares.
     """
 
+    name: str
+    """
+    Unique name for this Compare Set.
+    """
+
     description: str | None
     """
     Human-readable description of this Compare Set.
     """
 
-    compares: Dict[str, Compare] | None
-    """
-    Collection of Compare objects.
-    """
+    _compares: List[Compare]
 
     def __init__(
         self,
+        name: str,
         description: str | None = None,
-        compares: Dict[str, Compare] | None = None,
+        compares: List[Compare] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
+
+        self.name = name
 
         if description is None:
             description = ''
@@ -47,66 +50,49 @@ class CompareSet(
         self.description = description
 
         if compares is None:
-            compares = {}
+            compares = []
 
-        self.compares = compares
+        self._compares = compares
 
     def __str__(
         self,
     ) -> str:
 
-        if isinstance(self.compares, dict):
-            return str(
-                [compare_set_name for compare_set_name in self.compares.keys()],
-            )
+        return self.name
 
-        else:
-            return str(
-                self.compares,
-            )
-
-    @log_exception
-    def __setitem__(
-        self,
-        key: str,
-        value: Compare,
-    ) -> None:
-        if self.compares is None:
-            self.compares = {}
-
-        if not isinstance(self.compares, dict):
-            raise TypeError(
-                'CompareSet collection is not a dictionary!',
-            )
-
-        self.compares[key] = value
-
-    @log_exception
     def __getitem__(
         self,
-        item: str,
+        key: str | Compare,
     ) -> Compare:
 
-        if self.compares is None:
-            raise ValueError(
-                'CompareSet object is empty!',
-            )
+        key = str(
+            key,
+        )
 
-        if not isinstance(self.compares, dict):
-            raise TypeError(
-                'CompareSet collection is not a dictionary!',
-            )
+        return self.compares[key]
 
-        return self.compares[item]
-
-    @log_exception
-    @log_runtime
-    def load(
+    @property
+    def compares(
         self,
-    ) -> None:
+    ) -> Dict[str, Compare]:
 
-        # TODO: Multiprocess load each compare
-        pass
+        return {str(compare): compare for compare in self._compares}
+
+    def append(
+        self,
+        compare: Compare,
+    ) -> None:
+        """
+        Add compare to the collection of compares.
+
+        :param compare: Compare set to add.
+        :return:
+        """
+
+        if compare not in self._compares:
+            self._compares.append(
+                compare,
+            )
 
     @classmethod
     @log_exception
@@ -119,18 +105,22 @@ class CompareSet(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
+        for name, compare_values in instance_data['compares'].items():
+            compare_values['name'] = name
+
         return CompareSet(
+            name=instance_data['name'],
             description=instance_data['description'],
-            compares={
-                name: Compare.deserialize(
-                    instance_data=compare_set_values,
+            compares=[
+                Compare.deserialize(
+                    instance_data=compare_values,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
                     data_sources=data_sources,
                     wildcard_sets=wildcard_sets,
                 )
-                for name, compare_set_values in instance_data['compares'].items()
-            },
+                for compare_values in instance_data['compares'].values()
+            ],
         )
 
     @log_exception
@@ -140,7 +130,7 @@ class CompareSet(
     ) -> Dict:
 
         return {
-            'description': self.description.value,
+            'description': self.description,
             'compares': {
                 name: instance.serialize(
                     ib2d_file=ib2d_file,

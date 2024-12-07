@@ -1,12 +1,15 @@
 from PySide6.QtWidgets import (
     QWidget,
     QTabWidget,
+    QMenu,
 )
 
 from ...model_base_object_viewer import ModelBaseObjectViewer
 from .....core.wildcards_sets.wildcard_set import WildcardSet
 from .wildcard_set_description_widget import WildcardSetDescriptionWidget
 from .wildcard_set_widget import WildcardSetWidget
+from .....core.wildcards_sets import WildcardSets
+from ....view.main_window.main_widget.object_viewer import ObjectViewer
 
 
 class ModelWildcardSet(
@@ -20,14 +23,16 @@ class ModelWildcardSet(
 
     def __init__(
         self,
-        object_name: str,
         wildcard_set: WildcardSet,
+        wildcard_sets: WildcardSets,
+        object_viewer: ObjectViewer,
     ):
 
         ModelBaseObjectViewer.__init__(
             self=self,
             current_state=wildcard_set,
-            object_name=object_name,
+            wildcard_sets=wildcard_sets,
+            object_viewer=object_viewer,
         )
 
         # Build description widget
@@ -60,3 +65,18 @@ class ModelWildcardSet(
         )
 
         return tab_widget
+
+    @property
+    def context_menu(
+        self,
+    ) -> QMenu:
+
+        menu = QMenu()
+
+        menu.addAction('Open', self.open_in_object_viewer)
+
+        menu.addAction(
+            'Delete',
+        )  # TODO: Delete wildcard set
+
+        return menu

@@ -3,10 +3,14 @@ from typing import Any
 from functools import cached_property
 from abc import abstractmethod
 
-from PySide6.QtGui import QStandardItem
+from PySide6.QtGui import (
+    QStandardItem,
+    Qt,
+)
 from PySide6.QtWidgets import QMenu
 
 from ...core.base import Base
+from ...core.wildcards_sets import WildcardSets
 
 
 class ModelBase(
@@ -15,29 +19,24 @@ class ModelBase(
 
     _base_state: int
     current_state: Base
-    _object_name: str | None
+    wildcard_sets: WildcardSets
 
     def __init__(
         self,
         current_state: Base,
-        object_name: str = None,
+        wildcard_sets: WildcardSets,
     ):
 
         QStandardItem.__init__(
             self,
         )
-
-        self._object_name = object_name
+        self.wildcard_sets = wildcard_sets
 
         self.base_state = current_state
         self.current_state = current_state
 
         self.setEditable(
             False,
-        )
-
-        self.setText(
-            self.object_name,
         )
 
     @property
@@ -56,6 +55,18 @@ class ModelBase(
         self._base_state = hash(
             value,
         )
+
+    def data(
+        self,
+        role: Qt.ItemDataRole = Qt.ItemDataRole.DisplayRole,
+    ):
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            return str(
+                self.current_state,
+            )
+
+        return None
 
     def appendRow(
         self,
@@ -122,19 +133,6 @@ class ModelBase(
             return ''
 
     @property
-    def object_name(
-        self,
-    ) -> str:
-
-        if isinstance(self._object_name, str):
-            return self._object_name
-
-        else:
-            return str(
-                self.current_state,
-            )
-
-    @property
     @abstractmethod
     def context_menu(
         self,
@@ -142,3 +140,10 @@ class ModelBase(
         """
         Generates a menu, defined by the object.
         """
+
+    def open_in_object_viewer(
+        self,
+    ):
+        self.object_viewer.open(
+            item=self,
+        )

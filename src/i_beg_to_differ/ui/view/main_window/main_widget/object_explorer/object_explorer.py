@@ -27,7 +27,9 @@ class ObjectExplorer(
         self.object_viewer = object_viewer
 
         self.setModel(
-            Model(),
+            Model(
+                object_viewer=self.object_viewer,
+            ),
         )
 
         self.doubleClicked.connect(
@@ -39,18 +41,9 @@ class ObjectExplorer(
         item: ModelBase,
     ) -> None:
 
-        # TODO: Check if item is already opened and activate tab. Do not allow duplicate items.
-
         if isinstance(item, ModelBaseObjectViewer):
-            object_viewer_widget = item.object_viewer_widget
-
-            self.object_viewer.addTab(
-                object_viewer_widget,
-                f'{item.object_type}: {item.object_name}',
-            )
-
-            self.object_viewer.setCurrentWidget(
-                object_viewer_widget,
+            self.object_viewer.open(
+                item=item,
             )
 
     def double_click(

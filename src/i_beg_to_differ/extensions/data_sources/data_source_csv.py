@@ -32,7 +32,7 @@ class DataSourceCsv(
 
     def __init__(
         self,
-        path: str,
+        path: str | None = None,
         description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
@@ -41,6 +41,9 @@ class DataSourceCsv(
             self=self,
             description=description,
         )
+
+        if path is None:
+            path = ''
 
         self.path = WildcardFilePathInputField(
             path=path,

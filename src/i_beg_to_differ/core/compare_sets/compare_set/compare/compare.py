@@ -52,6 +52,11 @@ class Compare(
     CompareSchema,
 ):
 
+    name: str
+    """
+    Unique name for this Compare.
+    """
+
     description: str | None
     """
     Human-readable description.
@@ -61,6 +66,7 @@ class Compare(
 
     def __init__(
         self,
+        name: str,
         source_data_source_ref: DataSourceReference,
         target_data_source_ref: DataSourceReference,
         data_sources: DataSources,
@@ -84,7 +90,14 @@ class Compare(
             wildcard_sets=wildcard_sets,
         )
 
+        self.name = name
         self.description = description
+
+    def __str__(
+        self,
+    ) -> str:
+
+        return self.name
 
     @classmethod
     def deserialize(
@@ -130,6 +143,7 @@ class Compare(
             ]
 
         return Compare(
+            name=instance_data['name'],
             source_data_source_ref=source_data_source_ref,
             target_data_source_ref=target_data_source_ref,
             data_sources=data_sources,

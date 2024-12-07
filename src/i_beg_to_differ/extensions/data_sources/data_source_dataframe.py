@@ -28,7 +28,7 @@ class DataSourceDataFrame(
 
     def __init__(
         self,
-        data: DataFrame,
+        data: DataFrame | None = None,
         description: str | None = None,
     ):
 
@@ -36,6 +36,9 @@ class DataSourceDataFrame(
             self=self,
             description=description,
         )
+
+        if data is None:
+            data = DataFrame()
 
         self.data = data
 

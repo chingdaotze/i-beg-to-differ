@@ -1,4 +1,5 @@
 from typing import (
+    List,
     Dict,
     Self,
 )
@@ -17,31 +18,38 @@ class WildcardSets(
     Collection of wildcard sets, used to replace values.
     """
 
-    wildcard_sets: Dict[str, WildcardSet]
+    _wildcard_sets: List[WildcardSet]
     _active_wildcard_set: WildcardSet | None
     _DEFAULT_WILDCARD_SET = 'Default'
 
     def __init__(
         self,
-        wildcard_sets: Dict[str, WildcardSet] | None = None,
+        wildcard_sets: List[WildcardSet] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
 
-        self.wildcard_sets = self.manager.dict()
+        # Init all wildcard sets
+        self._wildcard_sets = self.manager.list()
 
         if wildcard_sets is None:
-            self.wildcard_sets[self._DEFAULT_WILDCARD_SET] = WildcardSet(
-                description='Default system-provided Wildcard Set.'
+            self.append(
+                WildcardSet(
+                    name=self._DEFAULT_WILDCARD_SET,
+                    description='Default system-provided Wildcard Set.',
+                )
             )
 
         else:
-            for key, value in wildcard_sets.items():
-                self.wildcard_sets[key] = value
+            for wildcard_set in wildcard_sets:
+                self.append(
+                    wildcard_set=wildcard_set,
+                )
 
-        if self.wildcard_sets:
-            self.active_wildcard_set = next(iter(self.wildcard_sets))
+        # Set active wildcard set
+        if self._wildcard_sets:
+            self.active_wildcard_set = self._wildcard_sets[0].name
 
         else:
             self.active_wildcard_set = None
@@ -51,6 +59,43 @@ class WildcardSets(
     ) -> str:
 
         return 'Wildcard Sets'
+
+    def __getitem__(
+        self,
+        wildcard_set: str | WildcardSet,
+    ) -> WildcardSet:
+
+        key = str(
+            wildcard_set,
+        )
+
+        return self.wildcard_sets[key]
+
+    @property
+    def wildcard_sets(
+        self,
+    ) -> Dict[str, WildcardSet]:
+        """
+        All wildcard sets, as a dictionary.
+        """
+
+        return {str(wildcard_set): wildcard_set for wildcard_set in self._wildcard_sets}
+
+    def append(
+        self,
+        wildcard_set: WildcardSet,
+    ) -> None:
+        """
+        Add wildcard set to the collection of wildcard sets.
+
+        :param wildcard_set: Wildcard set to add.
+        :return:
+        """
+
+        if wildcard_set not in self._wildcard_sets:
+            self._wildcard_sets.append(
+                wildcard_set,
+            )
 
     @property
     def active_wildcard_set(
@@ -65,7 +110,7 @@ class WildcardSets(
         return self._active_wildcard_set
 
     @active_wildcard_set.setter
-    @log_exception
+    # @log_exception
     def active_wildcard_set(
         self,
         name: str | None,
@@ -79,8 +124,10 @@ class WildcardSets(
 
         if name is not None:
 
-            if name in self.wildcard_sets:
-                self._active_wildcard_set = self.wildcard_sets[name]
+            wildcard_sets = self.wildcard_sets
+
+            if name in wildcard_sets:
+                self._active_wildcard_set = wildcard_sets[name]
 
             else:
                 raise KeyError(
@@ -134,16 +181,19 @@ class WildcardSets(
         wildcard_sets: Self | None = None,
     ) -> Self:
 
+        for name, wildcard_set_values in instance_data.items():
+            wildcard_set_values['name'] = name
+
         return WildcardSets(
-            wildcard_sets={
-                name: WildcardSet.deserialize(
+            wildcard_sets=[
+                WildcardSet.deserialize(
                     instance_data=wildcard_set_values,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
                     wildcard_sets=wildcard_sets,
                 )
-                for name, wildcard_set_values in instance_data.items()
-            },
+                for wildcard_set_values in instance_data.values()
+            ],
         )
 
     @log_exception

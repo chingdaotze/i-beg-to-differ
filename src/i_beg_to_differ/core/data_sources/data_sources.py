@@ -1,4 +1,5 @@
 from typing import (
+    List,
     Dict,
     ClassVar,
     List,
@@ -22,7 +23,7 @@ class DataSources(
     Collection of data sources.
     """
 
-    data_sources: Dict[str, DataSource]
+    _data_sources: List[DataSource]
     """
     Collection of data sources.
     """
@@ -34,7 +35,7 @@ class DataSources(
 
     def __init__(
         self,
-        data_sources: Dict[str, DataSource] | None = None,
+        data_sources: List[DataSource] | None = None,
     ):
 
         IB2DFileElement.__init__(
@@ -42,12 +43,9 @@ class DataSources(
         )
 
         if data_sources is None:
-            data_sources = {}
+            data_sources = []
 
-        self.data_sources = {}
-
-        for key, data_source in data_sources.items():
-            self.data_sources[key] = data_source
+        self._data_sources = data_sources
 
     def __str__(
         self,
@@ -71,6 +69,16 @@ class DataSources(
 
         return self.data_sources[key]
 
+    @property
+    def data_sources(
+        self,
+    ) -> Dict[str, DataSource]:
+        """
+        All data sources, as a dictionary.
+        """
+
+        return {str(data_source): data_source for data_source in self._data_sources}
+
     @log_exception
     def append(
         self,
@@ -83,7 +91,10 @@ class DataSources(
         :return:
         """
 
-        self.data_sources[str(data_source)] = data_source
+        if data_source not in self._data_sources:
+            self._data_sources.append(
+                data_source,
+            )
 
     @log_exception
     def remove(
@@ -97,15 +108,15 @@ class DataSources(
         :return:
         """
 
-        del self.data_sources[str(data_source)]
+        self._data_sources.remove(
+            data_source,
+        )
 
     def list_data_sources(
         self,
     ) -> List[str]:
 
-        return list(
-            self.data_sources.keys(),
-        )
+        return [str(data_source) for data_source in self._data_sources]
 
     @classmethod
     @log_exception
@@ -117,17 +128,19 @@ class DataSources(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
-        data_sources = {}
+        data_sources = []
 
-        for name, data_source_instance_data in instance_data.items():
+        for data_source_instance_data in instance_data.values():
             extension_id = data_source_instance_data['extension_id']
-            data_source_ = cls.data_source_extensions[extension_id]
+            data_source_type = cls.data_source_extensions[extension_id]
 
-            data_sources[name] = data_source_.deserialize(
-                instance_data=data_source_instance_data,
-                working_dir_path=working_dir_path,
-                ib2d_file=ib2d_file,
-                wildcard_sets=wildcard_sets,
+            data_sources.append(
+                data_source_type.deserialize(
+                    instance_data=data_source_instance_data,
+                    working_dir_path=working_dir_path,
+                    ib2d_file=ib2d_file,
+                    wildcard_sets=wildcard_sets,
+                )
             )
 
         return DataSources(

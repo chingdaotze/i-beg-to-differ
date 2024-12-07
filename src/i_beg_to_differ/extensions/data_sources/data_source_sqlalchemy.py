@@ -46,8 +46,8 @@ class DataSourceSqlAlchemy(
 
     def __init__(
         self,
-        drivername: str,
-        table_name: str,
+        drivername: str | None = None,
+        table_name: str | None = None,
         username: str | None = None,
         password: str | None = None,
         host: str | None = None,
@@ -63,11 +63,17 @@ class DataSourceSqlAlchemy(
             description=description,
         )
 
+        if drivername is None:
+            drivername = ''
+
         self._drivername = WildcardInputField(
             base_value=drivername,
             wildcard_sets=wildcard_sets,
             title='Driver Name',
         )
+
+        if table_name is None:
+            table_name = ''
 
         self._table_name = WildcardInputField(
             base_value=table_name,

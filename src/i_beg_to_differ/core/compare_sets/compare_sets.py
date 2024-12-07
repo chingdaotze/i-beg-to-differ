@@ -1,4 +1,5 @@
 from typing import (
+    List,
     Dict,
     Self,
 )
@@ -19,21 +20,20 @@ class CompareSets(
     Compare set object. Contains a collection of compares.
     """
 
-    compare_sets: Dict[str, CompareSet]
-    _DEFAULT_COMPARE_SET = 'Default'
+    _compare_sets: List[CompareSet]
 
     def __init__(
         self,
-        compare_sets: Dict[str, CompareSet] | None = None,
+        compare_sets: List[CompareSet] | None = None,
     ):
         IB2DFileElement.__init__(
             self=self,
         )
 
         if compare_sets is None:
-            compare_sets = {}
+            compare_sets = []
 
-        self.compare_sets = compare_sets
+        self._compare_sets = compare_sets
 
     def __str__(
         self,
@@ -41,22 +41,39 @@ class CompareSets(
 
         return 'Compare Sets'
 
-    @log_exception
-    def __setitem__(
-        self,
-        key: str,
-        value: CompareSet,
-    ) -> None:
-
-        self.compare_sets[key] = value
-
-    @log_exception
     def __getitem__(
         self,
-        item: str,
+        compare_set: str | CompareSet,
     ) -> CompareSet:
 
-        return self.compare_sets[item]
+        key = str(
+            compare_set,
+        )
+
+        return self.compare_sets[key]
+
+    @property
+    def compare_sets(
+        self,
+    ) -> Dict[str, CompareSet]:
+
+        return {str(compare_set): compare_set for compare_set in self._compare_sets}
+
+    def append(
+        self,
+        compare_set: CompareSet,
+    ):
+        """
+        Add compare set to the collection of compare sets.
+
+        :param compare_set: Compare set to add.
+        :return:
+        """
+
+        if compare_set not in self._compare_sets:
+            self._compare_sets.append(
+                compare_set,
+            )
 
     @classmethod
     @log_exception
@@ -69,17 +86,20 @@ class CompareSets(
         wildcard_sets: WildcardSets | None = None,
     ) -> Self:
 
+        for name, compare_set_values in instance_data.items():
+            compare_set_values['name'] = name
+
         return CompareSets(
-            compare_sets={
-                name: CompareSet.deserialize(
+            compare_sets=[
+                CompareSet.deserialize(
                     instance_data=compare_set_values,
                     working_dir_path=working_dir_path,
                     ib2d_file=ib2d_file,
                     data_sources=data_sources,
                     wildcard_sets=wildcard_sets,
                 )
-                for name, compare_set_values in instance_data.items()
-            },
+                for compare_set_values in instance_data.values()
+            ],
         )
 
     @log_exception

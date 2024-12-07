@@ -2,6 +2,8 @@ from PySide6.QtWidgets import QWidget
 
 from .model_base_object_viewer import ModelBaseObjectViewer
 from ...core.extensions.extension import Extension
+from ...core.wildcards_sets import WildcardSets
+from ..view.main_window.main_widget.object_viewer import ObjectViewer
 
 
 class ModelBaseExtension(
@@ -16,13 +18,15 @@ class ModelBaseExtension(
     def __init__(
         self,
         current_state: Extension,
-        object_name: str = None,
+        wildcard_sets: WildcardSets,
+        object_viewer: ObjectViewer,
     ):
 
         ModelBaseObjectViewer.__init__(
             self=self,
             current_state=current_state,
-            object_name=object_name,
+            wildcard_sets=wildcard_sets,
+            object_viewer=object_viewer,
         )
 
     @property

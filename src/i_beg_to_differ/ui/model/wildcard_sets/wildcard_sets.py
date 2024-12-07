@@ -8,6 +8,7 @@ from ...widgets import (
     Dialog,
     LineEdit,
 )
+from ...view.main_window.main_widget.object_viewer import ObjectViewer
 
 
 class ModelWildcardSets(
@@ -15,23 +16,29 @@ class ModelWildcardSets(
 ):
 
     current_state: WildcardSets
+    object_viewer: ObjectViewer
 
     def __init__(
         self,
         wildcard_sets: WildcardSets,
+        object_viewer: ObjectViewer,
     ):
 
         ModelBase.__init__(
             self=self,
             current_state=wildcard_sets,
+            wildcard_sets=wildcard_sets,
         )
 
-        for name, wildcard_set in self.current_state.wildcard_sets.items():
+        self.object_viewer = object_viewer
+
+        for wildcard_set in self.current_state.wildcard_sets.values():
 
             self.appendRow(
                 ModelWildcardSet(
-                    object_name=name,
                     wildcard_set=wildcard_set,
+                    wildcard_sets=self.current_state,
+                    object_viewer=object_viewer,
                 )
             )
 
@@ -59,14 +66,17 @@ class ModelWildcardSets(
         # Create WildcardSet object and update model
         wildcard_set_name = input_widget.text()
 
-        wildcard_set = WildcardSet()
+        wildcard_set = WildcardSet(
+            name=wildcard_set_name,
+        )
 
         self.current_state.wildcard_sets[wildcard_set_name] = wildcard_set
 
         self.appendRow(
             ModelWildcardSet(
-                object_name=wildcard_set_name,
                 wildcard_set=wildcard_set,
+                wildcard_sets=self.current_state,
+                object_viewer=self.object_viewer,
             )
         )
 

@@ -76,6 +76,7 @@ class FileMenu(
 
         if path:
             model = Model.load(
+                object_viewer=self.object_viewer,
                 path=path,
             )
 

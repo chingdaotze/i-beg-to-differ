@@ -151,7 +151,11 @@ class Base(
     ) -> int:
 
         return hash(
-            str(
+            type(
+                self,
+            ).__name__
+            + ': '
+            + str(
                 self,
             ),
         )
@@ -161,11 +165,10 @@ class Base(
         other: Self,
     ) -> bool:
 
-        if hash(self) == hash(other):
+        if type(self) == type(other) and hash(self) == hash(other):
             return True
 
-        else:
-            return False
+        return False
 
     def __ne__(
         self,

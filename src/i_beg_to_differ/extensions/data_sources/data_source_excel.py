@@ -68,8 +68,8 @@ class DataSourceExcel(
 
     def __init__(
         self,
-        path: str,
-        sheet: str,
+        path: str | None = None,
+        sheet: str | None = None,
         description: str | None = None,
         wildcard_sets: WildcardSets | None = None,
     ):
@@ -79,6 +79,9 @@ class DataSourceExcel(
             description=description,
         )
 
+        if path is None:
+            path = ''
+
         self.path = WildcardFilePathInputField(
             path=path,
             file_dialog_caption='Open *.xlsx File',
@@ -86,6 +89,9 @@ class DataSourceExcel(
             wildcard_sets=wildcard_sets,
             title='File Path',
         )
+
+        if sheet is None:
+            sheet = ''
 
         self.sheet = WildcardInputField(
             base_value=sheet,
