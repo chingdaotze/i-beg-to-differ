@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from ......widgets import DescriptionWidget
 from .......core.compare_sets.compare_set.compare import Compare
+from .......core.wildcards_sets.wildcard_field import WildcardField
 
 
 class CompareDescriptionTab(
@@ -20,7 +21,9 @@ class CompareDescriptionTab(
 
         DescriptionWidget.__init__(
             self=self,
-            value=compare.description,
+            wildcard_field=WildcardField(
+                base_value=self.compare.description,
+            ),
             parent=parent,
         )
 

@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from ....widgets import DescriptionWidget
 from .....core.wildcards_sets.wildcard_set import WildcardSet
+from .....core.wildcards_sets.wildcard_field import WildcardField
 
 
 class WildcardSetDescriptionWidget(
@@ -19,7 +20,9 @@ class WildcardSetDescriptionWidget(
 
         DescriptionWidget.__init__(
             self=self,
-            value=wildcard_set.description,
+            wildcard_field=WildcardField(
+                base_value=wildcard_set.description,
+            ),
             parent=parent,
         )
 

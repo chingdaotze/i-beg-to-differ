@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from ....widgets import DescriptionWidget
 from .....core.compare_sets.compare_set import CompareSet
+from .....core.wildcards_sets.wildcard_field import WildcardField
 
 
 class CompareSetDescriptionWidget(
@@ -19,7 +20,9 @@ class CompareSetDescriptionWidget(
 
         DescriptionWidget.__init__(
             self=self,
-            value=compare_set.description,
+            wildcard_field=WildcardField(
+                base_value=compare_set.description,
+            ),
             parent=parent,
         )
 

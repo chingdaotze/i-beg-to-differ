@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
 )
 
+from ...core.wildcards_sets.wildcard_field import WildcardField
 from .widget import Widget
 
 
@@ -14,12 +15,12 @@ class DescriptionWidget(
     Description text widget. Creates a markdown editor and viewer.
     """
 
-    value: str
+    wildcard_field: WildcardField
     text_edit: QPlainTextEdit
 
     def __init__(
         self,
-        value: str | None = None,
+        wildcard_field: WildcardField,
         parent: QWidget | None = None,
     ):
 
@@ -28,11 +29,7 @@ class DescriptionWidget(
             parent,
         )
 
-        # Init value
-        if value is None:
-            value = ''
-
-        self.value = value
+        self.wildcard_field = wildcard_field
 
         # Text editor
         self.text_edit = QPlainTextEdit()
@@ -42,7 +39,7 @@ class DescriptionWidget(
         )
 
         self.text_edit.setPlainText(
-            value,
+            self.wildcard_field.base_value,
         )
 
         # Layout
@@ -69,4 +66,4 @@ class DescriptionWidget(
         Abstract method triggered whenever text is changed. Override this method to update values.
         """
 
-        self.value = self.text_edit.toPlainText()
+        self.wildcard_field.base_value = self.text_edit.toPlainText()

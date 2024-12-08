@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget
 
 from .input_field import InputField
+from ...wildcards_sets.wildcard_field import WildcardField
 from ....ui.widgets import DescriptionWidget
 
 
@@ -11,15 +12,15 @@ class DescriptionInputField(
     Description input field. Creates a new Description tab and markdown editor.
     """
 
-    description_widget: DescriptionWidget
+    description: WildcardField
 
     def __init__(
         self,
         value: str | None = None,
     ):
 
-        self.description_widget = DescriptionWidget(
-            value=value,
+        self.description = WildcardField(
+            base_value=value,
         )
 
     @property
@@ -27,11 +28,15 @@ class DescriptionInputField(
         self,
     ) -> str:
 
-        return self.description_widget.value
+        return self.description.base_value
 
     @property
     def layout_component(
         self,
     ) -> QWidget:
 
-        return self.description_widget
+        description_widget = DescriptionWidget(
+            wildcard_field=self.description,
+        )
+
+        return description_widget
