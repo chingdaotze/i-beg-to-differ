@@ -19,6 +19,9 @@ class DescriptionInputField(
         value: str | None = None,
     ):
 
+        if value is None:
+            value = ''
+
         self.description = WildcardField(
             base_value=value,
         )
