@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import (
+    QStatusBar,
     QWidget,
     QTabWidget,
     QMenu,
@@ -25,6 +26,7 @@ class ModelWildcardSet(
         self,
         wildcard_set: WildcardSet,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -32,6 +34,7 @@ class ModelWildcardSet(
             self=self,
             current_state=wildcard_set,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
             object_viewer=object_viewer,
         )
 

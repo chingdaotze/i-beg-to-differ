@@ -42,27 +42,30 @@ class MainWindow(
             self.MIN_SIZE,
         )
 
-        # Bars
-        self.main_widget = MainWidget(
-            parent=self,
-        )
-
-        self.menu_bar = MenuBar(
-            parent=self,
-            object_explorer=self.main_widget.object_explorer,
-            object_viewer=self.main_widget.object_viewer,
-        )
-
-        self.setMenuBar(
-            self.menu_bar,
-        )
-
+        # Status Bar
         self.status_bar = StatusBar(
             parent=self,
         )
 
         self.setStatusBar(
             self.status_bar,
+        )
+
+        # Menu Bar
+        self.main_widget = MainWidget(
+            status_bar=self.status_bar,
+            parent=self,
+        )
+
+        self.menu_bar = MenuBar(
+            parent=self,
+            object_explorer=self.main_widget.object_explorer,
+            status_bar=self.status_bar,
+            object_viewer=self.main_widget.object_viewer,
+        )
+
+        self.setMenuBar(
+            self.menu_bar,
         )
 
         # Widgets

@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import (
+    QStatusBar,
+    QMenu,
+)
 
 from ..model_base import ModelBase
 from ....core.wildcards_sets import WildcardSets
@@ -21,6 +24,7 @@ class ModelWildcardSets(
     def __init__(
         self,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -28,6 +32,7 @@ class ModelWildcardSets(
             self=self,
             current_state=wildcard_sets,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
         )
 
         self.object_viewer = object_viewer
@@ -38,7 +43,8 @@ class ModelWildcardSets(
                 ModelWildcardSet(
                     wildcard_set=wildcard_set,
                     wildcard_sets=self.current_state,
-                    object_viewer=object_viewer,
+                    status_bar=self.status_bar,
+                    object_viewer=self.object_viewer,
                 )
             )
 
@@ -76,6 +82,7 @@ class ModelWildcardSets(
             ModelWildcardSet(
                 wildcard_set=wildcard_set,
                 wildcard_sets=self.current_state,
+                status_bar=self.status_bar,
                 object_viewer=self.object_viewer,
             )
         )

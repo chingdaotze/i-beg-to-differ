@@ -1,4 +1,8 @@
-from PySide6.QtWidgets import QTreeView
+from PySide6.QtWidgets import (
+    QTreeView,
+    QStatusBar,
+    QWidget,
+)
 from PySide6.QtCore import QModelIndex
 from PySide6.QtGui import QCursor
 
@@ -15,8 +19,9 @@ class ObjectExplorer(
 
     def __init__(
         self,
-        parent,
         object_viewer: ObjectViewer,
+        status_bar: QStatusBar,
+        parent: QWidget | None = None,
     ):
 
         QTreeView.__init__(
@@ -28,6 +33,7 @@ class ObjectExplorer(
 
         self.setModel(
             Model(
+                status_bar=status_bar,
                 object_viewer=self.object_viewer,
             ),
         )

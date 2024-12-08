@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Self
 
 from PySide6.QtGui import QStandardItemModel
+from PySide6.QtWidgets import QStatusBar
 
 from ..view.main_window.main_widget.object_viewer import ObjectViewer
 from ...core.ib2d_file import IB2DFile
@@ -19,6 +20,7 @@ class Model(
 
     def __init__(
         self,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
         ib2d_file: IB2DFile | None = None,
     ):
@@ -43,31 +45,35 @@ class Model(
         self.appendRow(
             ModelCompareSets(
                 compare_sets=self.ib2d_file.compare_sets,
-                data_sources=self.ib2d_file.data_sources,
-                working_dir_path=self.ib2d_file.working_dir_path,
-                object_viewer=object_viewer,
                 wildcard_sets=self.ib2d_file.wildcard_sets,
+                status_bar=status_bar,
+                data_sources=self.ib2d_file.data_sources,
+                object_viewer=object_viewer,
+                working_dir_path=self.ib2d_file.working_dir_path,
             )
         )
 
         self.appendRow(
             ModelDataSources(
                 data_sources=self.ib2d_file.data_sources,
-                object_viewer=object_viewer,
                 wildcard_sets=self.ib2d_file.wildcard_sets,
+                status_bar=status_bar,
+                object_viewer=object_viewer,
             )
         )
 
         self.appendRow(
             ModelWildcardSets(
-                object_viewer=object_viewer,
                 wildcard_sets=self.ib2d_file.wildcard_sets,
+                status_bar=status_bar,
+                object_viewer=object_viewer,
             )
         )
 
     @classmethod
     def load(
         cls,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
         path: Path | str,
     ) -> Self:
@@ -79,6 +85,7 @@ class Model(
 
         with open_ib2d_file(path=path) as ib2d_file:
             return Model(
+                status_bar=status_bar,
                 object_viewer=object_viewer,
                 ib2d_file=ib2d_file,
             )

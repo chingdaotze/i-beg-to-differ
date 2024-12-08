@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import (
+    QStatusBar,
+    QWidget,
+)
 
 from .model_base_object_viewer import ModelBaseObjectViewer
 from ...core.extensions.extension import Extension
@@ -19,6 +22,7 @@ class ModelBaseExtension(
         self,
         current_state: Extension,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -26,6 +30,7 @@ class ModelBaseExtension(
             self=self,
             current_state=current_state,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
             object_viewer=object_viewer,
         )
 

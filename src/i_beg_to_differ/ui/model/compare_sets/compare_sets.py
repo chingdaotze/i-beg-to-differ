@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from PySide6.QtWidgets import (
+    QStatusBar,
     QMenu,
     QFileDialog,
 )
@@ -30,8 +31,9 @@ class ModelCompareSets(
     def __init__(
         self,
         compare_sets: CompareSets,
-        data_sources: DataSources,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
+        data_sources: DataSources,
         object_viewer: ObjectViewer,
         working_dir_path: Path,
     ):
@@ -40,6 +42,7 @@ class ModelCompareSets(
             self=self,
             current_state=compare_sets,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
         )
 
         self.data_sources = data_sources
@@ -51,10 +54,11 @@ class ModelCompareSets(
             self.appendRow(
                 ModelCompareSet(
                     compare_set=compare_set,
-                    data_sources=self.data_sources,
                     wildcard_sets=self.wildcard_sets,
+                    status_bar=self.status_bar,
                     object_viewer=self.object_viewer,
-                    working_dir_path=working_dir_path,
+                    data_sources=self.data_sources,
+                    working_dir_path=self.working_dir_path,
                 )
             )
 
@@ -93,10 +97,11 @@ class ModelCompareSets(
         self.appendRow(
             ModelCompareSet(
                 compare_set=compare_set,
-                data_sources=self.data_sources,
                 wildcard_sets=self.wildcard_sets,
-                working_dir_path=self.working_dir_path,
+                status_bar=self.status_bar,
                 object_viewer=self.object_viewer,
+                data_sources=self.data_sources,
+                working_dir_path=self.working_dir_path,
             )
         )
 
@@ -111,6 +116,12 @@ class ModelCompareSets(
         )
 
         if dir_path:
+            self.status_bar.showMessage(
+                f'Saving comparison: {dir_path} ...',
+            )
+
+            self.status_bar.repaint()
+
             if output_type == 'csv':
                 self.current_state.to_csv(
                     dir_path=dir_path,
@@ -125,6 +136,10 @@ class ModelCompareSets(
                 self.current_state.to_excel(
                     dir_path=dir_path,
                 )
+
+            self.status_bar.showMessage(
+                f'Done! Comparison saved here: {dir_path}',
+            )
 
     def create_csv_files(
         self,

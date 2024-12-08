@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from PySide6.QtWidgets import (
+    QStatusBar,
     QWidget,
     QTabWidget,
     QMenu,
@@ -36,9 +37,10 @@ class ModelCompareSet(
     def __init__(
         self,
         compare_set: CompareSet,
-        data_sources: DataSources,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
+        data_sources: DataSources,
         working_dir_path: Path,
     ):
 
@@ -46,6 +48,7 @@ class ModelCompareSet(
             self=self,
             current_state=compare_set,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
             object_viewer=object_viewer,
         )
 
@@ -61,8 +64,9 @@ class ModelCompareSet(
             self.appendRow(
                 ModelCompare(
                     compare=compare,
-                    wildcard_sets=self.wildcard_sets,
                     object_viewer=self.object_viewer,
+                    wildcard_sets=self.wildcard_sets,
+                    status_bar=self.status_bar,
                     working_dir_path=self.working_dir_path,
                 )
             )
@@ -126,8 +130,9 @@ class ModelCompareSet(
         self.appendRow(
             ModelCompare(
                 compare=compare,
-                wildcard_sets=self.wildcard_sets,
                 object_viewer=self.object_viewer,
+                wildcard_sets=self.wildcard_sets,
+                status_bar=self.status_bar,
                 working_dir_path=self.working_dir_path,
             )
         )
@@ -143,6 +148,12 @@ class ModelCompareSet(
         )
 
         if dir_path:
+            self.status_bar.showMessage(
+                f'Saving comparison: {dir_path} ...',
+            )
+
+            self.status_bar.repaint()
+
             if output_type == 'csv':
                 self.current_state.to_csv(
                     dir_path=dir_path,
@@ -157,6 +168,10 @@ class ModelCompareSet(
                 self.current_state.to_excel(
                     dir_path=dir_path,
                 )
+
+            self.status_bar.showMessage(
+                f'Done! Comparison saved here: {dir_path}',
+            )
 
     def create_csv_files(
         self,

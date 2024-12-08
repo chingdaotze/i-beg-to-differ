@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QMenuBar
+from PySide6.QtWidgets import (
+    QMenuBar,
+    QStatusBar,
+)
 
 from ..main_widget.object_explorer import ObjectExplorer
 from ..main_widget.object_viewer import ObjectViewer
@@ -11,9 +14,6 @@ class MenuBar(
     QMenuBar,
 ):
 
-    object_explorer: ObjectExplorer
-    object_viewer: ObjectViewer
-
     file_menu: FileMenu
     edit_menu: EditMenu
     help_menu: HelpMenu
@@ -22,6 +22,7 @@ class MenuBar(
         self,
         parent,
         object_explorer: ObjectExplorer,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -30,12 +31,10 @@ class MenuBar(
             parent=parent,
         )
 
-        self.object_explorer = object_explorer
-        self.object_viewer = object_viewer
-
         self.file_menu = FileMenu(
             parent=self,
             object_explorer=object_explorer,
+            status_bar=status_bar,
             object_viewer=object_viewer,
         )
 

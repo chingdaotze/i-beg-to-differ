@@ -1,6 +1,9 @@
 from abc import abstractmethod
 
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import (
+    QWidget,
+    QStatusBar,
+)
 
 from .model_base import ModelBase
 from ...core.base import Base
@@ -21,6 +24,7 @@ class ModelBaseObjectViewer(
         self,
         current_state: Base,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -28,6 +32,7 @@ class ModelBaseObjectViewer(
             self=self,
             current_state=current_state,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
         )
 
         self.object_viewer = object_viewer

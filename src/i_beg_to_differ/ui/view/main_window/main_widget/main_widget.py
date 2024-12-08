@@ -1,4 +1,8 @@
-from PySide6.QtWidgets import QWidget, QSplitter
+from PySide6.QtWidgets import (
+    QSplitter,
+    QStatusBar,
+    QWidget,
+)
 from PySide6.QtCore import Qt
 
 from .object_explorer import ObjectExplorer
@@ -14,7 +18,8 @@ class MainWidget(
 
     def __init__(
         self,
-        parent,
+        status_bar: QStatusBar,
+        parent: QWidget | None = None,
     ):
 
         QSplitter.__init__(
@@ -28,8 +33,9 @@ class MainWidget(
         )
 
         self.object_explorer = ObjectExplorer(
-            parent=self,
+            status_bar=status_bar,
             object_viewer=self.object_viewer,
+            parent=self,
         )
 
         self.addWidget(

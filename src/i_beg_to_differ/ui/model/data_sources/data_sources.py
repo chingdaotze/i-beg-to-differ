@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import (
+    QStatusBar,
+    QMenu,
+)
 
 from ..model_base import ModelBase
 from ....core.data_sources import DataSources
@@ -23,6 +26,7 @@ class ModelDataSources(
         self,
         data_sources: DataSources,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
         object_viewer: ObjectViewer,
     ):
 
@@ -30,6 +34,7 @@ class ModelDataSources(
             self=self,
             current_state=data_sources,
             wildcard_sets=wildcard_sets,
+            status_bar=status_bar,
         )
 
         self.object_viewer = object_viewer
@@ -40,6 +45,7 @@ class ModelDataSources(
                 ModelDataSource(
                     data_source=data_source,
                     wildcard_sets=self.wildcard_sets,
+                    status_bar=self.status_bar,
                     object_viewer=self.object_viewer,
                 )
             )
@@ -90,6 +96,7 @@ class ModelDataSources(
             ModelDataSource(
                 data_source=data_source,
                 wildcard_sets=self.wildcard_sets,
+                status_bar=self.status_bar,
                 object_viewer=self.object_viewer,
             )
         )

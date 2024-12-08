@@ -7,7 +7,10 @@ from PySide6.QtGui import (
     QStandardItem,
     Qt,
 )
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import (
+    QMenu,
+    QStatusBar,
+)
 
 from ...core.base import Base
 from ...core.wildcards_sets import WildcardSets
@@ -20,17 +23,20 @@ class ModelBase(
     _base_state: int
     current_state: Base
     wildcard_sets: WildcardSets
+    status_bar: QStatusBar
 
     def __init__(
         self,
         current_state: Base,
         wildcard_sets: WildcardSets,
+        status_bar: QStatusBar,
     ):
 
         QStandardItem.__init__(
             self,
         )
         self.wildcard_sets = wildcard_sets
+        self.status_bar = status_bar
 
         self.base_state = current_state
         self.current_state = current_state
