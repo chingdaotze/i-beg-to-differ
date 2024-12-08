@@ -24,10 +24,11 @@ class DataSourceDataFrame(
     DataFrame.
     """
 
-    extension_name = 'DataFrame'
+    name: str
 
     def __init__(
         self,
+        name: str,
         data: DataFrame | None = None,
         description: str | None = None,
     ):
@@ -36,6 +37,8 @@ class DataSourceDataFrame(
             self=self,
             description=description,
         )
+
+        self.name = name
 
         if data is None:
             data = DataFrame()
@@ -46,7 +49,7 @@ class DataSourceDataFrame(
         self,
     ) -> str:
 
-        return f'{self.extension_name}: {id(self)}'
+        return self.name
 
     def load(
         self,

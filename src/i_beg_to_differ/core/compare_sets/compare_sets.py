@@ -114,3 +114,56 @@ class CompareSets(
             )
             for name, instance in self.compare_sets.items()
         }
+
+    def to_parquet(
+        self,
+        dir_path: Path | str,
+        file_name_prefix: str | None = None,
+    ) -> None:
+
+        if file_name_prefix is None:
+            file_name_prefix = ''
+
+        for compare_set in self._compare_sets:
+
+            compare_set.to_parquet(
+                dir_path=dir_path,
+                file_name_prefix=f'{file_name_prefix}{str(compare_set)}_',
+            )
+
+    def to_csv(
+        self,
+        dir_path: Path | str,
+        file_name_prefix: str | None = None,
+    ) -> None:
+
+        if file_name_prefix is None:
+            file_name_prefix = ''
+
+        for compare_set in self._compare_sets:
+
+            compare_set.to_csv(
+                dir_path=dir_path,
+                file_name_prefix=f'{file_name_prefix}{str(compare_set)}_',
+            )
+
+    def to_excel(
+        self,
+        dir_path: Path | str,
+        file_name_prefix: str | None = None,
+    ) -> None:
+
+        if file_name_prefix is None:
+            file_name_prefix = ''
+
+        if isinstance(dir_path, str):
+            dir_path = Path(
+                dir_path,
+            )
+
+        for compare_set in self._compare_sets:
+
+            compare_set.to_excel(
+                dir_path=dir_path,
+                file_name_prefix=f'{file_name_prefix}{str(compare_set)}_',
+            )

@@ -20,18 +20,20 @@ class CompareSchema(
     ) -> DataFrame:
 
         source_types = DataSources.data_source_extensions['data_source_dataframe'](
+            name='source',
             data=self.source_data_source.data_types,
         )
 
         target_types = DataSources.data_source_extensions['data_source_dataframe'](
+            name='target',
             data=self.target_data_source.data_types,
         )
 
         data_sources = DataSources(
-            data_sources={
-                'source': source_types,
-                'target': target_types,
-            }
+            data_sources=[
+                source_types,
+                target_types,
+            ],
         )
 
         source_data_source_ref = DataSourceReference(
