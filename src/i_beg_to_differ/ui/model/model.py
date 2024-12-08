@@ -43,6 +43,7 @@ class Model(
         self.appendRow(
             ModelCompareSets(
                 compare_sets=self.ib2d_file.compare_sets,
+                data_sources=self.ib2d_file.data_sources,
                 working_dir_path=self.ib2d_file.working_dir_path,
                 object_viewer=object_viewer,
                 wildcard_sets=self.ib2d_file.wildcard_sets,

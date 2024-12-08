@@ -54,6 +54,10 @@ class ModelCompare(
         menu = QMenu()
 
         menu.addAction(
+            'Run Compare',
+        )  # TODO: Run compare
+
+        menu.addAction(
             'Open',
             self.open_in_object_viewer,
         )

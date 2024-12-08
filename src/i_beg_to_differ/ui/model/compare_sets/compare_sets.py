@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QMenu
 
 from ..model_base import ModelBase
 from ....core.compare_sets import CompareSets
+from ....core.data_sources import DataSources
 from ....core.wildcards_sets import WildcardSets
 from ...view.main_window.main_widget.object_viewer import ObjectViewer
 from ....core.compare_sets.compare_set import CompareSet
@@ -19,12 +20,14 @@ class ModelCompareSets(
 ):
 
     current_state: CompareSets
+    data_sources: DataSources
     working_dir_path: Path
     object_viewer: ObjectViewer
 
     def __init__(
         self,
         compare_sets: CompareSets,
+        data_sources: DataSources,
         wildcard_sets: WildcardSets,
         object_viewer: ObjectViewer,
         working_dir_path: Path,
@@ -36,6 +39,7 @@ class ModelCompareSets(
             wildcard_sets=wildcard_sets,
         )
 
+        self.data_sources = data_sources
         self.working_dir_path = working_dir_path
         self.object_viewer = object_viewer
 
@@ -44,6 +48,7 @@ class ModelCompareSets(
             self.appendRow(
                 ModelCompareSet(
                     compare_set=compare_set,
+                    data_sources=self.data_sources,
                     wildcard_sets=self.wildcard_sets,
                     object_viewer=self.object_viewer,
                     working_dir_path=working_dir_path,
@@ -85,6 +90,7 @@ class ModelCompareSets(
         self.appendRow(
             ModelCompareSet(
                 compare_set=compare_set,
+                data_sources=self.data_sources,
                 wildcard_sets=self.wildcard_sets,
                 working_dir_path=self.working_dir_path,
                 object_viewer=self.object_viewer,
@@ -97,6 +103,10 @@ class ModelCompareSets(
     ) -> QMenu:
 
         menu = QMenu()
+
+        menu.addAction(
+            'Run Compare Sets',
+        )  # TODO: Run compare sets
 
         menu.addAction(
             'Add Compare Set',

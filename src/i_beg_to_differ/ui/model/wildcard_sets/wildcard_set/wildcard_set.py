@@ -73,7 +73,14 @@ class ModelWildcardSet(
 
         menu = QMenu()
 
-        menu.addAction('Open', self.open_in_object_viewer)
+        menu.addAction(
+            'Set Active',
+        )  # TODO: Set this wildcard set as active
+
+        menu.addAction(
+            'Open',
+            self.open_in_object_viewer,
+        )
 
         menu.addAction(
             'Delete',
