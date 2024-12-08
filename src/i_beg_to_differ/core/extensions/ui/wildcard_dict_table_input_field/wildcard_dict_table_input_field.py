@@ -3,6 +3,7 @@ from typing import Dict
 from PySide6.QtWidgets import QWidget
 
 from ..input_field import InputField
+from ....wildcards_sets.wildcard_dict import WildcardDict
 from .wildcard_dict_table_widget import WildcardDictTableWidget
 from ....wildcards_sets import WildcardSets
 from ....wildcards_sets.wildcard_field import WildcardField
@@ -18,7 +19,10 @@ class WildcardDictTableInputField(
     """
 
     title: str | None
-    wildcard_dict_table_widget: WildcardDictTableWidget
+
+    wildcard_dict: WildcardDict
+    key_column: str
+    value_column: str
 
     def __init__(
         self,
@@ -35,24 +39,31 @@ class WildcardDictTableInputField(
 
         self.title = title
 
-        self.wildcard_dict_table_widget = WildcardDictTableWidget(
+        self.wildcard_dict = WildcardDict(
             values=values,
             wildcard_sets=wildcard_sets,
-            key_column=key_column,
-            value_column=value_column,
         )
+
+        self.key_column = key_column
+        self.value_column = value_column
 
     @property
     def values(
         self,
     ) -> Dict[WildcardField, WildcardField]:
 
-        return self.wildcard_dict_table_widget.values
+        return self.wildcard_dict.values
 
     @property
     def layout_component(
         self,
     ) -> QWidget:
+
+        wildcard_dict_table_widget = WildcardDictTableWidget(
+            wildcard_dict=self.wildcard_dict,
+            key_column=self.key_column,
+            value_column=self.value_column,
+        )
 
         if self.title is not None:
             layout_component = GroupBox(
@@ -60,12 +71,12 @@ class WildcardDictTableInputField(
             )
 
             layout_component.layout.addWidget(
-                self.wildcard_dict_table_widget,
+                wildcard_dict_table_widget,
                 0,
                 0,
             )
 
         else:
-            layout_component = self.wildcard_dict_table_widget
+            layout_component = wildcard_dict_table_widget
 
         return layout_component

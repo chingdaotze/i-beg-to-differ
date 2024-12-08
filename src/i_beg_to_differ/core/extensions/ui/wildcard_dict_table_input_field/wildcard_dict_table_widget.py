@@ -6,8 +6,7 @@ from PySide6.QtWidgets import (
 )
 
 from .....ui.widgets import TableWidget
-from ....wildcards_sets.wildcard_field import WildcardField
-from ....wildcards_sets import WildcardSets
+from ....wildcards_sets.wildcard_dict import WildcardDict
 
 
 class WildcardDictTableWidget(
@@ -18,13 +17,11 @@ class WildcardDictTableWidget(
     keys and values.
     """
 
-    values = Dict[WildcardField, WildcardField]
-    wildcard_sets: WildcardSets
+    wildcard_dict: WildcardDict
 
     def __init__(
         self,
-        values: Dict[str, str] | None = None,
-        wildcard_sets: WildcardSets | None = None,
+        wildcard_dict: WildcardDict,
         key_column: str = 'Parameter',
         value_column: str = 'Value',
         parent: QWidget | None = None,
@@ -41,23 +38,9 @@ class WildcardDictTableWidget(
             parent=parent,
         )
 
-        self.wildcard_sets = wildcard_sets
+        self.wildcard_dict = wildcard_dict
 
-        if values is None:
-            values = {}
-
-        self.values = {
-            WildcardField(
-                base_value=key,
-                wildcard_sets=self.wildcard_sets,
-            ): WildcardField(
-                base_value=value,
-                wildcard_sets=self.wildcard_sets,
-            )
-            for key, value in values.items()
-        }
-
-        for key, value in self.values.items():
+        for key, value in self.wildcard_dict.values.items():
             self.add_row()
             row = self.table.rowCount()
 
@@ -89,46 +72,44 @@ class WildcardDictTableWidget(
         column: int,
     ) -> None:
 
-        # Key
+        # Read table
         key = self.table.item(
             row,
             0,
-        )
+        ).text()
 
-        key = WildcardField(
-            base_value=key.text(),
-            wildcard_sets=self.wildcard_sets,
-        )
+        value = self.table.item(
+            row,
+            2,
+        ).text()
 
+        # Update previews
         self.table.setItem(
             row,
             1,
             QTableWidgetItem(
-                str(key),
+                str(
+                    self.wildcard_dict.to_wildcard_field(
+                        base_value=key,
+                    ),
+                ),
             ),
-        )
-
-        # Value
-        value = self.table.item(
-            row,
-            2,
-        )
-
-        value = WildcardField(
-            base_value=value.text(),
-            wildcard_sets=self.wildcard_sets,
         )
 
         self.table.setItem(
             row,
             3,
             QTableWidgetItem(
-                str(value),
+                str(
+                    self.wildcard_dict.to_wildcard_field(
+                        base_value=value,
+                    ),
+                ),
             ),
         )
 
-        # Update dict
-        self.values[key] = value
+        # Update wildcard dict
+        self.wildcard_dict[key] = value
 
     def delete_current_row(
         self,
@@ -139,14 +120,9 @@ class WildcardDictTableWidget(
         key = self.table.item(
             row,
             0,
-        )
+        ).text()
 
-        key = WildcardField(
-            base_value=key.text(),
-            wildcard_sets=self.wildcard_sets,
-        )
-
-        del self.values[key]
+        del self.wildcard_dict[key]
 
         TableWidget.delete_current_row(
             self=self,

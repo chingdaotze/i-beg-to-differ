@@ -30,7 +30,8 @@ class WildcardInputField(
     """
 
     title: str | None
-    wildcard_input_widget: WildcardInputWidgetPreview
+    wildcard_field: WildcardField
+    options: List[str] | Callable[[], List[str]] | None
 
     def __init__(
         self,
@@ -47,20 +48,19 @@ class WildcardInputField(
 
         self.title = title
 
-        self.wildcard_input_widget = WildcardInputWidgetPreview(
-            wildcard_field=WildcardField(
-                base_value=base_value,
-                wildcard_sets=wildcard_sets,
-            ),
-            options=options,
+        self.wildcard_field = WildcardField(
+            base_value=base_value,
+            wildcard_sets=wildcard_sets,
         )
+
+        self.options = options
 
     @property
     def base_value(
         self,
     ) -> str:
 
-        return self.wildcard_input_widget.wildcard_field.base_value
+        return self.wildcard_field.base_value
 
     @base_value.setter
     def base_value(
@@ -68,14 +68,17 @@ class WildcardInputField(
         value: str,
     ) -> None:
 
-        self.wildcard_input_widget.input_widget.set_text(
-            value=value,
-        )
+        self.wildcard_field.base_value = value
 
     @property
     def layout_component(
         self,
     ) -> QWidget:
+
+        wildcard_input_widget = WildcardInputWidgetPreview(
+            wildcard_field=self.wildcard_field,
+            options=self.options,
+        )
 
         if self.title is not None:
             layout_component = GroupBox(
@@ -83,12 +86,12 @@ class WildcardInputField(
             )
 
             layout_component.layout.addWidget(
-                self.wildcard_input_widget,
+                wildcard_input_widget,
                 0,
                 0,
             )
 
         else:
-            layout_component = self.wildcard_input_widget
+            layout_component = wildcard_input_widget
 
         return layout_component

@@ -95,7 +95,7 @@ class Extension(
 
         for attribute, value in self.__dict__.items():
             if isinstance(value, DescriptionInputField):
-                description_widget = value.description_widget
+                description_widget = value.layout_component
 
             elif isinstance(value, InputField):
                 input_field_layout.addWidget(

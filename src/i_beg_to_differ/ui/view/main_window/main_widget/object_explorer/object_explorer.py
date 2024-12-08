@@ -79,6 +79,8 @@ class ObjectExplorer(
             index,
         )
 
-        item.context_menu.exec_(
-            QCursor.pos(),
-        )
+        if isinstance(item, ModelBase):
+
+            item.context_menu.exec_(
+                QCursor.pos(),
+            )
