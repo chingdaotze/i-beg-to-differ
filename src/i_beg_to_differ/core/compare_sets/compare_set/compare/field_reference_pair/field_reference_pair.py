@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Self
 
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .field_reference import FieldReference
@@ -55,3 +56,24 @@ class FieldReferencePair(
     ) -> str:
 
         return f'{self.source_field_ref} | {self.target_field_ref}'
+
+    def __hash__(
+        self,
+    ):
+
+        return hash(
+            str(
+                self,
+            ),
+        )
+
+    def __eq__(
+        self,
+        other: Self,
+    ) -> bool:
+
+        return hash(
+            self,
+        ) == hash(
+            other,
+        )
