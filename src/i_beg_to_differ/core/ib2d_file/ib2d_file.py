@@ -187,7 +187,7 @@ class IB2DFile(
                     f'Unable to locate *.ib2d file: "{path!s}"!',
                 )
 
-            working_dir_path = IB2DFile.get_working_dir_path(
+            working_dir_path = cls.get_working_dir_path(
                 working_dir_path=working_dir_path,
             )
 
@@ -223,6 +223,13 @@ class IB2DFile(
                 key='ib2d_file_dir_path',
                 value=str(
                     path.parent.absolute(),
+                ),
+            )
+
+            wildcard_sets.update_system_wildcard(
+                key='working_dir_path',
+                value=str(
+                    working_dir_path.absolute(),
                 ),
             )
 
