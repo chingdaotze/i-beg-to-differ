@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (
     QTreeView,
     QStatusBar,
+    QAbstractItemView,
     QWidget,
 )
 from PySide6.QtCore import QModelIndex
@@ -27,6 +28,10 @@ class ObjectExplorer(
         QTreeView.__init__(
             self,
             parent=parent,
+        )
+
+        self.setEditTriggers(
+            QAbstractItemView.EditTrigger.NoEditTriggers,
         )
 
         self.object_viewer = object_viewer
