@@ -64,12 +64,11 @@ class ObjectExplorer(
 
         model = self.model()
 
-        """
         index = model.index(
             index.row(),
             0,
+            index.parent(),
         )
-        """
 
         item = model.itemFromIndex(
             index,
@@ -85,13 +84,18 @@ class ObjectExplorer(
     ):
 
         index = self.currentIndex()
+        model = self.model()
 
-        item = self.model().itemFromIndex(
+        index = model.index(
+            index.row(),
+            0,
+            index.parent(),
+        )
+
+        item = model.itemFromIndex(
             index,
         )
 
-        if isinstance(item, ModelBase):
-
-            item.context_menu.exec_(
-                QCursor.pos(),
-            )
+        item.context_menu.exec_(
+            QCursor.pos(),
+        )
