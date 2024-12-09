@@ -44,6 +44,7 @@ class WildcardFilePathInputField(
 
     def browse(
         self,
+        wildcard_input_widget: WildcardInputWidgetPreview,
     ) -> None:
 
         path, _ = QFileDialog.getOpenFileName(
@@ -53,6 +54,9 @@ class WildcardFilePathInputField(
 
         if path:
             self.base_value = path
+            wildcard_input_widget.input_widget.set_text(
+                value=path,
+            )
 
     @property
     def layout_component(
@@ -69,7 +73,9 @@ class WildcardFilePathInputField(
         )
 
         browse_button.clicked.connect(
-            self.browse,
+            lambda: self.browse(
+                wildcard_input_widget=wildcard_input_widget,
+            ),
         )
 
         wildcard_input_widget.layout.addWidget(

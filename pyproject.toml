@@ -55,8 +55,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://actuarial-model.readthedocs.io/en/latest/index.html"
-Documentation = "https://actuarial-model.readthedocs.io/en/latest/index.html"
+Homepage = "https://i-beg-to-differ.readthedocs.io/en/latest/index.html"
+Documentation = "https://i-beg-to-differ.readthedocs.io/en/latest/index.html"
 Repository = "https://github.com/chingdaotze/i-beg-to-differ.git"
 Issues = "https://github.com/chingdaotze/i-beg-to-differ/issues"
 Changelog = "https://github.com/chingdaotze/i-beg-to-differ/blob/main/CHANGELOG.md"

@@ -59,9 +59,23 @@ class ModelDataSources(
             title='New Data Source',
         )
 
+        dialog.resize(
+            300,
+            80,
+        )
+
+        dialog.setMinimumWidth(
+            300,
+        )
+
+        dialog.setMinimumHeight(
+            80,
+        )
+
         extension_name_map = [
             (data_source.extension_name, data_source)
             for data_source in self.current_state.data_source_extensions.collection.values()
+            if hasattr(data_source, 'extension_name')
         ]
 
         input_widget = StaticComboBox(
