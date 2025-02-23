@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformCustom class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -21,6 +25,10 @@ class FieldTransformCustom(
     CustomPythonExtension,
     FieldTransform,
 ):
+    """
+    Field transform using a custom user-defined Python script.
+    Allows arbitrary code execution.
+    """
 
     extension_name = 'Custom Python Transform Script'
 

@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformToUpperCase class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -17,6 +21,9 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class FieldTransformToUpperCase(
     FieldTransform,
 ):
+    """
+    Field transform that normalizes string to upper case.
+    """
 
     extension_name = "Convert to Upper Case"
     data_type = DataType.STRING

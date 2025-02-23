@@ -1,10 +1,13 @@
+"""
+Contains definition of the CompareRuleCustom class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
     Self,
 )
 from zipfile import ZipFile
-from copy import copy
 
 from pandas import Series
 
@@ -22,6 +25,10 @@ class CompareRuleCustom(
     CustomPythonExtension,
     CompareRule,
 ):
+    """
+    Compare rule using a custom user-defined Python script.
+    Allows arbitrary code execution.
+    """
 
     extension_name = 'Custom Python Compare Script'
 

@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSourceDataFrame class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -23,11 +27,8 @@ class DataSourceDataFrame(
     DataFrame.
     """
 
-    name: str
-
     def __init__(
         self,
-        name: str,
         data: DataFrame | None = None,
         description: str | None = None,
     ):
@@ -36,8 +37,6 @@ class DataSourceDataFrame(
             self=self,
             description=description,
         )
-
-        self.name = name
 
         if data is None:
             data = DataFrame()
@@ -48,7 +47,11 @@ class DataSourceDataFrame(
         self,
     ) -> str:
 
-        return self.name
+        return str(
+            id(
+                obj=self.data,
+            ),
+        )
 
     def load(
         self,

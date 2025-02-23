@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSourceSqlAlchemy class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -11,7 +15,10 @@ from sqlalchemy import (
     Table,
     MetaData,
 )
-from sqlalchemy.util import EMPTY_DICT
+from sqlalchemy.util import (
+    EMPTY_DICT,
+    immutabledict,
+)
 from pandas import (
     read_sql,
     DataFrame,
@@ -138,7 +145,8 @@ class DataSourceSqlAlchemy(
         self,
     ) -> str:
 
-        return f'{self.extension_name}: \'{self.base_url}\', Table: \'{self._table_name.base_value}\''
+        return f'{self.extension_name}: \'{self.base_url}\', '  \
+        f'Table: \'{self._table_name.base_value}\''
 
     @property
     def drivername(
@@ -159,7 +167,8 @@ class DataSourceSqlAlchemy(
     ) -> str:
         """
         SQLAlchemy Table ``name`` parameter.
-        More details: https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.Table.params.name
+        More details: 
+        https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.Table.params.name
         """
 
         return str(
@@ -260,7 +269,7 @@ class DataSourceSqlAlchemy(
     @property
     def query(
         self,
-    ) -> Dict[str, str] | EMPTY_DICT:
+    ) -> Dict[str, str] | immutabledict:
         """
         SQLAlchemy URL ``query`` parameter.
         More details: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.engine.URL
@@ -269,8 +278,7 @@ class DataSourceSqlAlchemy(
         if self._query:
             return {str(key): str(value) for key, value in self._query.values.items()}
 
-        else:
-            return EMPTY_DICT
+        return EMPTY_DICT
 
     @property
     def base_url(

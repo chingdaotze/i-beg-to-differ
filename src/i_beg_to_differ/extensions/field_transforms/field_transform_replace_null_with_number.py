@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformReplaceNullWithNumber class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -17,6 +21,10 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class FieldTransformReplaceNullWithNumber(
     FieldTransform,
 ):
+    """
+    Field transform that replaces NULL in a column with a number.
+    """
+
     _replacement_value: WildcardInputField
 
     extension_name = "Replace Null with Number"

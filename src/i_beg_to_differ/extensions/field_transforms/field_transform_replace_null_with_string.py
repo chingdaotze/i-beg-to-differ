@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformReplaceNullWithString class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -17,6 +21,9 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class FieldTransformReplaceNullWithString(
     FieldTransform,
 ):
+    """
+    Field transform that replaces NULL in a column with a string.
+    """
 
     replacement_value: WildcardInputField
     """

@@ -1,3 +1,8 @@
+"""
+Contains definition of the CompareRuleNumericTolerance class, 
+along with other supporting classes.
+"""
+
 from enum import StrEnum
 from pathlib import Path
 from typing import (
@@ -19,6 +24,10 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class DiffMode(
     StrEnum,
 ):
+    """
+    Specifies how the difference is calculated.
+    """
+
     PERCENT = 'percent'
     SUBTRACTION = 'subtraction'
 
@@ -26,6 +35,10 @@ class DiffMode(
 class NumericMode(
     StrEnum,
 ):
+    """
+    Specifies how the difference is treated.
+    """
+
     ABSOLUTE = 'absolute'
     REAL = 'real'
 
@@ -33,6 +46,9 @@ class NumericMode(
 class CompareRuleNumericTolerance(
     CompareRule,
 ):
+    """
+    Compare rule comparing a difference against a numeric tolerance.
+    """
 
     _tolerance: WildcardInputField
     _numeric_mode: WildcardInputField
@@ -94,8 +110,6 @@ class CompareRuleNumericTolerance(
     ) -> float:
         """
         Absolute tolerance.
-
-        :return: Absolute tolerance.
         """
 
         return float(
@@ -108,8 +122,6 @@ class CompareRuleNumericTolerance(
     ) -> DiffMode:
         """
         Difference mode that informs how differences between the source and target are calculated.
-
-        :return: Difference mode.
         """
 
         return DiffMode(
@@ -124,8 +136,6 @@ class CompareRuleNumericTolerance(
     ) -> NumericMode:
         """
         Numeric mode that informs how differences between the source and target are interpreted.
-
-        :return: Numeric mode.
         """
 
         return NumericMode(

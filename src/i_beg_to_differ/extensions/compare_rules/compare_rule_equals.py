@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareRuleEquals class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -16,6 +20,9 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class CompareRuleEquals(
     CompareRule,
 ):
+    """
+    Compare rule using strict equality.
+    """
 
     extension_name = 'Equals'
 

@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformStripWhitespace class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -17,6 +21,9 @@ from i_beg_to_differ.core.wildcards_sets import WildcardSets
 class FieldTransformStripWhitespace(
     FieldTransform,
 ):
+    """
+    Field transform that removes leading and trailing whitespace from a column.
+    """
 
     extension_name = "Strip Whitespace"
     data_type = DataType.STRING

@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSourceCsv class.
+"""
+
 from pathlib import Path
 from typing import (
     Dict,
@@ -85,6 +89,7 @@ class DataSourceCsv(
 
         return DataSourceCsv(
             path=instance_data['parameters']['path'],
+            description=instance_data['description'],
             wildcard_sets=wildcard_sets,
         )
 
