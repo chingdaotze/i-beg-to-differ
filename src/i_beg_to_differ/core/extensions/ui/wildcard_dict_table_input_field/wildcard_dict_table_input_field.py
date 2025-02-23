@@ -1,21 +1,25 @@
+"""
+Contains definition of the WildcardDictTableInputField class.
+"""
+
 from typing import Dict
 
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.ui.widgets import GroupBox
 from ..input_field import InputField
 from ....wildcards_sets.wildcard_dict import WildcardDict
 from .wildcard_dict_table_widget import WildcardDictTableWidget
 from ....wildcards_sets import WildcardSets
 from ....wildcards_sets.wildcard_field import WildcardField
-from .....ui.widgets import GroupBox
 
 
 class WildcardDictTableInputField(
     InputField,
 ):
     """
-    Wildcard dictionary input field. Creates a table of key-value pairs, with Wildcard value substitution in both
-    keys and values.
+    Wildcard dictionary input field. Creates a table of key-value pairs, 
+    with Wildcard value substitution in both keys and values.
     """
 
     title: str | None
@@ -51,6 +55,9 @@ class WildcardDictTableInputField(
     def values(
         self,
     ) -> Dict[WildcardField, WildcardField]:
+        """
+        Interface to the dictionary values.
+        """
 
         return self.wildcard_dict.values
 

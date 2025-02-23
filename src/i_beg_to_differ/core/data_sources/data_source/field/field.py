@@ -1,5 +1,8 @@
+"""
+Contains definition of the Field class.
+"""
+
 from typing import (
-    Dict,
     List,
     TYPE_CHECKING,
 )
@@ -100,7 +103,6 @@ class Field(
         Initializes a sequence of field transforms.
 
         :param field_transforms: Field transforms to initialize.
-        :return:
         """
 
         field_transforms = self.__convert_field_transforms(
@@ -129,7 +131,6 @@ class Field(
         Field transform will not be calculated.
 
         :param field_transforms: Transforms to add.
-        :return:
         """
 
         field_transforms = self.__convert_field_transforms(
@@ -147,7 +148,6 @@ class Field(
         Delete field transforms from the collection of field transforms for this field.
 
         :param __field_transforms: Transforms to delete.
-        :return:
         """
 
         field_transforms = self.__convert_field_transforms(
@@ -162,8 +162,6 @@ class Field(
     ) -> str:
         """
         Native data type for this field.
-
-        :return: Native data type.
         """
 
         return self.data_source.native_types[self.name]
@@ -174,8 +172,6 @@ class Field(
     ) -> str:
         """
         Python data type for this field.
-
-        :return: Python data type.
         """
 
         return self.data_source.py_types[self.name]

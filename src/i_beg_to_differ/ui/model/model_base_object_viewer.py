@@ -1,3 +1,7 @@
+"""
+Contains definition of the ModelBaseObjectViewer class.
+"""
+
 from abc import abstractmethod
 
 from PySide6.QtWidgets import (
@@ -5,9 +9,9 @@ from PySide6.QtWidgets import (
     QStatusBar,
 )
 
+from i_beg_to_differ.core.base import Base
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from .model_base import ModelBase
-from ...core.base import Base
-from ...core.wildcards_sets import WildcardSets
 from ..view.main_window.main_widget.object_viewer import ObjectViewer
 
 
@@ -15,7 +19,8 @@ class ModelBaseObjectViewer(
     ModelBase,
 ):
     """
-    QStandardItem for objects that render in an Object Viewer. Relies on Extension to provide Object Viewer widget.
+    QStandardItem for objects that render in an Object Viewer. 
+    Relies on Extension to provide Object Viewer widget.
     """
 
     object_viewer: ObjectViewer
@@ -51,6 +56,10 @@ class ModelBaseObjectViewer(
     def open_in_object_viewer(
         self,
     ):
+        """
+        Opens the object in the Object Viewer.
+        """
+
         self.object_viewer.open(
             item=self,
         )

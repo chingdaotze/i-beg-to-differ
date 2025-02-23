@@ -1,3 +1,8 @@
+"""
+Contains definition of the DataTypeExtension class 
+and other supporting classes.
+"""
+
 from enum import StrEnum
 from abc import ABC
 from typing import (
@@ -82,8 +87,6 @@ class DataTypeExtension(
 
         match self.data_type:
             case DataType.ANY:
-                pass
-
                 return values
 
             case DataType.STRING:

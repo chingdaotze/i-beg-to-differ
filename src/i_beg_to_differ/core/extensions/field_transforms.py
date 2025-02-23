@@ -1,8 +1,9 @@
-from ..data_sources.data_source.field.field_transforms.field_transform import (
-    FieldTransform,
-)
-from . import Extensions
+"""
+Contains definition of the FieldTransformExtensions class.
+"""
+
 from i_beg_to_differ.extensions import field_transforms
+from . import Extensions
 
 
 class FieldTransformExtensions[FieldTransform](

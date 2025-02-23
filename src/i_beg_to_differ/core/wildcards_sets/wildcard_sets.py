@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardSets class.
+"""
+
 from multiprocessing.managers import ListProxy
 from typing import (
     List,

@@ -1,3 +1,7 @@
+"""
+Contains definition of the InputField class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,

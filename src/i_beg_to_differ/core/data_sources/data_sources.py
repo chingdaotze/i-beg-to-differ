@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSources class.
+"""
+
 from typing import (
     Dict,
     ClassVar,
@@ -124,6 +128,9 @@ class DataSources(
     def list_data_sources(
         self,
     ) -> List[str]:
+        """
+        List of data sources as strings.
+        """
 
         return [str(data_source) for data_source in self._data_sources]
 

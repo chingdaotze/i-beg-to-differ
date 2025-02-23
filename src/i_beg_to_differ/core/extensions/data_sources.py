@@ -1,6 +1,9 @@
-from ..data_sources.data_source import DataSource
-from . import Extensions
+"""
+Contains definition of the DataSourceExtensions class.
+"""
+
 from i_beg_to_differ.extensions import data_sources
+from . import Extensions
 
 
 class DataSourceExtensions[DataSource](

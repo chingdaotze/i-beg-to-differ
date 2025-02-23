@@ -1,3 +1,7 @@
+"""
+Contains definition of the Extensions class.
+"""
+
 from abc import ABC
 from typing import (
     Dict,
@@ -18,6 +22,9 @@ class Extensions[T](
     Base,
     ABC,
 ):
+    """
+    Abstract class that represents a collection of `Extension`s.
+    """
 
     _collection: Dict[str, Type[T]]
 
@@ -69,6 +76,11 @@ class Extensions[T](
         self,
         extension_type: Type[Extension],
     ) -> None:
+        """
+        Registers an extension definition in the collection.
+
+        :param extension_type: Extension to register.
+        """
 
         extension_id = extension_type.get_extension_id()
 
@@ -77,8 +89,7 @@ class Extensions[T](
                 f'Extension: {extension_id} has already been registered!',
             )
 
-        else:
-            self._collection[extension_id] = extension_type
+        self._collection[extension_id] = extension_type
 
     def __getitem__(
         self,
@@ -88,14 +99,16 @@ class Extensions[T](
         if extension_id in self._collection:
             return self._collection[extension_id]
 
-        else:
-            raise KeyError(
-                f'Extension: {extension_id} has not been registered!',
-            )
+        raise KeyError(
+            f'Extension: {extension_id} has not been registered!',
+        )
 
     @property
     def collection(
         self,
     ) -> Dict[str, Type[T]]:
+        """
+        Read-only interface to the extensions types.
+        """
 
         return self._collection

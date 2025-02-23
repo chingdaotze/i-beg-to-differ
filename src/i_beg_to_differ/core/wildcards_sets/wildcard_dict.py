@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardDict class.
+"""
+
 from typing import Dict
 
 from .wildcard_field import WildcardField
@@ -5,6 +9,9 @@ from .wildcard_sets import WildcardSets
 
 
 class WildcardDict:
+    """
+    Dictionary where both keys and values are Wildcards.
+    """
 
     values: Dict[WildcardField, WildcardField]
     wildcard_sets: WildcardSets
@@ -34,6 +41,11 @@ class WildcardDict:
         self,
         base_value: str,
     ) -> WildcardField:
+        """
+        Converts a value to a WildcardField.
+
+        :param base_value: Value to convert.
+        """
 
         return WildcardField(
             base_value=base_value,

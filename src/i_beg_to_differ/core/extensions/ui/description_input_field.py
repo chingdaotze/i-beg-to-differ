@@ -1,8 +1,12 @@
+"""
+Contains definition of the CompareRuleExtensions class.
+"""
+
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.ui.widgets import DescriptionWidget
 from .input_field import InputField
 from ...wildcards_sets.wildcard_field import WildcardField
-from ....ui.widgets import DescriptionWidget
 
 
 class DescriptionInputField(
@@ -30,6 +34,9 @@ class DescriptionInputField(
     def value(
         self,
     ) -> str:
+        """
+        Description text.
+        """
 
         return self.description.base_value
 

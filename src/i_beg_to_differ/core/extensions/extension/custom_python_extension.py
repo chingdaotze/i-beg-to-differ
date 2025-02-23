@@ -1,3 +1,7 @@
+"""
+Contains definition of the CustomPythonExtension class.
+"""
+
 from abc import ABC
 from pathlib import Path
 from typing import Callable
@@ -21,15 +25,19 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 
+from i_beg_to_differ.ui.widgets import Widget
 from .extension import Extension
 from ...wildcards_sets import WildcardSets
-from ....ui.widgets import Widget
 
 
 class CustomPythonExtension(
     Extension,
     ABC,
 ):
+    """
+    Abstract class for a custom Python extension. Manages and executes
+    Python code from a Python file.
+    """
 
     working_dir_path: Path
     py_file_name: str
@@ -95,7 +103,8 @@ class CustomPythonExtension(
         self,
     ) -> Signature:
         """
-        Python function signature that contains main extension logic. Used to build a new Python file.
+        Python function signature that contains main extension logic. 
+        Used to build a new Python file.
 
         :return:
         """

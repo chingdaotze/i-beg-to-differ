@@ -1,3 +1,7 @@
+"""
+Contains definition of the IB2DFile class.
+"""
+
 from pathlib import Path
 from zipfile import ZipFile
 from io import BytesIO
@@ -9,7 +13,10 @@ from json import (
 from os import getenv
 from contextlib import contextmanager
 from uuid import uuid4
-from typing import Self
+from typing import (
+    Generator, 
+    Self,
+)
 
 from ..base import Base
 from ..wildcards_sets import WildcardSets
@@ -113,6 +120,12 @@ class IB2DFile(
     def get_working_dir_path(
         working_dir_path: str | Path | None = None,
     ) -> Path:
+        """
+        Creates and sets a default working directory path, if one isn't provided.
+
+        :param working_dir_path: Working directory path to check or use.
+        """
+
         if working_dir_path is None:
             working_dir_path = getenv(
                 key='TEMP',
@@ -143,6 +156,11 @@ class IB2DFile(
     def load_zip_file(
         path: Path,
     ) -> ZipFile:
+        """
+        Loads an `*.ib2d` file as `ZipFile`.
+
+        :param path: Path to the `*.ib2d` file.
+        """
 
         with open(file=path, mode='rb') as input_file:
             ib2d_file_bytes = BytesIO(
@@ -162,9 +180,10 @@ class IB2DFile(
         cls,
         path: str | Path,
         working_dir_path: str | Path | None = None,
-    ) -> Self:
+    ) -> Generator[Self]:
         """
-        Reads a ``*.ib2d`` file from disk and creates an instance. Also initializes the working directory.
+        Reads a ``*.ib2d`` file from disk and creates an instance. 
+        Also initializes the working directory.
 
         :param path: ``*.ib2d`` file path.
         :param working_dir_path: Working directory path.

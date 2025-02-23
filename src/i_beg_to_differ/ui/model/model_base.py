@@ -1,3 +1,7 @@
+"""
+Contains definition of the ModelBase class.
+"""
+
 from __future__ import annotations
 from typing import Any
 from functools import cached_property
@@ -12,13 +16,16 @@ from PySide6.QtWidgets import (
     QStatusBar,
 )
 
-from ...core.base import Base
-from ...core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.base import Base
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
 class ModelBase(
     QStandardItem,
 ):
+    """
+    Base class for all items in the Qt Model.
+    """
 
     _base_state: int
     current_state: Base
@@ -49,6 +56,10 @@ class ModelBase(
     def base_state(
         self,
     ) -> int:
+        """
+        Prior state of the underlying object. Used to track
+        status and allow reversion.
+        """
 
         return self._base_state
 
@@ -66,6 +77,10 @@ class ModelBase(
         self,
         role: Qt.ItemDataRole = Qt.ItemDataRole.DisplayRole,
     ):
+        """
+        Overrides this method:
+        https://doc.qt.io/qtforpython-6/PySide6/QtGui/QStandardItem.html#PySide6.QtGui.QStandardItem.data
+        """
 
         if role == Qt.ItemDataRole.DisplayRole:
             return str(
@@ -78,6 +93,10 @@ class ModelBase(
         self,
         item: 'ModelBase',
     ) -> None:
+        """
+        Overrides this method:
+        https://doc.qt.io/qtforpython-6/PySide6/QtGui/QStandardItem.html#PySide6.QtGui.QStandardItem.appendRow
+        """
 
         type_name = QStandardItem(
             type(
@@ -110,6 +129,9 @@ class ModelBase(
     def object_type(
         self,
     ) -> str:
+        """
+        Object type, as a string.
+        """
 
         return type(
             self.current_state,
@@ -119,6 +141,9 @@ class ModelBase(
     def is_modified(
         self,
     ) -> bool:
+        """
+        Boolean flag to indicate whether the underlying object has been modified.
+        """
 
         return (
             hash(
@@ -131,6 +156,9 @@ class ModelBase(
     def modified_indicator(
         self,
     ) -> str:
+        """
+        String flag to indicate whether the underlying object has been modified.
+        """
 
         if self.is_modified:
             return '*'
@@ -146,10 +174,3 @@ class ModelBase(
         """
         Generates a menu, defined by the object.
         """
-
-    def open_in_object_viewer(
-        self,
-    ):
-        self.object_viewer.open(
-            item=self,
-        )

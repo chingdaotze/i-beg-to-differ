@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSource class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,
@@ -139,7 +143,7 @@ class DataSource(
         :return:
         """
 
-        self._cache_namespace._cache = None
+        self._cache_namespace.cache = None
 
     @abstractmethod
     def load(
@@ -228,4 +232,10 @@ class DataSource(
         self,
         field_reference: FieldReference,
     ) -> Series:
+        """
+        Force-calculate a field. Useful for multiprocessing.
+
+        :param field_reference: Field to calculate.
+        """
+
         return self[field_reference]

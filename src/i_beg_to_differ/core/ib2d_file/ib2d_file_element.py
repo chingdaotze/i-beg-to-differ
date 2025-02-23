@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformExtensions class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,
@@ -11,10 +15,10 @@ from typing import (
     Union,
 )
 
+from ..base import Base
+
 if TYPE_CHECKING:
     from ..wildcards_sets import WildcardSets
-
-from ..base import Base
 
 
 class IB2DFileElement(
@@ -42,8 +46,10 @@ class IB2DFileElement(
         wildcard_sets: Union['WildcardSets', None] = None,
     ) -> Self:
         """
-        Constructs an instance from a dictionary. Also extracts any supporting files from the ``*.compare``
+        Constructs an instance from a dictionary. 
+        Also extracts any supporting files from the ``*.compare``
         file to the working directory.
+
         :param instance_data: Dictionary that contains instance data.
         :param working_dir_path: Working directory path.
         :param ib2d_file: ``*.ib2d`` file.
@@ -57,7 +63,8 @@ class IB2DFileElement(
         ib2d_file: ZipFile,
     ) -> Dict:
         """
-        Constructs a dictionary from an instance. Also compresses any supporting files from the working
+        Constructs a dictionary from an instance. 
+        Also compresses any supporting files from the working
         directory to a ``*.ib2d`` file.
 
         :param ib2d_file: ``*.ib2d`` file.

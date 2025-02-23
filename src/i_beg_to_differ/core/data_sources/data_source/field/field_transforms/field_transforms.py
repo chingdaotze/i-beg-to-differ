@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransforms class.
+"""
+
 from typing import (
     List,
     ClassVar,
@@ -57,8 +61,8 @@ class FieldTransforms(
             return ' >> '.join(
                 [str(transform) for transform in self.transforms],
             )
-        else:
-            return 'None'
+
+        return 'None'
 
     def __bool__(
         self,
@@ -66,8 +70,7 @@ class FieldTransforms(
         if self.transforms:
             return True
 
-        else:
-            return False
+        return False
 
     def __getitem__(
         self,
@@ -168,6 +171,12 @@ class FieldTransforms(
         self,
         values: Series,
     ) -> Series:
+        """
+        Applies transforms on a `Series` of values.
+
+        :param values: Values to transform.
+        :return: Transformed values.
+        """
 
         for transform in self:
 

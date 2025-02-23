@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransform class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,

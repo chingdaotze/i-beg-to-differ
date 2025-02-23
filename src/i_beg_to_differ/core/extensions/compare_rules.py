@@ -1,8 +1,9 @@
-from ..compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
-    CompareRule,
-)
-from . import Extensions
+"""
+Contains definition of the CompareRuleExtensions class.
+"""
+
 from i_beg_to_differ.extensions import compare_rules
+from . import Extensions
 
 
 class CompareRuleExtensions[CompareRule](

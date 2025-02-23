@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardField class.
+"""
+
 from .wildcard_field_base import WildcardFieldBase
 from . import WildcardSets
 

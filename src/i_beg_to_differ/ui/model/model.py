@@ -1,12 +1,16 @@
+"""
+Contains definition of the Model class.
+"""
+
 from pathlib import Path
 from typing import Self
 
 from PySide6.QtGui import QStandardItemModel
 from PySide6.QtWidgets import QStatusBar
 
+from i_beg_to_differ.core.ib2d_file import IB2DFile
+from i_beg_to_differ.core import open_ib2d_file
 from ..view.main_window.main_widget.object_viewer import ObjectViewer
-from ...core.ib2d_file import IB2DFile
-from ...core import open_ib2d_file
 from .compare_sets import ModelCompareSets
 from .data_sources import ModelDataSources
 from .wildcard_sets import ModelWildcardSets
@@ -15,6 +19,9 @@ from .wildcard_sets import ModelWildcardSets
 class Model(
     QStandardItemModel,
 ):
+    """
+    Qt Model represenation of an `*.ib2d` file.
+    """
 
     ib2d_file: IB2DFile
 

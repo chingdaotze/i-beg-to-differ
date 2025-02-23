@@ -1,3 +1,7 @@
+"""
+Contains definition of the dict_to_dataframe function.
+"""
+
 from typing import Dict
 
 from pandas import DataFrame

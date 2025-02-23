@@ -1,23 +1,27 @@
+"""
+Contains definition of the WildcardFilePathInputField class.
+"""
+
 from PySide6.QtWidgets import (
     QFileDialog,
     QPushButton,
     QWidget,
 )
 
-from .wildcard_input_field import WildcardInputField
-from ...wildcards_sets import WildcardSets
-from ....ui.widgets import (
+from i_beg_to_differ.ui.widgets import (
     WildcardInputWidgetPreview,
     GroupBox,
 )
+from .wildcard_input_field import WildcardInputField
+from ...wildcards_sets import WildcardSets
 
 
 class WildcardFilePathInputField(
     WildcardInputField,
 ):
     """
-    Identical in behavior to ``WildcardInputField``, except provides a file browser interface to select a
-    single file.
+    Identical in behavior to ``WildcardInputField``, 
+    except provides a file browser interface to select a single file.
     """
 
     file_dialog_caption: str
@@ -46,6 +50,11 @@ class WildcardFilePathInputField(
         self,
         wildcard_input_widget: WildcardInputWidgetPreview,
     ) -> None:
+        """
+        Open a file browser dialog to request a file path.
+
+        :param wildcard_input_widget: Graphical widget to update.
+        """
 
         path, _ = QFileDialog.getOpenFileName(
             caption=self.file_dialog_caption,

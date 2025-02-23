@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardInputField class.
+"""
+
 from typing import (
     Callable,
     List,
@@ -5,13 +9,13 @@ from typing import (
 
 from PySide6.QtWidgets import QWidget
 
-from ...wildcards_sets.wildcard_field_base import WildcardFieldBase
-from ...wildcards_sets.wildcard_field import WildcardField
-from .input_field import InputField
-from ....ui.widgets import (
+from i_beg_to_differ.ui.widgets import (
     WildcardInputWidgetPreview,
     GroupBox,
 )
+from ...wildcards_sets.wildcard_field_base import WildcardFieldBase
+from ...wildcards_sets.wildcard_field import WildcardField
+from .input_field import InputField
 from ...wildcards_sets import WildcardSets
 
 
@@ -20,11 +24,13 @@ class WildcardInputField(
     InputField,
 ):
     """
-    Wildcard input field that also provides a widget interface. Creates a text input field with Wildcard
-    value substitution. Options can be provided in several forms:
+    Wildcard input field that also provides a widget interface. 
+    Creates a text input field with Wildcard value substitution. 
+    Options can be provided in several forms:
+
         - As a static list.
-        - As a dynamic list, where a function provides option values. The function is recalculated every time
-          the dropdown is activated.
+        - As a dynamic list, where a function provides option values. 
+          The function is recalculated every time the dropdown is activated.
 
     If options are provided, they appear as ``QComboBox`` options.
     """

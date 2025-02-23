@@ -1,11 +1,15 @@
+"""
+Contains definition of the ModelBaseExtension class.
+"""
+
 from PySide6.QtWidgets import (
     QStatusBar,
     QWidget,
 )
 
+from i_beg_to_differ.core.extensions.extension import Extension
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from .model_base_object_viewer import ModelBaseObjectViewer
-from ...core.extensions.extension import Extension
-from ...core.wildcards_sets import WildcardSets
 from ..view.main_window.main_widget.object_viewer import ObjectViewer
 
 
@@ -39,9 +43,7 @@ class ModelBaseExtension(
         self,
     ) -> QWidget:
         """
-        Returns an Object Viewer widget defined in the Extension.
-
-        :return:
+        Object Viewer widget defined in the Extension.
         """
 
         return self.current_state.object_viewer_widget

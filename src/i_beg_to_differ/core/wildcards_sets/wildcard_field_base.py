@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardFieldBase class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,

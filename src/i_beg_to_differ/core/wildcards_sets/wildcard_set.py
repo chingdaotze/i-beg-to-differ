@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardSet class.
+"""
+
 from multiprocessing.managers import DictProxy
 from pathlib import Path
 from typing import (
@@ -80,6 +84,10 @@ class WildcardSet(
     def replacement_values(
         self,
     ) -> Dict[str, str]:
+        """
+        Replacement values as a Dictionary. System values are overriden
+        by user-provided values.
+        """
 
         system_replacement_values = dict(
             self.system_replacement_values,

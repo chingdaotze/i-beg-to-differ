@@ -1,11 +1,13 @@
-from typing import Dict
+"""
+Contains definition of the WildcardDictTableWidget class.
+"""
 
 from PySide6.QtWidgets import (
     QWidget,
     QTableWidgetItem,
 )
 
-from .....ui.widgets import TableWidget
+from i_beg_to_differ.ui.widgets import TableWidget
 from ....wildcards_sets.wildcard_dict import WildcardDict
 
 

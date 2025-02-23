@@ -1,3 +1,7 @@
+"""
+Contains definition of the Extension class.
+"""
+
 from abc import ABC
 from typing import ClassVar
 
@@ -55,14 +59,18 @@ class Extension(
 
         # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
 
-        return cls.__module__.split('.')[-1]
+        return cls.__module__.rsplit(
+            '.', 
+            maxsplit=1,
+        )[-1]
 
     @property
     def object_viewer_widget(
         self,
     ) -> QWidget:
         """
-        Defines this Extension's Object Viewer widget. Override this method to provide a custom widget in the UI.
+        Defines this Extension's Object Viewer widget. 
+        Override this method to provide a custom widget in the UI.
         By default, this method parses the Extension object for attributes to add to the widget.
 
         :return: Object Viewer widget.
@@ -93,7 +101,7 @@ class Extension(
         # Scan for Input Fields
         description_widget = None
 
-        for attribute, value in self.__dict__.items():
+        for value in self.__dict__.values():
             if isinstance(value, DescriptionInputField):
                 description_widget = value.layout_component
 
