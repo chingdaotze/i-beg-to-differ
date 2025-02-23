@@ -11,10 +11,7 @@ from contextlib import contextmanager
 from uuid import uuid4
 from typing import Self
 
-from ..base import (
-    Base,
-    log_exception,
-)
+from ..base import Base
 from ..wildcards_sets import WildcardSets
 from ..compare_sets import CompareSets
 from ..data_sources import DataSources
@@ -161,7 +158,6 @@ class IB2DFile(
 
     @classmethod
     @contextmanager
-    @log_exception
     def open(
         cls,
         path: str | Path,
@@ -283,7 +279,6 @@ class IB2DFile(
         finally:
             pass
 
-    @log_exception
     def save(
         self,
         path: str | Path,

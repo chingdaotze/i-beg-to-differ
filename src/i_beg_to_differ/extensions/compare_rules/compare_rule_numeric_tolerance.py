@@ -14,7 +14,6 @@ from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.
 from i_beg_to_differ.core.extensions.ui import WildcardInputField
 from i_beg_to_differ.core.extensions.extension import DataType
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
-from i_beg_to_differ.core.base import log_exception
 
 
 class DiffMode(
@@ -90,7 +89,6 @@ class CompareRuleNumericTolerance(
         )
 
     @property
-    @log_exception
     def tolerance(
         self,
     ) -> float:
@@ -105,7 +103,6 @@ class CompareRuleNumericTolerance(
         )
 
     @property
-    @log_exception
     def diff_mode(
         self,
     ) -> DiffMode:
@@ -122,7 +119,6 @@ class CompareRuleNumericTolerance(
         )
 
     @property
-    @log_exception
     def numeric_mode(
         self,
     ) -> NumericMode:
@@ -183,7 +179,6 @@ class CompareRuleNumericTolerance(
         return result
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -199,7 +194,6 @@ class CompareRuleNumericTolerance(
             wildcard_sets=wildcard_sets,
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

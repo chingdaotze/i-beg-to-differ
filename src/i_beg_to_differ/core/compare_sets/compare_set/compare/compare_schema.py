@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareSchema class.
+"""
+
 from abc import ABC
 
 from pandas import DataFrame
@@ -13,11 +17,17 @@ class CompareSchema(
     CompareBase,
     ABC,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     @property
     def schema_compare(
         self,
     ) -> DataFrame:
+        """
+        Schema comparison between the Source and Target.
+        """
 
         source_types = DataSources.data_source_extensions['data_source_dataframe'](
             name='source',

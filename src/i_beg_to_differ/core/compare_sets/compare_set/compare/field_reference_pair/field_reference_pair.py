@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldReferencePair class.
+"""
+
 from abc import ABC
 from typing import Self
 

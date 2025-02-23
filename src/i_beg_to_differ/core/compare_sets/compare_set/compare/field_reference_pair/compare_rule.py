@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareRule class.
+"""
+
 from abc import (
     ABC,
     abstractmethod,

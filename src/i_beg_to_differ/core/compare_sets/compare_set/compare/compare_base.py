@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareBase class.
+"""
+
 from typing import List
 from abc import ABC
 
@@ -68,15 +72,33 @@ class CompareBase(
     def source_data_source(
         self,
     ) -> DataSource:
+        """
+        Source data source, referenced by `source_data_source_ref`.
+        """
 
-        return self.data_sources[self.source_data_source_ref]
+        if self.source_data_source_ref in self.data_sources:
+            return self.data_sources[self.source_data_source_ref]
+
+        raise KeyError(
+            f'Could not locate Source Data Source: "{self.source_data_source_ref}" '
+            'in Data Sources!',
+        )
 
     @property
     def target_data_source(
         self,
     ) -> DataSource:
+        """
+        Target data source, referenced by `target_data_source_ref`.
+        """
 
-        return self.data_sources[self.target_data_source_ref]
+        if self.target_data_source_ref in self.data_sources:
+            return self.data_sources[self.target_data_source_ref]
+
+        raise KeyError(
+            f'Could not locate Target Data Source: "{self.target_data_source_ref}" '
+            'in Data Sources!',
+        )
 
     @property
     def pk_fields(
@@ -253,6 +275,9 @@ class CompareBase(
     def source_table_deduplicated(
         self,
     ) -> DataFrame:
+        """
+        Source table where duplicate records are dropped (based on index).
+        """
 
         deduplicated_table = self.source_table[
             ~self.source_table.index.duplicated(
@@ -298,6 +323,9 @@ class CompareBase(
     def target_table_deduplicated(
         self,
     ) -> DataFrame:
+        """
+        Target table where duplicate records are dropped (based on index).
+        """
 
         deduplicated_table = self.target_table[
             ~self.target_table.index.duplicated(

@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareMatchingRecords class.
+"""
+
 from typing import List
 
 from pandas import (
@@ -18,6 +22,9 @@ from ....wildcards_sets import WildcardSets
 class CompareMatchingRecords(
     CompareValuesUnmasked,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -43,6 +50,9 @@ class CompareMatchingRecords(
     def matching_records(
         self,
     ) -> DataFrame:
+        """
+        DataFrame of all matching records between the Source and Target.
+        """
 
         matching_records = self.values_comparison_unmasked.copy(
             deep=True,

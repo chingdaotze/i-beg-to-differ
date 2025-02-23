@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareTargetDuplicatePrimaryKeyRecords class.
+"""
+
 from typing import List
 
 from pandas import DataFrame
@@ -15,6 +19,9 @@ from ....wildcards_sets import WildcardSets
 class CompareTargetDuplicatePrimaryKeyRecords(
     CompareBase,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -40,6 +47,9 @@ class CompareTargetDuplicatePrimaryKeyRecords(
     def target_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
+        """
+        DataFrame of all duplicate records in the Target.
+        """
 
         duplicated_dataframe = self.target_table[
             self.target_table.index.duplicated(

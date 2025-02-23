@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareTargetOnlyRecords class.
+"""
+
 from typing import List
 
 from pandas import DataFrame
@@ -15,6 +19,9 @@ from ....wildcards_sets import WildcardSets
 class CompareTargetOnlyRecords(
     CompareBase,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -40,6 +47,9 @@ class CompareTargetOnlyRecords(
     def target_only_records(
         self,
     ) -> DataFrame:
+        """
+        DataFrame of records only found in the Target.
+        """
 
         inner_index = self.source_table_deduplicated.index.join(
             other=self.target_table_deduplicated.index,

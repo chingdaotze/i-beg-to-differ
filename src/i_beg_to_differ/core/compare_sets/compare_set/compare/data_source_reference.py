@@ -1,3 +1,7 @@
+"""
+Contains definition of the DataSourceReference class.
+"""
+
 from ....base import Base
 from ....wildcards_sets.wildcard_field import WildcardField
 from ....wildcards_sets import WildcardSets

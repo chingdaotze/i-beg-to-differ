@@ -1,3 +1,7 @@
+"""
+Contains definition of the Compare class.
+"""
+
 from typing import (
     List,
     Dict,
@@ -51,6 +55,9 @@ class Compare(
     CompareTargetDuplicatePrimaryKeyRecords,
     CompareSchema,
 ):
+    """
+    Mixin that contains all comparisons.
+    """
 
     name: str
     """
@@ -105,8 +112,8 @@ class Compare(
         instance_data: Dict,
         working_dir_path: Path,
         ib2d_file: ZipFile,
-        data_sources: DataSources = None,
         wildcard_sets: WildcardSets | None = None,
+        data_sources: DataSources = None,
     ) -> Self:
 
         source_data_source_ref = DataSourceReference(
@@ -188,6 +195,9 @@ class Compare(
     def all_reports(
         self,
     ) -> Dict[str, DataFrame]:
+        """
+        Dictionary of DataFrames that contains all comparison reports.
+        """
 
         return {
             'schema_compare': self.schema_compare,
@@ -212,7 +222,6 @@ class Compare(
         :param dir_path: Directory to save reports.
         :param file_name_prefix: File name prefix for *.parquet files.
         :param file_name_suffix: File name suffix for *.parquet files.
-        :return:
         """
 
         if isinstance(dir_path, str):
@@ -265,7 +274,6 @@ class Compare(
         :param dir_path: Directory to save reports.
         :param file_name_prefix: File name prefix for *.csv files.
         :param file_name_suffix: File name suffix for *.csv files.
-        :return:
         """
 
         if isinstance(dir_path, str):
@@ -297,7 +305,7 @@ class Compare(
                 dir_path / f'{file_name_prefix}{report_name}{file_name_suffix}.csv'
             )
 
-            with open(file=file_path, mode='w', newline='') as file:
+            with open(file=file_path, mode='w', newline='', encoding='utf-8') as file:
                 file.write(
                     buffer.getvalue(),
                 )
@@ -314,7 +322,6 @@ class Compare(
         Writes all reports as sheets in a specified Excel file.
 
         :param path: Path to the Excel file.
-        :return:
         """
 
         if isinstance(path, str):

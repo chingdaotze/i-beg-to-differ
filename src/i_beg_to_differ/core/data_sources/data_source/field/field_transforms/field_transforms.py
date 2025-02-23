@@ -13,7 +13,6 @@ from pandas import Series
 from .....ib2d_file.ib2d_file_element import IB2DFileElement
 from .field_transform import FieldTransform
 from .....extensions.field_transforms import FieldTransformExtensions
-from .....base import log_exception
 from .....wildcards_sets import WildcardSets
 
 
@@ -94,7 +93,6 @@ class FieldTransforms(
         )
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -122,7 +120,6 @@ class FieldTransforms(
             transforms=transforms,
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,
@@ -137,7 +134,6 @@ class FieldTransforms(
             ],
         }
 
-    @log_exception
     def append(
         self,
         transform: FieldTransform,
@@ -153,7 +149,6 @@ class FieldTransforms(
             transform,
         )
 
-    @log_exception
     def remove(
         self,
         transform: FieldTransform,
@@ -169,7 +164,6 @@ class FieldTransforms(
             transform,
         )
 
-    @log_exception
     def apply(
         self,
         values: Series,

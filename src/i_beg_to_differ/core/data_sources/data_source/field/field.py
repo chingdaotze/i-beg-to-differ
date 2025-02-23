@@ -3,10 +3,11 @@ from typing import (
     List,
     TYPE_CHECKING,
 )
+from multiprocessing.managers import DictProxy
 
 from pandas import Series
 
-from ....base import Base, log_exception
+from ....base import Base
 from .field_transforms import FieldTransforms
 from .field_transforms.field_transform import FieldTransform
 
@@ -32,7 +33,7 @@ class Field(
     Base data layer.
     """
 
-    field_transforms: Dict[FieldTransforms, Series | None]
+    field_transforms: DictProxy[FieldTransforms, Series | None]
     """
     Dictionary of transformations that apply to this field, and corresponding values.
     """
@@ -119,7 +120,6 @@ class Field(
 
             self.field_transforms[field_transforms] = values
 
-    @log_exception
     def append(
         self,
         field_transforms: FieldTransforms | List[FieldTransform] | None,
@@ -139,7 +139,6 @@ class Field(
         if field_transforms not in self.field_transforms:
             self.field_transforms[field_transforms] = None
 
-    @log_exception
     def remove(
         self,
         __field_transforms: FieldTransforms | List[FieldTransform] | None,
@@ -158,7 +157,6 @@ class Field(
         del self.field_transforms[field_transforms]
 
     @property
-    @log_exception
     def native_type(
         self,
     ) -> str:
@@ -171,7 +169,6 @@ class Field(
         return self.data_source.native_types[self.name]
 
     @property
-    @log_exception
     def py_type(
         self,
     ) -> str:

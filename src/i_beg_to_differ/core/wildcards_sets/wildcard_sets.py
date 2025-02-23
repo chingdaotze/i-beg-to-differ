@@ -1,3 +1,4 @@
+from multiprocessing.managers import ListProxy
 from typing import (
     List,
     Dict,
@@ -7,7 +8,6 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..base import log_exception
 from .wildcard_set import WildcardSet
 
 
@@ -18,7 +18,7 @@ class WildcardSets(
     Collection of wildcard sets, used to replace values.
     """
 
-    _wildcard_sets: List[WildcardSet]
+    _wildcard_sets: ListProxy[WildcardSet]
     _active_wildcard_set: WildcardSet | None
     _DEFAULT_WILDCARD_SET = 'Default'
 
@@ -110,7 +110,6 @@ class WildcardSets(
         return self._active_wildcard_set
 
     @active_wildcard_set.setter
-    # @log_exception
     def active_wildcard_set(
         self,
         name: str | None,
@@ -138,7 +137,6 @@ class WildcardSets(
 
             self._active_wildcard_set = None
 
-    @log_exception
     def replace_wildcards(
         self,
         string: str,
@@ -160,7 +158,6 @@ class WildcardSets(
 
             return string
 
-    @log_exception
     def update_system_wildcard(
         self,
         key: str,
@@ -172,7 +169,6 @@ class WildcardSets(
             instance.system_replacement_values[key] = value
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -196,7 +192,6 @@ class WildcardSets(
             ],
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

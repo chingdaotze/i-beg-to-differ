@@ -1,3 +1,4 @@
+from multiprocessing.managers import DictProxy
 from pathlib import Path
 from typing import (
     Dict,
@@ -6,7 +7,6 @@ from typing import (
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..base import log_exception
 
 
 class WildcardSet(
@@ -26,12 +26,12 @@ class WildcardSet(
     Human-readable description of this Wildcard Set.
     """
 
-    user_replacement_values: Dict[str, str]
+    user_replacement_values: DictProxy[str, str]
     """
     User-defined wildcard replacement values.
     """
 
-    system_replacement_values: Dict[str, str]
+    system_replacement_values: DictProxy[str, str]
     """
     System-defined wildcard replacement values.
     """
@@ -70,7 +70,6 @@ class WildcardSet(
         return self.name
 
     @property
-    @log_exception
     def __replacement_values(
         self,
     ) -> Dict[str, str]:
@@ -92,7 +91,6 @@ class WildcardSet(
 
         return system_replacement_values | user_replacement_values
 
-    @log_exception
     def replace_wildcards(
         self,
         string: str,
@@ -125,7 +123,6 @@ class WildcardSet(
         return string
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -140,7 +137,6 @@ class WildcardSet(
             user_replacement_values=instance_data['replacement_values'],
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

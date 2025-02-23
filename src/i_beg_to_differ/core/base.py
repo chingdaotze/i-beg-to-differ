@@ -1,15 +1,19 @@
+"""
+Contains definition of the Base class.
+"""
+
 from multiprocessing import (
     Lock,
-    Pool,
+    Pool as MultiprocessingPool,
     Manager,
 )
+from multiprocessing.managers import SyncManager
+from multiprocessing.pool import Pool
 from typing import (
-    Callable,
-    Any,
     ClassVar,
     Self,
+    NoReturn,
 )
-from time import time
 from abc import (
     ABC,
     abstractmethod,
@@ -27,83 +31,6 @@ Global multiprocessing lock.
 """
 
 
-def log_runtime(
-    f: Callable,
-) -> Callable:
-    """
-    Decorator that logs runtime to a log file.
-
-    :param f: Arbitrary instance method from ``Base`` class.
-    :return:
-    """
-
-    def wrapper(
-        self,
-        *args,
-        **kwargs,
-    ) -> Any:
-
-        start_time = time()
-
-        result = f(
-            self,
-            *args,
-            **kwargs,
-        )
-
-        end_time = time()
-        runtime = end_time - start_time
-
-        lock.acquire()
-        self.logger.info(
-            msg=f'Function - {f.__name__}, Runtime - {runtime:.2f} seconds.',
-        )
-        lock.release()
-
-        return result
-
-    return wrapper
-
-
-def log_exception(
-    f: Callable,
-) -> Callable:
-    """
-    Decorator that logs exceptions to a log file.
-
-    :param f: Arbitrary instance method from ``Base`` class.
-    :return:
-    """
-
-    def wrapper(
-        self,
-        *args,
-        **kwargs,
-    ) -> Any:
-
-        try:
-
-            result = f(
-                self,
-                *args,
-                **kwargs,
-            )
-
-            return result
-
-        except Exception as e:
-
-            lock.acquire()
-            self.logger.exception(
-                msg='Encountered exception. Traceback below:\n\n',
-            )
-            lock.release()
-
-            raise e
-
-    return wrapper
-
-
 class Base(
     ABC,
 ):
@@ -118,15 +45,17 @@ class Base(
 
     __pool: ClassVar[Pool] = None
 
-    __manager: ClassVar[Manager] = None
+    __manager: ClassVar[SyncManager] = None
 
     @abstractmethod
     def __str__(
         self,
     ) -> str:
         """
-        Method that returns a string representation of this object.
-        This string value is used for hashing and equality tests.
+        String value used for hashing and equality tests,
+        among other things.
+
+        :return: String representation of this object.
         """
 
     def __repr__(
@@ -139,11 +68,14 @@ class Base(
 
     def __format__(
         self,
-        format_spec,
+        format_spec: str,
     ) -> str:
 
-        return str(
-            self,
+        return format(
+            str(
+                self,
+            ),
+            format_spec,
         )
 
     def __hash__(
@@ -164,7 +96,8 @@ class Base(
         self,
         other: Self,
     ) -> bool:
-
+        # pylint: disable=unidiomatic-typecheck
+        # Use unidiomatic type check for exact type (ignoring inheritance)
         if type(self) == type(other) and hash(self) == hash(other):
             return True
 
@@ -178,8 +111,7 @@ class Base(
         if self == other:
             return False
 
-        else:
-            return True
+        return True
 
     def __init__(
         self,
@@ -198,7 +130,6 @@ class Base(
         Logs a message to the log file. Multiprocess-safe.
 
         :param msg: Message to log.
-        :return:
         """
 
         lock.acquire()
@@ -207,20 +138,52 @@ class Base(
         )
         lock.release()
 
+    def log_warning(
+        self,
+        msg: str,
+    ) -> None:
+        """
+        Logs a warning to the log file. Multiprocess-safe.
+
+        :param msg: Warning to log.
+        """
+
+        lock.acquire()
+        self.logger.warning(
+            msg=msg,
+        )
+        lock.release()
+
+    def log_exception(
+        self,
+        exc: Exception,
+    ) -> NoReturn:
+        """
+        Logs an exception and raises it. Multiprocess-safe.
+
+        :param exc: Exception to raise.
+        """
+
+        lock.acquire()
+        self.logger.exception(
+            msg='Encountered exception. Traceback below:\n\n',
+        )
+        lock.release()
+
+        raise exc
+
     @property
     def pool(
         self,
     ) -> Pool:
         """
         Global multiprocessing pool.
-
-        :return:
         """
 
         # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.
 
         if Base.__pool is None:
-            Base.__pool = Pool(
+            Base.__pool = MultiprocessingPool(
                 processes=max(
                     cpu_count(
                         logical=False,
@@ -235,11 +198,9 @@ class Base(
     @property
     def manager(
         self,
-    ) -> Manager:
+    ) -> SyncManager:
         """
         Global multiprocessing manager.
-
-        :return:
         """
 
         # FIXME: This is actually a class property, but Python 3.13+ deprecates class properties.

@@ -1,8 +1,12 @@
+"""
+Package main entry point.
+"""
+
 from enum import StrEnum
-from typing_extensions import Annotated
 from pathlib import Path
 from logging import FileHandler
 
+from typing_extensions import Annotated
 from typer import (
     Typer,
     Argument,
@@ -23,6 +27,10 @@ typer_app = Typer()
 class OutputFormat(
     StrEnum,
 ):
+    """
+    Valid output format options for the cli.
+    """
+
     CSV = 'csv'
     XLSX = 'xlsx'
     PARQUET = 'parquet'
@@ -70,6 +78,13 @@ def cli(
     """
     Command-line interface for the i-beg-to-differ package.
     Generates a comparison report given an *.ib2d file path.
+
+    :param ib2d_file_path: Path to an *.ib2d file.
+    :param compare_set: Compare set to run.
+    :param compare: Compare to run.
+    :param output_path: Path to the report output.
+    :param output_format: Report output format.
+    :param active_wildcard_set: Active wildcard set to use. Defaults to the default wildcard set.
     """
 
     with open_ib2d_file(path=ib2d_file_path) as ib2d_file:
@@ -112,6 +127,11 @@ def gui(
         ),
     ] = None,
 ) -> None:
+    """
+    Command-line function to start the GUI.
+
+    :param ib2d_file_path: Path to an *.ib2d file. Loads the *.ib2d file into the GUI.
+    """
 
     qt_app = QApplication()
 

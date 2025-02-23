@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareSets class.
+"""
+
 from typing import (
     List,
     Dict,
@@ -7,7 +11,6 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..base import log_exception
 from .compare_set import CompareSet
 from ..data_sources import DataSources
 from ..wildcards_sets import WildcardSets
@@ -56,13 +59,16 @@ class CompareSets(
     def compare_sets(
         self,
     ) -> Dict[str, CompareSet]:
+        """
+        Dictionary representation of compare sets.
+        """
 
         return {str(compare_set): compare_set for compare_set in self._compare_sets}
 
     def append(
         self,
         compare_set: CompareSet,
-    ):
+    ) -> None:
         """
         Add compare set to the collection of compare sets.
 
@@ -76,7 +82,6 @@ class CompareSets(
             )
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -102,7 +107,6 @@ class CompareSets(
             ],
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,
@@ -120,6 +124,12 @@ class CompareSets(
         dir_path: Path | str,
         file_name_prefix: str | None = None,
     ) -> None:
+        """
+        Writes all comparison sets to disk as `*.parquet` files.
+
+        :param dir_path: Output directory path.
+        :param file_name_prefix: Optional file name prefix, separated by an underscore character.
+        """
 
         if file_name_prefix is None:
             file_name_prefix = ''
@@ -136,6 +146,12 @@ class CompareSets(
         dir_path: Path | str,
         file_name_prefix: str | None = None,
     ) -> None:
+        """
+        Writes all comparison sets to disk as `*.csv` files.
+
+        :param dir_path: Output directory path.
+        :param file_name_prefix: Optional file name prefix, separated by an underscore character.
+        """
 
         if file_name_prefix is None:
             file_name_prefix = ''
@@ -152,6 +168,12 @@ class CompareSets(
         dir_path: Path | str,
         file_name_prefix: str | None = None,
     ) -> None:
+        """
+        Writes all comparison sets to disk as `*.xlsx` files.
+
+        :param dir_path: Output directory path.
+        :param file_name_prefix: Optional file name prefix, separated by an underscore character.
+        """
 
         if file_name_prefix is None:
             file_name_prefix = ''

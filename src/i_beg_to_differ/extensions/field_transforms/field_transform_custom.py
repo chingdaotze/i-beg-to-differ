@@ -15,7 +15,6 @@ from i_beg_to_differ.extensions.field_transforms.field_transform_custom_prototyp
     transform,
 )
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
-from i_beg_to_differ.core.base import log_exception
 
 
 class FieldTransformCustom(
@@ -73,7 +72,6 @@ class FieldTransformCustom(
         )
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -94,7 +92,6 @@ class FieldTransformCustom(
 
         return field_transform
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

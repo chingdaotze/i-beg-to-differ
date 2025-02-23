@@ -1,5 +1,4 @@
 from typing import (
-    List,
     Dict,
     ClassVar,
     List,
@@ -9,7 +8,6 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from ..ib2d_file.ib2d_file_element import IB2DFileElement
-from ..base import log_exception
 from .data_source import DataSource
 from ..extensions.data_sources import DataSourceExtensions
 from ..compare_sets.compare_set.compare.data_source_reference import DataSourceReference
@@ -53,7 +51,20 @@ class DataSources(
 
         return 'Data Sources'
 
-    @log_exception
+    def __contains__(
+        self,
+        data_source: str | DataSource | DataSourceReference,
+    ) -> bool:
+        if isinstance(data_source, DataSourceReference):
+            key = data_source.data_source_name.base_value
+
+        else:
+            key = str(
+                data_source,
+            )
+
+        return key in self.data_sources
+
     def __getitem__(
         self,
         data_source: str | DataSource | DataSourceReference,
@@ -79,7 +90,6 @@ class DataSources(
 
         return {str(data_source): data_source for data_source in self._data_sources}
 
-    @log_exception
     def append(
         self,
         data_source: DataSource,
@@ -96,7 +106,6 @@ class DataSources(
                 data_source,
             )
 
-    @log_exception
     def remove(
         self,
         data_source: DataSource | DataSourceReference,
@@ -119,7 +128,6 @@ class DataSources(
         return [str(data_source) for data_source in self._data_sources]
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -147,7 +155,6 @@ class DataSources(
             data_sources=data_sources,
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

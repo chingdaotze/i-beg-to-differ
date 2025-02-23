@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareSourceDuplicatePrimaryKeyRecords class.
+"""
+
 from typing import List
 
 from pandas import DataFrame
@@ -15,6 +19,9 @@ from ....wildcards_sets import WildcardSets
 class CompareSourceDuplicatePrimaryKeyRecords(
     CompareBase,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -40,6 +47,9 @@ class CompareSourceDuplicatePrimaryKeyRecords(
     def source_duplicate_primary_key_records(
         self,
     ) -> DataFrame:
+        """
+        DataFrame of all duplicate records in the Source.
+        """
 
         duplicated_dataframe = self.source_table[
             self.source_table.index.duplicated(

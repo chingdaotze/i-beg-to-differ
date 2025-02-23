@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareValues class.
+"""
+
 from typing import List
 
 from pandas import DataFrame
@@ -15,6 +19,9 @@ from ....wildcards_sets import WildcardSets
 class CompareValues(
     CompareValuesUnmasked,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -40,6 +47,10 @@ class CompareValues(
     def values_comparison(
         self,
     ) -> DataFrame:
+        """
+        Values comparison between the Source and Target.
+        Mismatches are indicated with an `*`.
+        """
 
         values_comparison = self.values_comparison_unmasked.copy(
             deep=True,

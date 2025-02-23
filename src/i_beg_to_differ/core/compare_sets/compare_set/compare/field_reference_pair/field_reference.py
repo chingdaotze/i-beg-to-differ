@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldReference class.
+"""
+
 from .....base import Base
 from .....wildcards_sets.wildcard_field import WildcardField
 from .....data_sources.data_source.field.field_transforms import FieldTransforms

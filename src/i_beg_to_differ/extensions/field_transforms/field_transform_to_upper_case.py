@@ -11,7 +11,6 @@ from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_
     FieldTransform,
 )
 from i_beg_to_differ.core.extensions.extension import DataType
-from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -52,7 +51,6 @@ class FieldTransformToUpperCase(
         return values
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -63,7 +61,6 @@ class FieldTransformToUpperCase(
 
         return FieldTransformToUpperCase()
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

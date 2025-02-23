@@ -12,7 +12,6 @@ from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_
 )
 from i_beg_to_differ.core.extensions.ui import WildcardInputField
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
-from i_beg_to_differ.core.base import log_exception
 
 
 class FieldTransformReplaceNullWithString(
@@ -68,7 +67,6 @@ class FieldTransformReplaceNullWithString(
         return values
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -82,7 +80,6 @@ class FieldTransformReplaceNullWithString(
             wildcard_sets=wildcard_sets,
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

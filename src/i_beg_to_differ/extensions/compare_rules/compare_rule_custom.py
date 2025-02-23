@@ -15,7 +15,6 @@ from i_beg_to_differ.core.extensions.extension import CustomPythonExtension
 from i_beg_to_differ.extensions.compare_rules.compare_rule_custom_prototype import (
     compare,
 )
-from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -79,7 +78,6 @@ class CompareRuleCustom(
         )
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -100,7 +98,6 @@ class CompareRuleCustom(
 
         return compare_rule
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

@@ -1,3 +1,7 @@
+"""
+Package initialization.
+"""
+
 from logging import (
     getLogger,
     DEBUG,
@@ -18,9 +22,9 @@ def setup_logger(
     Sets up the logging module.
 
     :param file_handler: File handler for the logger. If not provided, does not log to a file.
-    :param stream_handler: Stream handler for the logger. If not provided, uses a default StreamHandler.
+    :param stream_handler: Stream handler for the logger.
+        If not provided, uses a default StreamHandler.
     :param level: Minimum logging level.
-    :return:
     """
 
     # Create logger

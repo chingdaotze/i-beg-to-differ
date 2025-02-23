@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareValuesUnmasked class.
+"""
+
 from typing import List
 
 from pandas import DataFrame
@@ -15,6 +19,9 @@ from ....wildcards_sets import WildcardSets
 class CompareValuesUnmasked(
     CompareBase,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -36,9 +43,15 @@ class CompareValuesUnmasked(
             wildcard_sets=wildcard_sets,
         )
 
-    def apply_mask(self, dataframe: DataFrame) -> DataFrame:
+    def apply_mask(
+        self,
+        dataframe: DataFrame,
+    ) -> DataFrame:
         """
         Applies a masking character to diff columns.
+
+        :param dataframe: DataFrame to mask.
+        :return: Masked DataFrame.
         """
 
         for field_pair in self.dt_fields:
@@ -125,24 +138,3 @@ class CompareValuesUnmasked(
             dataframe = source_table
 
         return dataframe
-
-    @property
-    def values_comparison(
-        self,
-    ) -> DataFrame:
-
-        values_comparison = self.values_comparison_unmasked.copy(
-            deep=True,
-        )
-
-        for field_pair in self.dt_fields:
-            values_comparison[field_pair]['diff'] = values_comparison[field_pair][
-                'diff'
-            ].replace(
-                to_replace={
-                    True: '',
-                    False: '*',
-                },
-            )
-
-        return values_comparison

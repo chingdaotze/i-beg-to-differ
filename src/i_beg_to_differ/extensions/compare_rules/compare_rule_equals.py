@@ -10,7 +10,6 @@ from pandas import Series
 from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
     CompareRule,
 )
-from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -52,7 +51,6 @@ class CompareRuleEquals(
         return result
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -63,7 +61,6 @@ class CompareRuleEquals(
 
         return CompareRuleEquals()
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

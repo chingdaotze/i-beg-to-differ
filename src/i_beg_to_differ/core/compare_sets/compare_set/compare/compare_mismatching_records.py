@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareMismatchingRecords class.
+"""
+
 from typing import List
 
 from pandas import (
@@ -18,6 +22,9 @@ from ....wildcards_sets import WildcardSets
 class CompareMismatchingRecords(
     CompareValuesUnmasked,
 ):
+    """
+    Mixin component for the `Compare` class.
+    """
 
     def __init__(
         self,
@@ -43,6 +50,9 @@ class CompareMismatchingRecords(
     def mismatching_records(
         self,
     ) -> DataFrame:
+        """
+        DataFrame of all mismatching records between the Source and Target.
+        """
 
         mismatching_records = self.values_comparison_unmasked.copy(
             deep=True,

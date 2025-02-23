@@ -23,7 +23,6 @@ from i_beg_to_differ.core.extensions.ui import (
     WildcardFilePathInputField,
     WildcardInputField,
 )
-from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -179,7 +178,6 @@ class DataSourceExcel(
         )
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -194,7 +192,6 @@ class DataSourceExcel(
             wildcard_sets=wildcard_sets,
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,

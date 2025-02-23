@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldReferencePairData class.
+"""
+
 from pathlib import Path
 from typing import (
     ClassVar,

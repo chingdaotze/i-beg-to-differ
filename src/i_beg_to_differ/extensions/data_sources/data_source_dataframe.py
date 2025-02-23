@@ -8,7 +8,6 @@ from zipfile import ZipFile
 from pandas import DataFrame
 
 from i_beg_to_differ.core.data_sources.data_source import DataSource
-from i_beg_to_differ.core.base import log_exception
 from i_beg_to_differ.core.wildcards_sets import WildcardSets
 
 
@@ -57,7 +56,6 @@ class DataSourceDataFrame(
         return self.data
 
     @classmethod
-    @log_exception
     def deserialize(
         cls,
         instance_data: Dict,
@@ -72,7 +70,6 @@ class DataSourceDataFrame(
             ),
         )
 
-    @log_exception
     def serialize(
         self,
         ib2d_file: ZipFile,
