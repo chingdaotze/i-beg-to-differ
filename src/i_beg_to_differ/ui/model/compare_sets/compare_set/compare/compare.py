@@ -1,3 +1,7 @@
+"""
+Contains definition of the ModelCompare class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -7,9 +11,9 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
 from ....model_base_object_viewer import ModelBaseObjectViewer
-from ......core.compare_sets.compare_set.compare import Compare
-from ......core.wildcards_sets import WildcardSets
 from .....view.main_window.main_widget.object_viewer import ObjectViewer
 from .compare_object_viewer_widget import CompareObjectViewerWidget
 
@@ -17,6 +21,9 @@ from .compare_object_viewer_widget import CompareObjectViewerWidget
 class ModelCompare(
     ModelBaseObjectViewer,
 ):
+    """
+    Qt Model representation of a Compare.
+    """
 
     current_state: Compare
     working_dir_path: Path
@@ -54,6 +61,13 @@ class ModelCompare(
         self,
         output_type: str,
     ) -> None:
+        """
+        Creates comparison reports for a Compare 
+        and prompts for an output directory.
+        Varies by output format.
+
+        :param output_type: Output format for report generation.
+        """
 
         if output_type == 'csv':
             dir_path = QFileDialog.getExistingDirectory(
@@ -119,6 +133,11 @@ class ModelCompare(
     def create_csv_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for a Compare 
+        and prompts for an output directory.
+        Uses `*.csv` format.
+        """
 
         self.create_report(
             output_type='csv',
@@ -127,6 +146,11 @@ class ModelCompare(
     def create_parquet_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for a Compare 
+        and prompts for an output directory.
+        Uses `*.parquet` format.
+        """
 
         self.create_report(
             output_type='parquet',
@@ -135,6 +159,11 @@ class ModelCompare(
     def create_excel_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for a Compare 
+        and prompts for an output directory.
+        Uses `*.excel` format.
+        """
 
         self.create_report(
             output_type='excel',

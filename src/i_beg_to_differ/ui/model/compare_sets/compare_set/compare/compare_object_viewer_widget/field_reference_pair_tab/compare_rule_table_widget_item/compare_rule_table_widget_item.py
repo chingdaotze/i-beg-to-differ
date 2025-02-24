@@ -1,6 +1,10 @@
+"""
+Contains definition of the CompareRuleTableWidgetItem class.
+"""
+
 from pathlib import Path
 
-from .........core.compare_sets.compare_set.compare.field_reference_pair import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairData,
 )
 from ........widgets import TableWidgetItemDialog
@@ -10,6 +14,9 @@ from .compare_rule_table_widget_item_dialog import CompareRuleTableWidgetItemDia
 class CompareRuleTableWidgetItem(
     TableWidgetItemDialog,
 ):
+    """
+    Table item that represents a Compare Rule.
+    """
 
     field_reference_pair: FieldReferencePairData
     working_dir_path: Path

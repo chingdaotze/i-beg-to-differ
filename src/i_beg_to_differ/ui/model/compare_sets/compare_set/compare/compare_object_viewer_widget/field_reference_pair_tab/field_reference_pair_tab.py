@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldReferencePairTab class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -5,15 +9,18 @@ from PySide6.QtWidgets import (
     QGridLayout,
 )
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
 from .field_reference_pair_primary_key_widget import FieldReferencePairPrimaryKeyWidget
 from .field_reference_pair_data_widget import FieldReferencePairDataWidget
-from ........core.compare_sets.compare_set.compare import Compare
 from .......widgets import GroupBox
 
 
 class FieldReferencePairTab(
     QWidget,
 ):
+    """
+    Object Viewer Field Reference Pair tab.
+    """
 
     field_reference_pair_primary_key_widget: FieldReferencePairPrimaryKeyWidget
     field_reference_pair_data_widget: FieldReferencePairDataWidget

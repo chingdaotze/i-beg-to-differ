@@ -1,15 +1,19 @@
+"""
+Contains definition of the FieldReferencePairPrimaryKeyWidget class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QModelIndex
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair import (
+    FieldReferencePairPrimaryKey,
+)
 from .......widgets import (
     TableWidget,
     TableWidgetItemDialog,
-)
-from ........core.compare_sets.compare_set.compare import Compare
-from ........core.compare_sets.compare_set.compare.field_reference_pair import (
-    FieldReferencePairPrimaryKey,
 )
 from .field_name_table_widget_item import FieldNameTableWidgetItem
 from .field_transform_table_widget_item import FieldTransformTableWidgetItem
@@ -18,6 +22,9 @@ from .field_transform_table_widget_item import FieldTransformTableWidgetItem
 class FieldReferencePairPrimaryKeyWidget(
     TableWidget,
 ):
+    """
+    Widget that renders Field Reference Primary Key Pairs in a table.
+    """
 
     compare: Compare
     working_dir_path: Path
@@ -106,6 +113,11 @@ class FieldReferencePairPrimaryKeyWidget(
         self,
         pk_field: FieldReferencePairPrimaryKey,
     ) -> None:
+        """
+        Inserts a Field Reference Primary Key Pair into the table.
+        
+        :param dt_field: Field Reference Primary Key Pair to insert.
+        """
 
         # Assemble row items
         items = [
@@ -146,6 +158,11 @@ class FieldReferencePairPrimaryKeyWidget(
         self,
         index: QModelIndex,
     ) -> None:
+        """
+        Opens a dialog provided by a `TableWidgetItemDialog` object.
+
+        :param index: Index for the item to open.
+        """
 
         item: TableWidgetItemDialog = self.table.itemFromIndex(
             index,

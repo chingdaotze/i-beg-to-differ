@@ -1,7 +1,11 @@
-from .........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+"""
+Contains definition of the FieldNameTableWidgetItem class.
+"""
+
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
-from .........core.data_sources.data_source import DataSource
+from i_beg_to_differ.core.data_sources.data_source import DataSource
 from ........widgets import TableWidgetItemDialog
 from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog
 
@@ -9,6 +13,9 @@ from .field_name_table_widget_item_dialog import FieldNameTableWidgetItemDialog
 class FieldNameTableWidgetItem(
     TableWidgetItemDialog,
 ):
+    """
+    Table item that represents a Field Name.
+    """
 
     field_reference: FieldReference
     data_source: DataSource | None
@@ -33,8 +40,7 @@ class FieldNameTableWidgetItem(
         if self.field_reference is None:
             return ''
 
-        else:
-            return self.field_reference.field_name.base_value
+        return self.field_reference.field_name.base_value
 
     def open_dialog(
         self,

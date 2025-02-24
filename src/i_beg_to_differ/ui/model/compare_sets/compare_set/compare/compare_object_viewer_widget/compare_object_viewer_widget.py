@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareObjectViewerWidget class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -5,7 +9,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from .......core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
 from .compare_description_tab import CompareDescriptionTab
 from .data_sources_tab import DataSourcesTab
 from .field_reference_pair_tab import FieldReferencePairTab
@@ -14,6 +18,9 @@ from .field_reference_pair_tab import FieldReferencePairTab
 class CompareObjectViewerWidget(
     QTabWidget,
 ):
+    """
+    Compare object viewer. Contains multiple child tabs.
+    """
 
     description_tab: CompareDescriptionTab
     data_sources_tab: DataSourcesTab

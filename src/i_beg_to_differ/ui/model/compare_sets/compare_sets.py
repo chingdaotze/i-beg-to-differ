@@ -1,3 +1,7 @@
+"""
+Contains definition of the ModelCompareSets class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -6,12 +10,13 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 
+from i_beg_to_differ.core.compare_sets import CompareSets
+from i_beg_to_differ.core.data_sources import DataSources
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.compare_sets.compare_set import CompareSet
+
 from ..model_base import ModelBase
-from ....core.compare_sets import CompareSets
-from ....core.data_sources import DataSources
-from ....core.wildcards_sets import WildcardSets
 from ...view.main_window.main_widget.object_viewer import ObjectViewer
-from ....core.compare_sets.compare_set import CompareSet
 from .compare_set import ModelCompareSet
 from ...widgets import (
     Dialog,
@@ -22,6 +27,9 @@ from ...widgets import (
 class ModelCompareSets(
     ModelBase,
 ):
+    """
+    Qt Model representation of CompareSets.
+    """
 
     current_state: CompareSets
     data_sources: DataSources
@@ -65,6 +73,9 @@ class ModelCompareSets(
     def add_compare_set(
         self,
     ) -> None:
+        """
+        Adds a new CompareSet to the CompareSets.
+        """
 
         # Create / show Dialog
         dialog = Dialog(
@@ -109,6 +120,13 @@ class ModelCompareSets(
         self,
         output_type: str,
     ) -> None:
+        """
+        Creates comparison reports for all CompareSets 
+        and prompts for an output directory.
+        Varies by output format.
+
+        :param output_type: Output format for report generation.
+        """
 
         # Open File Dialog
         dir_path = QFileDialog.getExistingDirectory(
@@ -144,6 +162,11 @@ class ModelCompareSets(
     def create_csv_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all CompareSets 
+        and prompts for an output directory.
+        Uses `*.csv` format.
+        """
 
         self.create_report(
             output_type='csv',
@@ -152,6 +175,11 @@ class ModelCompareSets(
     def create_parquet_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all CompareSets 
+        and prompts for an output directory.
+        Uses `*.parquet` format.
+        """
 
         self.create_report(
             output_type='parquet',
@@ -160,6 +188,11 @@ class ModelCompareSets(
     def create_excel_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all CompareSets 
+        and prompts for an output directory.
+        Uses `*.xlsx` format.
+        """
 
         self.create_report(
             output_type='excel',

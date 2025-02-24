@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldReferencePairDataWidget class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -6,13 +10,13 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QModelIndex
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair import (
+    FieldReferencePairData,
+)
 from .......widgets import (
     TableWidget,
     TableWidgetItemDialog,
-)
-from ........core.compare_sets.compare_set.compare import Compare
-from ........core.compare_sets.compare_set.compare.field_reference_pair import (
-    FieldReferencePairData,
 )
 from .field_name_table_widget_item import FieldNameTableWidgetItem
 from .field_transform_table_widget_item import FieldTransformTableWidgetItem
@@ -22,6 +26,9 @@ from .compare_rule_table_widget_item import CompareRuleTableWidgetItem
 class FieldReferencePairDataWidget(
     TableWidget,
 ):
+    """
+    Widget that renders Field Reference Data Pairs in a table.
+    """
 
     compare: Compare
     working_dir_path: Path
@@ -113,6 +120,11 @@ class FieldReferencePairDataWidget(
         self,
         dt_field: FieldReferencePairData,
     ) -> None:
+        """
+        Inserts a Field Reference Data Pair into the table.
+        
+        :param dt_field: Field Reference Data Pair to insert.
+        """
 
         # Assemble row items
         items = [
@@ -169,6 +181,9 @@ class FieldReferencePairDataWidget(
     def auto_match_rows(
         self,
     ) -> None:
+        """
+        Populates the table with auto-matched Fields.
+        """
 
         self.table.setRowCount(
             0,
@@ -185,6 +200,11 @@ class FieldReferencePairDataWidget(
         self,
         index: QModelIndex,
     ) -> None:
+        """
+        Opens a dialog provided by a `TableWidgetItemDialog` object.
+
+        :param index: Index for the item to open.
+        """
 
         item: TableWidgetItemDialog = self.table.itemFromIndex(
             index,

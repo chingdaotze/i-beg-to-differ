@@ -1,3 +1,7 @@
+"""
+Contains definition of the ModelCompareSet class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -8,26 +12,29 @@ from PySide6.QtWidgets import (
     QFileDialog,
 )
 
-from ...model_base_object_viewer import ModelBaseObjectViewer
-from .compare_set_description_widget import CompareSetDescriptionWidget
-from .....core.compare_sets.compare_set import CompareSet
-from .....core.data_sources import DataSources
-from .....core.compare_sets.compare_set.compare.data_source_reference import (
+from i_beg_to_differ.core.compare_sets.compare_set import CompareSet
+from i_beg_to_differ.core.data_sources import DataSources
+from i_beg_to_differ.core.compare_sets.compare_set.compare.data_source_reference import (
     DataSourceReference,
 )
-from .....core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.wildcards_sets import WildcardSets
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
+from ...model_base_object_viewer import ModelBaseObjectViewer
+from .compare_set_description_widget import CompareSetDescriptionWidget
 from ....view.main_window.main_widget.object_viewer import ObjectViewer
 from .compare import ModelCompare
 from ....widgets import (
     Dialog,
     LineEdit,
 )
-from .....core.compare_sets.compare_set.compare import Compare
 
 
 class ModelCompareSet(
     ModelBaseObjectViewer,
 ):
+    """
+    Qt Model representation of a CompareSet.
+    """
 
     current_state: CompareSet
     data_sources: DataSources
@@ -89,6 +96,9 @@ class ModelCompareSet(
     def add_compare(
         self,
     ) -> None:
+        """
+        Adds a new Compare to the CompareSet.
+        """
 
         # Create / show Dialog
         dialog = Dialog(
@@ -141,6 +151,13 @@ class ModelCompareSet(
         self,
         output_type: str,
     ) -> None:
+        """
+        Creates comparison reports for all Compares 
+        and prompts for an output directory.
+        Varies by output format.
+
+        :param output_type: Output format for report generation.
+        """
 
         # Open File Dialog
         dir_path = QFileDialog.getExistingDirectory(
@@ -176,6 +193,11 @@ class ModelCompareSet(
     def create_csv_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all Compares 
+        and prompts for an output directory.
+        Uses `*.csv` format.
+        """
 
         self.create_report(
             output_type='csv',
@@ -184,6 +206,11 @@ class ModelCompareSet(
     def create_parquet_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all Compares 
+        and prompts for an output directory.
+        Uses `*.parquet` format.
+        """
 
         self.create_report(
             output_type='parquet',
@@ -192,6 +219,11 @@ class ModelCompareSet(
     def create_excel_files(
         self,
     ) -> None:
+        """
+        Creates comparison reports for all Compares 
+        and prompts for an output directory.
+        Uses `*.excel` format.
+        """
 
         self.create_report(
             output_type='excel',

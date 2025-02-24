@@ -1,9 +1,13 @@
+"""
+Contains definition of the DataSourcesTab class.
+"""
+
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
 )
 
-from .......core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
 from ......widgets import (
     WildcardInputWidgetPreview,
     GroupBox,
@@ -13,6 +17,9 @@ from ......widgets import (
 class DataSourcesTab(
     QWidget,
 ):
+    """
+    Object Viewer Data Sources tab.
+    """
 
     layout: QVBoxLayout
     compare: Compare

@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformListWidget class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -6,13 +10,13 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QModelIndex
 
-from .........widgets import TableWidget
-from ..........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
-from ..........core.data_sources.data_source.field.field_transforms.field_transform import (
+from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
+from .........widgets import TableWidget
 from .field_transform_selector_dialog import FieldTransformSelectorDialog
 from .field_transform_list_table_widget_item import FieldTransformListTableWidgetItem
 
@@ -20,6 +24,9 @@ from .field_transform_list_table_widget_item import FieldTransformListTableWidge
 class FieldTransformListWidget(
     TableWidget,
 ):
+    """
+    List of Field Transforms.
+    """
 
     field_reference: FieldReference
     working_dir_path: Path
@@ -116,6 +123,12 @@ class FieldTransformListWidget(
         self,
         field_transform: FieldTransform,
     ) -> None:
+        """
+        Inserts a Field Transform into the table.
+        
+        :param field_transform: Field Transform to insert.
+        """
+
         # Assemble row items
         items = [
             FieldTransformListTableWidgetItem(
@@ -140,6 +153,10 @@ class FieldTransformListWidget(
     def click_edit_button(
         self,
     ) -> None:
+        """
+        Connects Edit button to the edit dialog.
+        """
+
         index = self.table.currentIndex()
 
         self.open_dialog(
@@ -150,6 +167,12 @@ class FieldTransformListWidget(
         self,
         index: QModelIndex,
     ) -> None:
+        """
+        Opens the edit dialog.
+        
+        :param index: Index that points at a `FieldTransformListTableWidgetItem`.
+        """
+
         item: FieldTransformListTableWidgetItem = self.table.itemFromIndex(
             index,
         )

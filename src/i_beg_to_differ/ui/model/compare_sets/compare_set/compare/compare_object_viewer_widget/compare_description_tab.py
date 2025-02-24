@@ -1,13 +1,20 @@
+"""
+Contains definition of the CompareDescriptionTab class.
+"""
+
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare import Compare
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from ......widgets import DescriptionWidget
-from .......core.compare_sets.compare_set.compare import Compare
-from .......core.wildcards_sets.wildcard_field import WildcardField
 
 
 class CompareDescriptionTab(
     DescriptionWidget,
 ):
+    """
+    Object Viewer Description tab.
+    """
 
     compare: Compare
 

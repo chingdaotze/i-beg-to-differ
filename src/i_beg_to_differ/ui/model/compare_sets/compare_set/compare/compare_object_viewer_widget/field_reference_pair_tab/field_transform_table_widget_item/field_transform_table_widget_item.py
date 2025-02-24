@@ -1,6 +1,10 @@
+"""
+Contains definition of the FieldTransformTableWidgetItem class.
+"""
+
 from pathlib import Path
 
-from .........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
 from ........widgets import TableWidgetItemDialog
@@ -12,6 +16,9 @@ from .field_transform_table_widget_item_dialog import (
 class FieldTransformTableWidgetItem(
     TableWidgetItemDialog,
 ):
+    """
+    Field Transform widget embedded in the Field Pairs tab.
+    """
 
     field_reference: FieldReference
     working_dir_path: Path

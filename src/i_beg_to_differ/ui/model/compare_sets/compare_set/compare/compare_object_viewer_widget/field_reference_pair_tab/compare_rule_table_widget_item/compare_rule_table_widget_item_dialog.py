@@ -1,3 +1,7 @@
+"""
+Contains definition of the CompareRuleTableWidgetItemDialog class.
+"""
+
 from pathlib import Path
 from typing import (
     List,
@@ -12,21 +16,24 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 
-from ........widgets import Dialog
-from .........core.compare_sets.compare_set.compare.field_reference_pair import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair import (
     FieldReferencePairData,
 )
-from .........core.compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.compare_rule import (
     CompareRule,
 )
-from .........core.extensions.extension.custom_python_extension import (
+from i_beg_to_differ.core.extensions.extension.custom_python_extension import (
     CustomPythonExtension,
 )
+from ........widgets import Dialog
 
 
 class CompareRuleTableWidgetItemDialog(
     Dialog,
 ):
+    """
+    Dialog that renders a Compare Rule.
+    """
 
     field_reference_pair: FieldReferencePairData
     compare_rule_display: QLabel
@@ -98,6 +105,9 @@ class CompareRuleTableWidgetItemDialog(
     def update_compare_rule_display(
         self,
     ) -> None:
+        """
+        Updates the Compare Rule representation in the GUI.
+        """
 
         self.compare_rule_display.setText(
             str(
@@ -108,6 +118,9 @@ class CompareRuleTableWidgetItemDialog(
     def click_change_button(
         self,
     ) -> None:
+        """
+        Creates and displays dialog to change the Compare Rule.
+        """
 
         # Build /show selector
         compare_rule_selector_widget = QComboBox(
@@ -151,6 +164,9 @@ class CompareRuleTableWidgetItemDialog(
     def click_edit_button(
         self,
     ) -> None:
+        """
+        Creates and displays dialog to edit the Compare Rule.
+        """
 
         dialog = Dialog(
             title='Compare Rule Parameters',

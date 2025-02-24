@@ -1,18 +1,25 @@
+"""
+Contains definition of the FieldNameTableWidgetItemDialog class.
+"""
+
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+    FieldReference,
+)
+from i_beg_to_differ.core.data_sources.data_source import DataSource
 from ........widgets import (
     Dialog,
     WildcardInputWidgetPreview,
 )
-from .........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
-    FieldReference,
-)
-from .........core.data_sources.data_source import DataSource
 
 
 class FieldNameTableWidgetItemDialog(
     Dialog,
 ):
+    """
+    Dialog that renders a Field Name.
+    """
 
     field_reference: FieldReference
     data_source: DataSource | None

@@ -1,13 +1,20 @@
+"""
+Contains definition of the CompareSetDescriptionWidget class.
+"""
+
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.core.compare_sets.compare_set import CompareSet
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from ....widgets import DescriptionWidget
-from .....core.compare_sets.compare_set import CompareSet
-from .....core.wildcards_sets.wildcard_field import WildcardField
 
 
 class CompareSetDescriptionWidget(
     DescriptionWidget,
 ):
+    """
+    Description widget for a CompareSet.
+    """
 
     compare_set: CompareSet
 

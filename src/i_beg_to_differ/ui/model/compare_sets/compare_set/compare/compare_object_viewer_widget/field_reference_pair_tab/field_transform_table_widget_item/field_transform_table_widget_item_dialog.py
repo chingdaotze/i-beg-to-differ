@@ -1,17 +1,24 @@
+"""
+Contains definition of the FieldTransformTableWidgetItemDialog class.
+"""
+
 from pathlib import Path
 
 from PySide6.QtWidgets import QWidget
 
-from ........widgets import Dialog
-from .........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
+from ........widgets import Dialog
 from .field_transform_list_widget import FieldTransformListWidget
 
 
 class FieldTransformTableWidgetItemDialog(
     Dialog,
 ):
+    """
+    Dialog that contains a list of Field Transforms.
+    """
 
     field_reference: FieldReference
     field_transform_list_widget: FieldTransformListWidget

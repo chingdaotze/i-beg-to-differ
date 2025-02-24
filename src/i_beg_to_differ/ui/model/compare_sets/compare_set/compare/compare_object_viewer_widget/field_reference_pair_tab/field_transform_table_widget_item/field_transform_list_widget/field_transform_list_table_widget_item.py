@@ -1,4 +1,8 @@
-from ..........core.data_sources.data_source.field.field_transforms.field_transform import (
+"""
+Contains definition of the FieldTransformListTableWidgetItem class.
+"""
+
+from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
 from .........widgets import (
@@ -10,6 +14,9 @@ from .........widgets import (
 class FieldTransformListTableWidgetItem(
     TableWidgetItemDialog,
 ):
+    """
+    List item that represents a Field Transform.
+    """
 
     field_transform: FieldTransform
 

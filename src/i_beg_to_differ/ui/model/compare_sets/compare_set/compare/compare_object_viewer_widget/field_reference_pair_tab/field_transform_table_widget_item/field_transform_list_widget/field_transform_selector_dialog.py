@@ -1,3 +1,7 @@
+"""
+Contains definition of the FieldTransformSelectorDialog class.
+"""
+
 from pathlib import Path
 from typing import (
     List,
@@ -10,21 +14,24 @@ from PySide6.QtWidgets import (
     QComboBox,
 )
 
-from .........widgets import Dialog
-from ..........core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
+from i_beg_to_differ.core.compare_sets.compare_set.compare.field_reference_pair.field_reference import (
     FieldReference,
 )
-from ..........core.data_sources.data_source.field.field_transforms.field_transform import (
+from i_beg_to_differ.core.data_sources.data_source.field.field_transforms.field_transform import (
     FieldTransform,
 )
-from ..........core.extensions.extension.custom_python_extension import (
+from i_beg_to_differ.core.extensions.extension.custom_python_extension import (
     CustomPythonExtension,
 )
+from .........widgets import Dialog
 
 
 class FieldTransformSelectorDialog(
     Dialog,
 ):
+    """
+    Dialog that provides a Field Transform selector.
+    """
 
     field_reference: FieldReference
     working_dir_path: Path
@@ -73,6 +80,9 @@ class FieldTransformSelectorDialog(
     def field_transform(
         self,
     ) -> FieldTransform:
+        """
+        Currently selected Field Transform.
+        """
 
         current_index = self.field_transform_selector_widget.currentIndex()
         field_transform_type = self.extension_name_map[current_index][1]
