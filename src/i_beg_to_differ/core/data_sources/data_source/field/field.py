@@ -36,7 +36,7 @@ class Field(
     Base data layer.
     """
 
-    field_transforms: DictProxy[FieldTransforms, Series | None]
+    field_transforms: DictProxy
     """
     Dictionary of transformations that apply to this field, and corresponding values.
     """

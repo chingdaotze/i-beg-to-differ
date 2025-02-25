@@ -22,7 +22,7 @@ class WildcardSets(
     Collection of wildcard sets, used to replace values.
     """
 
-    _wildcard_sets: ListProxy[WildcardSet]
+    _wildcard_sets: ListProxy
     _active_wildcard_set: WildcardSet | None
     _DEFAULT_WILDCARD_SET = 'Default'
 

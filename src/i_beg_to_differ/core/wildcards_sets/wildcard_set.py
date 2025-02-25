@@ -30,12 +30,12 @@ class WildcardSet(
     Human-readable description of this Wildcard Set.
     """
 
-    user_replacement_values: DictProxy[str, str]
+    user_replacement_values: DictProxy
     """
     User-defined wildcard replacement values.
     """
 
-    system_replacement_values: DictProxy[str, str]
+    system_replacement_values: DictProxy
     """
     System-defined wildcard replacement values.
     """

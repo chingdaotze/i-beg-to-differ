@@ -3,6 +3,7 @@ Contains definition of the IB2DFile class.
 """
 
 from pathlib import Path
+from platform import system
 from zipfile import ZipFile
 from io import BytesIO
 from shutil import rmtree
@@ -127,9 +128,27 @@ class IB2DFile(
         """
 
         if working_dir_path is None:
-            working_dir_path = getenv(
-                key='TEMP',
-            )
+            os_system = system()
+
+            if os_system == 'Windows':
+                working_dir_path = getenv(
+                    key='TEMP',
+                )
+
+                if working_dir_path is None:
+                    raise KeyError(
+                        'Unable to create default working directory: working_dir_path not specified '
+                        'and could not locate "TEMP" environment variable.'
+                    )
+
+            elif os_system == 'Linux':
+                working_dir_path = '/tmp'
+
+            else:
+                raise NotImplementedError(
+                    'Unable to create default working directory: working_dir_path not specified '
+                    f'and default logic not specified for OS: {os_system}.',
+                )
 
             if working_dir_path is None:
                 raise KeyError(
@@ -140,6 +159,11 @@ class IB2DFile(
             working_dir_path = Path(
                 working_dir_path,
             )
+
+            if not working_dir_path.exists():
+                raise NotADirectoryError(
+                    f'Working directory does not exist: "{working_dir_path}".',
+                )
 
             working_dir_path /= f'ib2d_{uuid4()!s}'
 
@@ -180,7 +204,7 @@ class IB2DFile(
         cls,
         path: str | Path,
         working_dir_path: str | Path | None = None,
-    ) -> Generator[Self]:
+    ) -> Generator[Self, None, None]:
         """
         Reads a ``*.ib2d`` file from disk and creates an instance. 
         Also initializes the working directory.
