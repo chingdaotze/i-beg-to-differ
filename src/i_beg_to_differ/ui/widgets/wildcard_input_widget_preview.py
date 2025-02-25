@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardInputWidgetPreview class.
+"""
+
 from typing import (
     Callable,
     List,
@@ -8,7 +12,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ...core.wildcards_sets.wildcard_field import WildcardField
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from . import WildcardInputWidget
 
 
@@ -16,13 +20,14 @@ class WildcardInputWidgetPreview(
     WildcardInputWidget,
 ):
     """
-    Wildcard input field widget. Creates a text input field that updates the base value of a WildCard field. Options
+    Wildcard input field widget. Creates a text input field that 
+    updates the base value of a WildCard field. Options
     can be provided:
         - As a static list.
-        - As a dynamic list, where a function provides option values. The function is recalculated every time
-          the dropdown is activated.
+        - As a dynamic list, where a function provides option values. 
+          The function is recalculated every time the dropdown is activated.
 
-    If options are provided, they appear as ``QComboBox`` options.
+    If options are provided, they appear as `QComboBox` options.
     """
 
     preview: QLabel
@@ -63,6 +68,9 @@ class WildcardInputWidgetPreview(
     def update_preview(
         self,
     ) -> None:
+        """
+        Updates the preview by evaluating the Wildcard Field.
+        """
 
         self.preview.setText(
             str(

@@ -1,3 +1,7 @@
+"""
+Contains definition of the Widget class.
+"""
+
 from PySide6.QtWidgets import (
     QWidget,
     QGridLayout,

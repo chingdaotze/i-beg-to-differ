@@ -1,3 +1,7 @@
+"""
+Contains definition of the ObjectViewer class.
+"""
+
 from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QTabWidget
@@ -9,6 +13,9 @@ if TYPE_CHECKING:
 class ObjectViewer(
     QTabWidget,
 ):
+    """
+    Main window Object Viewer.
+    """
 
     def __init__(
         self,
@@ -32,6 +39,11 @@ class ObjectViewer(
         self,
         index,
     ) -> None:
+        """
+        Closes a tab in the Object Viewer.
+        
+        :param index: Index of the tab to close.
+        """
 
         self.removeTab(
             index,
@@ -41,6 +53,12 @@ class ObjectViewer(
         self,
         item: 'ModelBaseObjectViewer',
     ) -> None:
+        """
+        Opens a tab in the Object Viewer.
+
+        :param item: Item to open.
+        """
+
         # TODO: Check if item is already opened and activate tab. Do not allow duplicate items.
 
         object_viewer_widget = item.object_viewer_widget

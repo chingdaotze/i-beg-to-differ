@@ -1,10 +1,14 @@
+"""
+Contains definition of the DescriptionWidget class.
+"""
+
 from PySide6.QtWidgets import (
     QWidget,
     QPlainTextEdit,
     QSizePolicy,
 )
 
-from ...core.wildcards_sets.wildcard_field import WildcardField
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from .widget import Widget
 
 

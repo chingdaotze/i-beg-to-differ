@@ -1,3 +1,7 @@
+"""
+Contains definition of the MainWindow class.
+"""
+
 from typing import ClassVar
 
 from PySide6.QtWidgets import QMainWindow
@@ -11,6 +15,9 @@ from .main_widget import MainWidget
 class MainWindow(
     QMainWindow,
 ):
+    """
+    Main window for the Qt application.
+    """
 
     MIN_SIZE: ClassVar[QSize] = QSize(
         800,

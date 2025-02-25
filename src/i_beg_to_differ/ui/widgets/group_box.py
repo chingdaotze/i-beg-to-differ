@@ -1,3 +1,7 @@
+"""
+Contains definition of the GroupBox class.
+"""
+
 from PySide6.QtWidgets import (
     QGroupBox,
     QGridLayout,

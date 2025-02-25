@@ -1,3 +1,7 @@
+"""
+Contains definition of the TableWidget class.
+"""
+
 from typing import List
 from abc import abstractmethod
 
@@ -15,6 +19,9 @@ from .widget import Widget
 class TableWidget(
     Widget,
 ):
+    """
+    Widget that contains a table.
+    """
 
     columns: List[str]
     table: QTableWidget
@@ -113,11 +120,17 @@ class TableWidget(
     ) -> None:
         """
         Abstract method that is called whenever a cell changes.
+
+        :param row: Row index.
+        :param column: Column index.
         """
 
     def add_row(
         self,
     ) -> None:
+        """
+        Adds an empty row to the table.
+        """
 
         self.table.insertRow(
             self.table.rowCount(),
@@ -126,6 +139,9 @@ class TableWidget(
     def delete_current_row(
         self,
     ) -> None:
+        """
+        Deletes the current row from the table.
+        """
 
         row = self.table.currentRow()
 

@@ -1,3 +1,7 @@
+"""
+Contains definition of the WildcardInputWidget class.
+"""
+
 from typing import (
     Callable,
     List,
@@ -5,9 +9,9 @@ from typing import (
 
 from PySide6.QtWidgets import QWidget
 
+from i_beg_to_differ.core.wildcards_sets.wildcard_field import WildcardField
 from .widget import Widget
 from .combo_box.combo_box import ComboBox
-from ...core.wildcards_sets.wildcard_field import WildcardField
 from . import (
     TextWidget,
     StaticComboBox,
@@ -20,11 +24,11 @@ class WildcardInputWidget(
     Widget,
 ):
     """
-    Wildcard input field widget. Creates a text input field that updates the base value of a WildCard field. Options
-    can be provided:
+    Wildcard input field widget. Creates a text input field that 
+    updates the base value of a WildCard field. Options can be provided:
         - As a static list.
-        - As a dynamic list, where a function provides option values. The function is recalculated every time
-          the dropdown is activated.
+        - As a dynamic list, where a function provides option values. 
+          The function is recalculated every time the dropdown is activated.
 
     If options are provided, they appear as ``QComboBox`` options.
     """
@@ -86,5 +90,9 @@ class WildcardInputWidget(
     def text_changed(
         self,
     ) -> None:
+        """
+        Updates the Wildcard Field's base value from
+        user input.
+        """
 
         self.wildcard_field.base_value = self.input_widget.get_text()

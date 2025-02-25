@@ -1,3 +1,7 @@
+"""
+Contains definition of the Dialog class.
+"""
+
 from typing import ClassVar
 
 from PySide6.QtWidgets import (
@@ -10,6 +14,9 @@ from PySide6.QtWidgets import (
 class Dialog(
     QDialog,
 ):
+    """
+    Basic QDialog that provides a QGridLayout and title.
+    """
 
     layout: QGridLayout
 

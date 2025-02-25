@@ -1,3 +1,7 @@
+"""
+Contains definition of the HelpMenu class.
+"""
+
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QKeySequence
 
@@ -5,6 +9,9 @@ from PySide6.QtGui import QKeySequence
 class HelpMenu(
     QMenu,
 ):
+    """
+    Main window help menu.
+    """
 
     def __init__(
         self,

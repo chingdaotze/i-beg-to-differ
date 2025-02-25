@@ -1,3 +1,7 @@
+"""
+Contains definition of the FileMenu class.
+"""
+
 from typing import NoReturn
 from PySide6.QtWidgets import (
     QMenu,
@@ -14,6 +18,9 @@ from ....model import Model
 class FileMenu(
     QMenu,
 ):
+    """
+    Main window file menu.
+    """
 
     object_explorer: ObjectExplorer
     status_bar: QStatusBar
@@ -74,6 +81,9 @@ class FileMenu(
     def new(
         self,
     ) -> None:
+        """
+        Creates and sets an empty model.
+        """
 
         model = Model(
             status_bar=self.status_bar,
@@ -88,6 +98,11 @@ class FileMenu(
         self,
         path: str | None = None,
     ) -> None:
+        """
+        Opens an `*.ib2d` file and sets it as the model.
+
+        :param path: `*.ib2d` file path.
+        """
 
         if path is None:
             path, _ = QFileDialog.getOpenFileName(
@@ -121,6 +136,10 @@ class FileMenu(
     def save(
         self,
     ) -> None:
+        """
+        If it already exists, saves the model to disk.
+        Else, opens a Save As dialog.
+        """
 
         model: Model = self.object_explorer.model()
 
@@ -146,15 +165,16 @@ class FileMenu(
 
     def save_as(
         self,
-        path: str | None = None,
     ) -> None:
+        """
+        Gets path from user and saves the model to disk.
+        """
 
-        if path is None:
-            path, _ = QFileDialog.getSaveFileName(
-                self,
-                caption='Save *.ib2d File',
-                filter='ib2d Files (*.ib2d)',
-            )
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            caption='Save *.ib2d File',
+            filter='ib2d Files (*.ib2d)',
+        )
 
         if path:
             self.status_bar.showMessage(
@@ -174,6 +194,9 @@ class FileMenu(
 
     @staticmethod
     def quit() -> NoReturn:
+        """
+        Exits the application.
+        """
 
         exit(
             0,

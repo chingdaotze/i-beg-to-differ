@@ -1,3 +1,7 @@
+"""
+Contains definition of the LineEdit class.
+"""
+
 from PySide6.QtCore import SignalInstance
 from PySide6.QtWidgets import (
     QLineEdit,

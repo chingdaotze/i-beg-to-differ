@@ -1,3 +1,7 @@
+"""
+Contains definition of the MenuBar class.
+"""
+
 from PySide6.QtWidgets import (
     QMenuBar,
     QStatusBar,
@@ -13,6 +17,9 @@ from .help_menu import HelpMenu
 class MenuBar(
     QMenuBar,
 ):
+    """
+    Main window menu bar.
+    """
 
     file_menu: FileMenu
     edit_menu: EditMenu

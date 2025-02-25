@@ -1,3 +1,7 @@
+"""
+Contains definition of the ComboBox class.
+"""
+
 from abc import abstractmethod
 from typing import List
 
@@ -77,6 +81,9 @@ class ComboBox(
     def showPopup(
         self,
     ) -> None:
+        """
+        https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QComboBox.html#PySide6.QtWidgets.QComboBox.showPopup
+        """
 
         self.clear()
 

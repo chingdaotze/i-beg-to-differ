@@ -1,3 +1,7 @@
+"""
+Contains definition of the StaticComboBox class.
+"""
+
 from typing import List
 
 from PySide6.QtWidgets import QWidget

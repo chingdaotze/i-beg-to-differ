@@ -1,3 +1,7 @@
+"""
+Contains definition of the ObjectExplorer class.
+"""
+
 from PySide6.QtWidgets import (
     QTreeView,
     QStatusBar,
@@ -16,6 +20,10 @@ from ..object_viewer import ObjectViewer
 class ObjectExplorer(
     QTreeView,
 ):
+    """
+    Main Window Object Explorer.
+    """
+
     object_viewer: ObjectViewer
 
     def __init__(

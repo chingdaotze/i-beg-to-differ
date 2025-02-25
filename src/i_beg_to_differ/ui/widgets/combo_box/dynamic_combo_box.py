@@ -1,3 +1,7 @@
+"""
+Contains definition of the DynamicComboBox class.
+"""
+
 from typing import (
     Callable,
     List,

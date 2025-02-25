@@ -1,3 +1,7 @@
+"""
+Contains definition of the EditMenu class.
+"""
+
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QKeySequence
 
@@ -5,6 +9,9 @@ from PySide6.QtGui import QKeySequence
 class EditMenu(
     QMenu,
 ):
+    """
+    Main window edit menu.
+    """
 
     def __init__(
         self,

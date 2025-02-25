@@ -1,3 +1,7 @@
+"""
+Contains definition of the MainWidget class.
+"""
+
 from PySide6.QtWidgets import (
     QSplitter,
     QStatusBar,
@@ -12,6 +16,9 @@ from .object_viewer import ObjectViewer
 class MainWidget(
     QSplitter,
 ):
+    """
+    Main window widget.
+    """
 
     object_explorer: ObjectExplorer
     object_viewer: ObjectViewer

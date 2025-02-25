@@ -1,3 +1,7 @@
+"""
+Contains definition of the TextWidget class.
+"""
+
 from abc import abstractmethod
 
 from PySide6.QtCore import SignalInstance

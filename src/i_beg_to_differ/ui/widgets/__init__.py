@@ -1,3 +1,7 @@
+"""
+widgets imports.
+"""
+
 from .combo_box import (
     StaticComboBox,
     DynamicComboBox,
