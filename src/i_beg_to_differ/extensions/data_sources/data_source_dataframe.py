@@ -27,8 +27,14 @@ class DataSourceDataFrame(
     DataFrame.
     """
 
+    name: str
+    """
+    Data Source name.
+    """
+
     def __init__(
         self,
+        name: str,
         data: DataFrame | None = None,
         description: str | None = None,
     ):
@@ -37,6 +43,8 @@ class DataSourceDataFrame(
             self=self,
             description=description,
         )
+
+        self.name = name
 
         if data is None:
             data = DataFrame()
@@ -47,11 +55,7 @@ class DataSourceDataFrame(
         self,
     ) -> str:
 
-        return str(
-            id(
-                obj=self.data,
-            ),
-        )
+        return self.name
 
     def load(
         self,
@@ -68,6 +72,7 @@ class DataSourceDataFrame(
     ) -> Self:
 
         return DataSourceDataFrame(
+            name=instance_data['parameters']['name'],
             data=DataFrame(
                 data=instance_data['parameters']['data'],
             ),
